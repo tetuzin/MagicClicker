@@ -51,6 +51,7 @@ namespace ShunLib.Popup.Common
             if (_decisionText == default) return;
 
             _decisionText.text = text;
+            
         }
 
         // キャンセルボタン文言の設定

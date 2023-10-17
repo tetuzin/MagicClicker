@@ -9,7 +9,7 @@ namespace ShunLib.UI.Cutin.Img
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
         [Header("カットイン画像")]
-        [SerializeField] private Image _cutinImage = default;
+        [SerializeField] protected Image cutinImage = default;
 
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
@@ -21,8 +21,8 @@ namespace ShunLib.UI.Cutin.Img
         // 画像の設定
         public void SetCutinImage(Sprite sprite)
         {
-            _cutinImage.sprite = sprite;
-            _cutinImage.SetNativeSize();
+            cutinImage.sprite = sprite;
+            cutinImage.SetNativeSize();
         }
 
         // ---------- Private関数 ----------

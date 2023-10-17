@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 namespace ShunLib.UI.Input
 {
@@ -25,6 +26,10 @@ namespace ShunLib.UI.Input
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
+
+        // 値が変更されたときのコールバック
+        private Action _changeValueCallback = default;
+
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
 
@@ -34,6 +39,23 @@ namespace ShunLib.UI.Input
             _inputField.characterLimit = _inputMaxCount;
             // _inputField.wasCanceled = true;
             _emptyText.text = _emptyStr;
+
+            // 入力された値が変更されたときのイベント設定
+            _inputField.onValueChanged.AddListener((str) => {
+                _changeValueCallback?.Invoke();
+            });
+        }
+
+        // 表示
+        public void Show()
+        {
+            _inputField.gameObject.SetActive(true);
+        }
+
+        // 非表示
+        public void Hide()
+        {
+            _inputField.gameObject.SetActive(false);
         }
 
         // 入力テキスト削除
@@ -50,6 +72,18 @@ namespace ShunLib.UI.Input
                 return "";
             }
             return _inputField.text;
+        }
+
+        // 入力テキスト設定
+        public void SetInputText(string text)
+        {
+            _inputField.text = text;
+        }
+
+        // 入力イベント設定
+        public void SetChangeValueCallback(Action callback)
+        {
+            _changeValueCallback = callback;
         }
 
         // ---------- Private関数 ----------

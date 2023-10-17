@@ -49,6 +49,7 @@ namespace ShunLib.Strix.Room.CreateRoom
         {
             base.Initialize();
             List<string> dropdownItems = StrixConst.CAPACITY_VALUE_LIST.ConvertAll(x => x.ToString());
+            _capacityDropdown.Initialize();
             _capacityDropdown.AddItems(dropdownItems);
         }
 

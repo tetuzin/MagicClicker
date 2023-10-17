@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 using ShunLib.Dict;
+using ShunLib.Controller.Audio;
 
 namespace ShunLib.Manager.Audio
 {
@@ -18,8 +20,8 @@ namespace ShunLib.Manager.Audio
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
         [Header("オーディオソース")] 
-        [SerializeField] private AudioSource _audioSourceSE = default;
-        [SerializeField] private AudioSource _audioSourceVoice = default;
+        [SerializeField] private AudioSourceController _audioSourceCtrlSE = default;
+        [SerializeField] private AudioSourceController _audioSourceCtrlVoice = default;
         [SerializeField] private AudioSource _audioSourceBGM = default;
 
         [Header("オーディオミキサー")] 
@@ -39,11 +41,11 @@ namespace ShunLib.Manager.Audio
 
         public AudioSource AudioSE
         {
-            get { return _audioSourceSE; }
+            get { return _audioSourceCtrlSE.GetAudioSource(); }
         }
         public AudioSource AudioVoice
         {
-            get { return _audioSourceVoice; }
+            get { return _audioSourceCtrlVoice.GetAudioSource(); }
         }
         public AudioSource AudioBGM
         {
@@ -84,8 +86,8 @@ namespace ShunLib.Manager.Audio
         {
             if (_seAudioDictionary.IsValue(key))
             {
-                if (isCoercion) _audioSourceSE.Stop();
-                _audioSourceSE.PlayOneShot(_seAudioDictionary.GetValue(key));
+                if (isCoercion) _audioSourceCtrlSE.StopAllAudioSource();
+                _audioSourceCtrlSE.GetAudioSource().PlayOneShot(_seAudioDictionary.GetValue(key));
             }
             else
             {
@@ -93,18 +95,54 @@ namespace ShunLib.Manager.Audio
             }
         }
 
+        // AudioClipでSEを再生
+        public void PlaySE(AudioClip clip, bool isCoercion = false)
+        {
+            if (isCoercion) _audioSourceCtrlSE.StopAllAudioSource();
+            _audioSourceCtrlSE.GetAudioSource().PlayOneShot(clip);
+        }
+
         // stringでVoiceを再生
         public void PlayVoice(string key)
         {
             if (_voiceAudioDictionary.IsValue(key))
             {
-                _audioSourceVoice.Stop();
-                _audioSourceVoice.PlayOneShot(_voiceAudioDictionary.GetValue(key));
+                _audioSourceCtrlVoice.GetAudioSource().PlayOneShot(_voiceAudioDictionary.GetValue(key));
             }
             else
             {
                 Debug.LogWarning("<color=red>VoiceAudioClip\"" + key + "\"は設定されていません</color>");
             }
+        }
+
+        // AudioClipでVoiceを再生
+        public void PlayVoice(AudioClip clip)
+        {
+            _audioSourceCtrlVoice.GetAudioSource().PlayOneShot(clip);
+        }
+
+        // stringでVoiceを再生(終了待機)
+        public async Task PlayVoiceAsync(string key)
+        {
+            if (_voiceAudioDictionary.IsValue(key))
+            {
+                AudioSource audioSource = _audioSourceCtrlVoice.GetAudioSource();
+                audioSource.PlayOneShot(_voiceAudioDictionary.GetValue(key));
+                await UniTask.WaitWhile(() => audioSource.isPlaying);
+            }
+            else
+            {
+                Debug.LogWarning("<color=red>VoiceAudioClip\"" + key + "\"は設定されていません</color>");
+                await UniTask.CompletedTask;
+            }
+        }
+
+        // AudioClipでVoiceを再生(終了待機)
+        public async Task PlayVoiceAsync(AudioClip clip)
+        {
+            AudioSource audioSource = _audioSourceCtrlVoice.GetAudioSource();
+            audioSource.PlayOneShot(clip);
+            await UniTask.WaitWhile(() => audioSource.isPlaying);
         }
         
         // stringでBGMを再生

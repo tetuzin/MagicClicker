@@ -15,6 +15,7 @@ using ShunLib.UI;
 using ShunLib.UI.Cutin;
 using ShunLib.UI.Panel;
 using ShunLib.UI.Input;
+using ShunLib.UI.DropDown.Common;
 
 namespace ShunLib.Manager.UI
 {
@@ -50,6 +51,9 @@ namespace ShunLib.Manager.UI
         [Header("入力フォーム")]
         [SerializeField] protected CommonInputFieldTable _inputFieldList = new CommonInputFieldTable();
 
+        [Header("ドロップダウン")]
+        [SerializeField] protected CommonDropDownTable _dropDownList = new CommonDropDownTable();
+
         [Header("キャンバスグループ")]
         // [SerializeField] protected CommonDictionary<string, CanvasGroup> _canvasGroupList = new CommonDictionary<string, CanvasGroup>();
         [SerializeField] protected CanvasGroupTable _canvasGroupList = new CanvasGroupTable();
@@ -81,6 +85,7 @@ namespace ShunLib.Manager.UI
             InitCutin();
             InitPanel();
             InitInputField();
+            InitDropDown();
         }
 
         // テキストの表示・非表示
@@ -184,6 +189,62 @@ namespace ShunLib.Manager.UI
                 _panelList.GetValue(key).Hide();
             }
         }
+
+        // 入力フォームの取得
+        public CommonInputField GetInputField(string key)
+        {
+            if (!_inputFieldList.IsValue(key)) return null;
+            return _inputFieldList.GetValue(key);
+        }
+
+        // 入力フォームの表示・非表示
+        public void SetInputFieldActive(string key, bool isActive)
+        {
+            if (!_inputFieldList.IsValue(key)) return;
+            if (isActive)
+            {
+                _inputFieldList.GetValue(key).Show();
+            }
+            else
+            {
+                _inputFieldList.GetValue(key).Hide();
+            }
+        }
+
+        // 入力フォームのイベント設定
+        public void SetInputFieldCallback(string key, Action callback)
+        {
+            if (!_inputFieldList.IsValue(key)) return;
+            _inputFieldList.GetValue(key).SetChangeValueCallback(callback);
+        }
+
+        // ドロップダウンの取得
+        public CommonDropDown GetDropDown(string key)
+        {
+            if (!_dropDownList.IsValue(key)) return null;
+            return _dropDownList.GetValue(key);
+        }
+
+        // ドロップダウンの表示・非表示
+        public void SetDropDownActive(string key, bool isActive)
+        {
+            if (!_dropDownList.IsValue(key)) return;
+            if (isActive)
+            {
+                _dropDownList.GetValue(key).Show();
+            }
+            else
+            {
+                _dropDownList.GetValue(key).Hide();
+            }
+        }
+
+        // ドロップダウンのイベント設定
+        public void SetDropDownCallback(string key, Action callback)
+        {
+            if (!_dropDownList.IsValue(key)) return;
+            _dropDownList.GetValue(key).SetChangeValueCallback(callback);
+        }
         
         // キャンバスグループの表示・非表示
         public void SetCanvasGroupActive(string key, bool isActive)
@@ -197,7 +258,11 @@ namespace ShunLib.Manager.UI
         // キャンバスグループのフェード
         public void FadeCanvasGroup(string key, bool isActive, float speed, Action callback = null)
         {
-            if (!_canvasGroupList.IsValue(key)) return;
+            if (!_canvasGroupList.IsValue(key))
+            {
+                callback?.Invoke();
+                return;
+            }
             _canvasGroupList.GetValue(key).DOFade(isActive ? 1f : 0f, speed).OnComplete(() => {
                 _canvasGroupList.GetValue(key).alpha = isActive ? 1 : 0;
                 _canvasGroupList.GetValue(key).interactable = isActive;
@@ -399,6 +464,15 @@ namespace ShunLib.Manager.UI
             foreach (CommonInputField inputField in _inputFieldList.GetValueArray())
             {
                 inputField.Initialize();
+            }
+        }
+
+        // ドロップダウンの初期化
+        private void InitDropDown()
+        {
+            foreach (CommonDropDown dropDown in _dropDownList.GetValueArray())
+            {
+                dropDown.Initialize();
             }
         }
 

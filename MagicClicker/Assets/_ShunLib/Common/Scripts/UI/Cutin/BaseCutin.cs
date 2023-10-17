@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 
+using ShunLib.Manager.Audio;
+
 namespace ShunLib.UI.Cutin
 {
     public enum ShowAnimState
@@ -13,6 +15,7 @@ namespace ShunLib.UI.Cutin
         RIGHT_SLIDE,
         LEFT_SLIDE,
         SCALE,
+        BOUND_SCALE,
         FADE,
         FADE_TOP_SLIDE,
         FADE_BOTTOM_SLIDE,
@@ -29,6 +32,7 @@ namespace ShunLib.UI.Cutin
         RIGHT_SLIDE,
         LEFT_SLIDE,
         SCALE,
+        SCALE_UP_FADE,
         FADE,
         FADE_TOP_SLIDE,
         FADE_BOTTOM_SLIDE,
@@ -42,6 +46,13 @@ namespace ShunLib.UI.Cutin
         // ---------- 定数宣言 ----------
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
+        [Header("AudioManager")]
+        [SerializeField] protected AudioManager audioManager = default;
+
+        [Header("AudioClip")]
+        [SerializeField, Tooltip("表示SE")] protected AudioClip showAudioClip = default;
+        [SerializeField, Tooltip("非表示SE")] protected AudioClip hideAudioClip = default;
+
         [Header("キャンバスグループ")]
         [SerializeField] protected CanvasGroup _canvasGroup = default;
 
@@ -53,8 +64,10 @@ namespace ShunLib.UI.Cutin
 
         [Header("表示アニメーション")]
         [SerializeField] protected ShowAnimState _showAnim = ShowAnimState.NONE;
+
         [Header("非表示アニメーション")]
         [SerializeField] protected HideAnimState _hideAnim = HideAnimState.NONE;
+
         [Header("アニメーション速度")]
         [SerializeField] protected float _animTime = 0.25f;
 
@@ -83,12 +96,22 @@ namespace ShunLib.UI.Cutin
             SetActive(false);
         }
 
+        // AudioManagerの設定
+        public virtual void SetAudioManager(AudioManager manager)
+        {
+            audioManager = manager;
+        }
+
         // カットイン表示
         public virtual async Task Show(Action callback = null)
         {
             if (!_isShow)
             {
                 _isShow = true;
+                if (audioManager != default && showAudioClip != default)
+                {
+                    audioManager.PlaySE(showAudioClip);
+                }
                 ShowAnimation(callback);
                 await Task.Delay((int)(_showTime * 1000));
                 Hide();
@@ -101,6 +124,10 @@ namespace ShunLib.UI.Cutin
             if (_isShow)
             {
                 _isShow = false;
+                if (audioManager != default && hideAudioClip != default)
+                {
+                    audioManager.PlaySE(hideAudioClip);
+                }
                 HideAnimation(_callback);
             }
         }
@@ -139,6 +166,18 @@ namespace ShunLib.UI.Cutin
                     SetActive(true);
                     _canvasGroup.transform.DOScale(Vector3.one, _animTime).OnComplete(() => {
                         callback?.Invoke();
+                    });
+                    break;
+
+                // スケールインからバウンドのような演出をはさんで表示
+                case ShowAnimState.BOUND_SCALE:
+                    float boundTime = _animTime / 3f;
+                    _canvasGroup.transform.localScale = Vector3.zero;
+                    SetActive(true);
+                    _canvasGroup.transform.DOScale(Vector3.one * 1.3f, _animTime - boundTime).OnComplete(() => {
+                        _canvasGroup.transform.DOScale(Vector3.one, boundTime).OnComplete(() => {
+                            callback?.Invoke();
+                        });
                     });
                     break;
 
@@ -281,6 +320,16 @@ namespace ShunLib.UI.Cutin
                 case HideAnimState.SCALE:
                     _canvasGroup.transform.localScale = Vector3.one;
                     _canvasGroup.transform.DOScale(Vector3.zero, _animTime).OnComplete(() => {
+                        SetActive(false);
+                        callback?.Invoke();
+                    });
+                    break;
+                
+                // スケール１から拡大非表示
+                case HideAnimState.SCALE_UP_FADE:
+                    _canvasGroup.transform.localScale = Vector3.one;
+                    _canvasGroup.DOFade(0f, _animTime / 3f);
+                    _canvasGroup.transform.DOScale(Vector3.one * 2f, _animTime).OnComplete(() => {
                         SetActive(false);
                         callback?.Invoke();
                     });

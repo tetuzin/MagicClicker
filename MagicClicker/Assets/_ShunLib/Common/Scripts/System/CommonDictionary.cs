@@ -12,6 +12,7 @@ using ShunLib.Particle;
 using ShunLib.UI.Cutin;
 using ShunLib.UI.Panel;
 using ShunLib.UI.Input;
+using ShunLib.UI.DropDown.Common;
 using ShunLib.Room;
 using ShunLib.Lib3D.Block.Block;
 using ShunLib.Lib3D.Block.Const;
@@ -73,6 +74,13 @@ namespace ShunLib.Dict
 
     [System.Serializable]
     public class BasePopupPair : KeyAndValue<string, BasePopup>{}
+
+    /// ドロップダウン ///
+    [System.Serializable]
+    public class CommonDropDownTable : TableBase<string, CommonDropDown, CommonDropDownPair>{}
+
+    [System.Serializable]
+    public class CommonDropDownPair : KeyAndValue<string, CommonDropDown>{}
 
     /// AudioClip ///
     [System.Serializable]

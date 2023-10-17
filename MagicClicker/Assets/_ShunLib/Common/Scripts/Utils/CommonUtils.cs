@@ -22,7 +22,7 @@ namespace ShunLib.Utils.Common
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;//ゲームプレイ終了
 #else
-            Application.Quit();//ゲームプレイ終了
+            // Application.Quit();//ゲームプレイ終了
 #endif
         }
 

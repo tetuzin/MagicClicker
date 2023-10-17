@@ -52,9 +52,12 @@ namespace ShunLib.Manager.CommonScene
             _cameraManager.Initialize();
 
             // キャラクターコントローラ3D初期化
-            _characterController3D?.SetCameraManager(_cameraManager);
-            _cameraManager.SetTrackObject(_characterController3D.GetAvatorCamera());
-            _characterController3D?.Initialize();
+            if (_characterController3D != default)
+            {
+                _characterController3D?.SetCameraManager(_cameraManager);
+                _cameraManager.SetTrackObject(_characterController3D.GetAvatorCamera());
+                _characterController3D?.Initialize();
+            }
             
             // キーコントローラ初期化
             if (_inputKeyController != default)
@@ -63,7 +66,19 @@ namespace ShunLib.Manager.CommonScene
                 _characterController3D?.SetKeyController(_inputKeyController);
                 _inputKeyController.EnableKeyCtrl = true;
             }
+
+            // ボタンの設定
+            InitializeButton();
+
+            // イベントの設定
+            InitEvent();
         }
+
+        // UIボタンの設定
+        protected virtual void InitializeButton(){ }
+
+        // イベントの設定
+        protected virtual void InitEvent(){ }
 
         // キャラクターコントローラのオンオフ
         protected virtual void SwitchEnableCharacterController(bool b)

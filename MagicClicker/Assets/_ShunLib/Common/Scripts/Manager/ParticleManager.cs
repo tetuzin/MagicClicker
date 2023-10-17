@@ -39,6 +39,33 @@ namespace ShunLib.Manager.Particle
             _particleParent = particleParent;
             _particleTable = particleTable;
         }
+
+        // パーティクルの生成
+        public CommonParticle CreateParticle(CommonParticle pt, Transform parent = null)
+        {
+            if (_showParticleTable.GetKeyList().Contains(pt.gameObject.name)) 
+            {
+                if (parent != null)
+                {
+                    _showParticleTable.GetValue(pt.gameObject.name).gameObject.transform.SetParent(parent);
+                    _showParticleTable.GetValue(pt.gameObject.name).gameObject.transform.localPosition = Vector3.zero;
+                }
+                return _showParticleTable.GetValue(pt.gameObject.name);
+            }
+            Transform parentPos = this.gameObject.transform;
+            if (parent != null)
+            {
+                parentPos = parent;
+            }
+            else if (_particleParent != default)
+            {
+                parentPos = _particleParent;
+            }
+            CommonParticle particle = Instantiate(pt, parentPos);
+            _showParticleTable.SetValue(pt.gameObject.name, particle);
+            particle.Hide();
+            return particle;
+        }
         
         // パーティクルの生成
         public CommonParticle CreateParticle(string key, Transform parent = null)

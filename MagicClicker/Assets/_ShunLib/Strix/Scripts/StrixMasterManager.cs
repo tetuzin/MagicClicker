@@ -65,11 +65,12 @@ namespace ShunLib.Strix.Manager.Master
         {
             ObjectFactory.Instance.Register(typeof(ShunLib.Strix.Manager.Message.StrixMessageManager));
             ObjectFactory.Instance.Register(typeof(ShunLib.Strix.Model.Message.StrixMessageModel));
-            ObjectFactory.Instance.Register(typeof(Pachinko.Machine.PachinkoMachine));
-            ObjectFactory.Instance.Register(typeof(Pachinko.Manager.Pachinko.PachinkoManager));
-            ObjectFactory.Instance.Register(typeof(Pachinko.Model.PlayDataModel));
-            ObjectFactory.Instance.Register(typeof(Pachinko.Model.HoldModel));
-            ObjectFactory.Instance.Register(typeof(Pachinko.Model.DirectionModel));
+            // TODO Pachinko
+            // ObjectFactory.Instance.Register(typeof(Pachinko.Machine.PachinkoMachine));
+            // ObjectFactory.Instance.Register(typeof(Pachinko.Manager.Pachinko.PachinkoManager));
+            // ObjectFactory.Instance.Register(typeof(Pachinko.Model.PlayDataModel));
+            // ObjectFactory.Instance.Register(typeof(Pachinko.Model.HoldModel));
+            // ObjectFactory.Instance.Register(typeof(Pachinko.Model.DirectionModel));
             // セッションイベント設定
             if (
                 GameManager.Instance.dataManager.Data.User.UserAccountInfo.TitleInfo != null &&
