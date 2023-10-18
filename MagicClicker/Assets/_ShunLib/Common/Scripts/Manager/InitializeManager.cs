@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 using ShunLib.Manager.Scene;
 using ShunLib.Manager.Game;
@@ -28,6 +29,12 @@ namespace ShunLib.Manager.Initialize
         [SerializeField] protected StrixMasterManager _strixMasterManager = default;
         [SerializeField] protected StrixRoomManager _strixRoomManager = default;
 
+        [Header("画面タッチで開始フラグ")] 
+        [SerializeField] protected bool _touchFlag = false;
+
+        [Header("画面タッチ判定用ボタン")] 
+        [SerializeField] protected Button _windowBtn = default;
+
         [Header("最初に遷移するシーン名")] 
         [SerializeField] protected string _transSceneName = default;
         
@@ -48,7 +55,17 @@ namespace ShunLib.Manager.Initialize
         
         void Start()
         {
-            Initialize();
+            if (_touchFlag)
+            {
+                _windowBtn.onClick.RemoveAllListeners();
+                _windowBtn.onClick.AddListener(() => {
+                    Initialize();
+                });
+            }
+            else
+            {
+                Initialize();
+            }
         }
 
         // ---------- Public関数 ----------
