@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HomeScene.unity
     guid: b2b9860ffc49338459f7ce1f8955227f
+  - enabled: 1
+    path: Assets/Scenes/ClickerScene.unity
+    guid: 678597c92cd22ad4584473b2342bafe8
   m_configObjects: {}

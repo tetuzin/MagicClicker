@@ -833,7 +833,7 @@ MonoBehaviour:
   _strixRoomManager: {fileID: 0}
   _touchFlag: 1
   _windowBtn: {fileID: 1192276965233240201}
-  _transSceneName: HomeScene
+  _transSceneName: ClickerScene
 --- !u!4 &2010158247
 Transform:
   m_ObjectHideFlags: 0
