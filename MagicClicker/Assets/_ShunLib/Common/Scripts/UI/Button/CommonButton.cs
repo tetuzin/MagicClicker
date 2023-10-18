@@ -29,6 +29,8 @@ namespace ShunLib.Btn.Common
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
+        private Vector3 _buttonScale = default;
+
         private bool _isActiveOnEvent = default;
         private bool _isActiveDownEvent = default;
 
@@ -111,6 +113,8 @@ namespace ShunLib.Btn.Common
         {
             _isActiveOnEvent = true;
             _isActiveDownEvent = true;
+
+            _buttonScale = this.gameObject.transform.localScale;
             
             _isDown = false;
             _isOnDownEvent = false;
@@ -152,7 +156,8 @@ namespace ShunLib.Btn.Common
             }
             if (isHoverAnim)
             {
-                obj.transform.DOScale(new Vector3(1.05f, 1.05f, 1.05f), 0.3f);
+                Vector3 scale = _buttonScale * 1.05f;
+                obj.transform.DOScale(scale, 0.3f);
             }
         }
         
@@ -161,7 +166,7 @@ namespace ShunLib.Btn.Common
         {
             if (isHoverAnim)
             {
-                obj.transform.DOScale(new Vector3(1.0f, 1.0f, 1.0f), 0.3f);
+                obj.transform.DOScale(_buttonScale, 0.3f);
             }
         }
         

@@ -264,9 +264,7 @@ namespace ShunLib.Manager.UI
                 return;
             }
             _canvasGroupList.GetValue(key).DOFade(isActive ? 1f : 0f, speed).OnComplete(() => {
-                _canvasGroupList.GetValue(key).alpha = isActive ? 1 : 0;
-                _canvasGroupList.GetValue(key).interactable = isActive;
-                _canvasGroupList.GetValue(key).blocksRaycasts = isActive;
+                SetCanvasGroupActive(key, isActive);
                 callback?.Invoke();
             });
         }

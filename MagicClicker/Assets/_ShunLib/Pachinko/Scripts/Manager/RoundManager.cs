@@ -4,6 +4,7 @@ using UnityEngine;
 using ShunLib.Manager.Video;
 using ShunLib.Manager.Audio;
 
+using Pachinko.Const;
 using Pachinko.Model;
 using Pachinko.Round.Panel;
 
@@ -228,7 +229,14 @@ namespace Pachinko.Round.Manager
         // ラウンドスタート時の演出
         protected virtual async void StartRoundDirect()
         {
+            ShowMovie();
             await _panel.ShowCutin(CUTIN_RIGHT_SHOT_MODE, null, 3f);
+        }
+
+        // ラウンド消化中の動画を再生
+        protected virtual void ShowMovie()
+        {
+            VideoManager.PlayLoopVideoClip(PachinkoUIConst.BACK_GOURND_PLAYER, "movie_round_bg");
         }
     }
 }

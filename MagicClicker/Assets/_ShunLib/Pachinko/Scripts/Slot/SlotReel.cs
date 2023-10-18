@@ -186,7 +186,7 @@ namespace Pachinko.Slot.Reel
                     {
                         if (_slotState == SlotState.STOP) return;
                         _slotState = SlotState.STOP;
-                        PlayAnimations(SlotAnimState.Stop);
+                        PlayAnimations(SlotAnimState.Stop, _stopDesignIndex);
                         SetDesignAlpha(1.0f, 0.0f);
                         _stopCallback?.Invoke();
 
@@ -235,7 +235,7 @@ namespace Pachinko.Slot.Reel
         // 回転
         public void StartRotate()
         {
-            PlayAnimations(SlotAnimState.Rotate);
+            PlayAnimations(SlotAnimState.Rotate, _stopDesignIndex);
             SetDesignAlpha(1.0f, 1.0f);
             
             if (_isAnim) 
@@ -429,11 +429,18 @@ namespace Pachinko.Slot.Reel
         }
 
         // 図柄のアニメーションを再生
-        private void PlayAnimations(SlotAnimState animState)
+        private void PlayAnimations(SlotAnimState animState, int index = -1)
         {
-            for (int i = 0; i < _slotDesignList.Length; i++)
+            if (index >= 0)
             {
-                _slotDesignList[i].PlayAnimation(animState);
+                _slotDesignList[index].PlayAnimation(animState);
+            }
+            else
+            {
+                for (int i = 0; i < _slotDesignList.Length; i++)
+                {
+                    _slotDesignList[i].PlayAnimation(animState);
+                }
             }
         }
 

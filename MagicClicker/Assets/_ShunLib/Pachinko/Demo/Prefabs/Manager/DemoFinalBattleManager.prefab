@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1144921993704059641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3429255203869224013}
+  - component: {fileID: 2222375661316644139}
+  m_Layer: 0
+  m_Name: DemoFinalBattleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3429255203869224013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144921993704059641}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2222375661316644139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144921993704059641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba1f83fa95f18a4c8bda582119e75dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slotManager: {fileID: 0}
+  _holdViewManager: {fileID: 0}
+  _directionManager: {fileID: 0}
+  _hitProb: 8
+  _reachProb: 0
+  _reachDirectionTable:
+    list: []
+  _noticeDirectionTable:
+    list: []
+  _maxChargeTime: 10
+  _iconTable:
+    list:
+    - Key: 0
+      Value:
+        _name: Level_1
+        _sprite: {fileID: 21300000, guid: 606b79c8d12202944b44da843d74d0f4, type: 3}
+        _frameColor: {r: 0, g: 0.1309097, b: 0.8207547, a: 0}
+        _level: 0
+    - Key: 1
+      Value:
+        _name: Level_2
+        _sprite: {fileID: 21300000, guid: 38deaf7fc6a0b2e4da03dbc743107d65, type: 3}
+        _frameColor: {r: 0, g: 0.7169812, b: 0.07380285, a: 0}
+        _level: 1
+    - Key: 2
+      Value:
+        _name: Level_3
+        _sprite: {fileID: 21300000, guid: 8dc145445a5316043a2256f7f4bada13, type: 3}
+        _frameColor: {r: 1, g: 0, b: 0, a: 0}
+        _level: 2
+    - Key: 3
+      Value:
+        _name: Level_4
+        _sprite: {fileID: 21300000, guid: a008d39037e314049a8559a48bfcbfff, type: 3}
+        _frameColor: {r: 0.91188633, g: 1, b: 0, a: 0}
+        _level: 3

@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 using ShunLib.Utils.Random;
+using ShunLib.Utils.Debug;
 using ShunLib.Manager.Particle;
 using ShunLib.Manager.Video;
 using ShunLib.Manager.Audio;
 using ShunLib.Particle;
+using ShunLib.Adv.Model;
 
 using Pachinko.Dict;
 using Pachinko.Const;
@@ -25,6 +27,10 @@ using Pachinko.Manager.Emission;
 using Pachinko.HoldView;
 using Pachinko.HoldView.Icon;
 using Pachinko.Controller.ReachDirection;
+using Pachinko.Controller.NoticeDirection;
+
+using Pachinko.Cutin.Message;
+using Pachinko.Resource.Message;
 
 namespace Pachinko.GameMode.Base.Manager
 {
@@ -55,7 +61,9 @@ namespace Pachinko.GameMode.Base.Manager
         [Header("演出")] 
         [SerializeField, Tooltip("背景動画")] protected string _bgMovieKey = default;
         [SerializeField, Tooltip("リーチ演出")] protected ReachDirectionTable _reachDirectionTable = default;
-        [SerializeField, Tooltip("予告演出")] protected NoticeDirectionTable _noticeDirectionTable = default;
+        [SerializeField, Tooltip("予告演出出現確立")] protected NoticeDirectionTable _noticeDirectionTable = default;
+        [SerializeField, Tooltip("会話演出")] protected List<PachinkoMessageScriptableObject> _messageList = new List<PachinkoMessageScriptableObject>();
+        [SerializeField, Tooltip("シャワーパーティクル")] protected ShowerParticleTable _showerParticleTable = default;
 
         [Header("デバッグ用")] 
         [SerializeField, Tooltip("当たる確率100%")] protected bool _isConfirmHit = false;
@@ -110,8 +118,14 @@ namespace Pachinko.GameMode.Base.Manager
         // 変動フラグ
         private bool _isRotate = default;
 
+        // 疑似連数（疑似連状態）
+        protected int pseudoCount = 0;
+
         // リーチ演出コントローラ
-        protected ReachDirectionController _reachDirectionCtrl = default;
+        protected ReachDirectionController reachDirectionCtrl = default;
+
+        // 予告演出コントローラ
+        protected NoticeDirectionController noticeDirectionCtrl = default;
 
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
@@ -119,8 +133,11 @@ namespace Pachinko.GameMode.Base.Manager
         // 初期化
         public virtual void Initialize()
         {
-            _reachDirectionCtrl = new ReachDirectionController();
-            _reachDirectionCtrl.Initialize(_reachDirectionTable);
+            reachDirectionCtrl = new ReachDirectionController();
+            reachDirectionCtrl.Initialize(_reachDirectionTable);
+
+            noticeDirectionCtrl = new NoticeDirectionController();
+            noticeDirectionCtrl.Initialize(_noticeDirectionTable);
 
             panel.Initialize();
             panel.Hide();
@@ -141,7 +158,9 @@ namespace Pachinko.GameMode.Base.Manager
             int hitProb = 30, int reachProb = 10, int endRotateCount = -1,
             int maxHoldCount = 4, bool isRemainHold = true,
             string bgMovieKey = "",
-            ReachDirectionTable reachDirectionTable = null, NoticeDirectionTable noticeDirectionTable = null
+            ReachDirectionTable reachDirectionTable = null, NoticeDirectionTable noticeDirectionTable = null,
+            List<PachinkoMessageScriptableObject> messageList = null,
+            ShowerParticleTable showerParticleTable = null
         )
         {
             _slotManager = slotManager;
@@ -154,6 +173,8 @@ namespace Pachinko.GameMode.Base.Manager
             _bgMovieKey = bgMovieKey;
             _reachDirectionTable = reachDirectionTable;
             _noticeDirectionTable = noticeDirectionTable;
+            _messageList = messageList;
+            _showerParticleTable = showerParticleTable;
         }
 
         // 表示
@@ -245,7 +266,7 @@ namespace Pachinko.GameMode.Base.Manager
             int hitRate = 0;
             if (PachinkoUtils.CheckDirectHold(hold))
             {
-                ReachDirectionModel reachModel = _reachDirectionCtrl.GetReachDirection(hold.IsHit);
+                ReachDirectionModel reachModel = reachDirectionCtrl.GetReachDirection(hold.IsHit);
                 if (reachModel != null)
                 {
                     reachKey = reachModel.Name;
@@ -270,7 +291,7 @@ namespace Pachinko.GameMode.Base.Manager
             string reachKey = null;
             if (PachinkoUtils.CheckDirectHold(hold))
             {
-                reachKey = _reachDirectionCtrl.GetReachDirection(hold.IsHit).Name;
+                reachKey = reachDirectionCtrl.GetReachDirection(hold.IsHit).Name;
             }
             hold.ReachKey = reachKey;
             return hold;
@@ -406,8 +427,24 @@ namespace Pachinko.GameMode.Base.Manager
                 UpdateHoldModelCallback?.Invoke(direct.IsChanceUpCurHold, 0, hold);
             }
 
-            // パーティクル設定
-            GetShowParticleDirect(hold, direct, beforeDirect);
+            // 予告演出の設定
+            NoticeDirectState noticeDirectState = noticeDirectionCtrl.GetNoticeDirectState(hold.ValueState);
+            direct.NoticeDirectState = noticeDirectState;
+            switch(noticeDirectState)
+            {
+                // 会話演出設定
+                case NoticeDirectState.MESSAGE:
+                    GetShowMessageDirect(hold, direct, beforeDirect);
+                    break;
+
+                // パーティクル設定
+                case NoticeDirectState.SHOWER_PARTICLE:
+                    GetShowParticleDirect(hold, direct, beforeDirect);
+                    break;
+
+                default:
+                    break;
+            }
 
             // 保留変化設定
             if (CheckChanceUpHold(hold))
@@ -455,7 +492,7 @@ namespace Pachinko.GameMode.Base.Manager
                 if (PachinkoUtils.CheckDirectHold(hold))
                 {
                     // リーチ固有演出
-                    direct.ReachMovieKey = _reachDirectionCtrl.GetReachDirectionByName(hold.ReachKey)?.ShowMovieKey;
+                    direct.ReachMovieKey = reachDirectionCtrl.GetReachDirectionByName(hold.ReachKey)?.ShowMovieKey;
 
                     // リーチ中役物動作フラグ
                     direct.IsReachAccessory = RandomUtils.GetRandomBool(hold.IsHit ? 2 : 5);
@@ -466,18 +503,20 @@ namespace Pachinko.GameMode.Base.Manager
             direct.ShowCutin = GetShowCutin(hold, direct, beforeDirect);
 
             // 疑似連設定
-            ReachDirectionModel reachDirectionModel = _reachDirectionCtrl.GetReachDirectionByName(hold.ReachKey);
+            ReachDirectionModel reachDirectionModel = reachDirectionCtrl.GetReachDirectionByName(hold.ReachKey);
             if (reachDirectionModel != null)
             {
                 // 疑似連数の取得
                 ReachDirectionState reachState;
                 if (beforeDirect == null)
                 {
-                    reachState = _reachDirectionCtrl.GetReachDirectionState(reachDirectionModel);
+                    reachState = reachDirectionCtrl.GetReachDirectionState(reachDirectionModel);
+                    direct.PseudoCount = 1;
                 }
                 else
                 {
                     reachState = beforeDirect.ReachState;
+                    direct.PseudoCount = beforeDirect.PseudoCount + 1;
                 }
                 
                 //疑似連演出の生成
@@ -518,7 +557,7 @@ namespace Pachinko.GameMode.Base.Manager
                     }
                 }
             }
-
+            pseudoCount = direct.PseudoCount;
             return direct;
         }
 
@@ -551,10 +590,21 @@ namespace Pachinko.GameMode.Base.Manager
                 // ７テン演出
                 await SevenReachDirect(direct);
 
-                // TODO MetaPachi 会話演出
+                switch(direct.NoticeDirectState)
+                {
+                    // 会話演出
+                    case NoticeDirectState.MESSAGE:
+                        await ShowMessageDirect(direct);
+                        break;
 
-                // パーティクルシャワー演出
-                await ShowParticleDirect(direct);
+                    // パーティクル
+                    case NoticeDirectState.SHOWER_PARTICLE:
+                        await ShowParticleDirect(direct);
+                        break;
+
+                    default:
+                        break;
+                }
 
                 // 保留昇格演出
                 await ChanceUpHoldDirect(direct);
@@ -577,15 +627,20 @@ namespace Pachinko.GameMode.Base.Manager
 
                 // カットイン演出
                 await ShowCutin(direct);
-
+                
                 // 疑似連演出(上からもう一度)
                 if (direct.IsPseudo && direct.PseudoData != null)
                 {
+                    _slotManager.ReelStop(() => {
+                        AudioManager.PlaySE(PachinkoConst.SE_REEL_STOP);
+                    });
+                    await Task.Delay(2000);
                     ShowPseudoDirect(direct.PseudoData, callback);
                 }
                 else
                 {
                     // リーチ固有の演出
+                    pseudoCount = 0;
                     ShowReachMainDirect(direct, callback);
                 }
             }
@@ -739,7 +794,7 @@ namespace Pachinko.GameMode.Base.Manager
             callback?.Invoke();
         }
 
-        // パーティクル表示
+        // パーティクル表示(文字列での指定)
         protected virtual void ShowParticle(string key, Color color = default, Transform parent = null)
         {
             if (IsPause) return;
@@ -749,6 +804,27 @@ namespace Pachinko.GameMode.Base.Manager
                 particle.SetColor(color);
             }
             particle.Show();
+        }
+
+        // パーティクル表示(シャワーパーティクル定数での指定)
+        protected virtual void ShowShowerParticle(ShowerParticleState key, Color color = default, Transform parent = null)
+        {
+            if (IsPause) return;
+            if (key == ShowerParticleState.NONE) return;
+            if (!_showerParticleTable.IsValue(key)) return;
+
+            CommonParticle particle = ParticleManager.CreateParticle(
+                _showerParticleTable.GetValue(key).Particle, parent
+            );
+            if (color != default)
+            {
+                particle.SetColor(color);
+            }
+            DebugUtils.Log("シャワーパーティクル[" + _showerParticleTable.GetValue(key).Name + "]を再生しました");
+            particle.Show();
+
+            // SE再生
+            AudioManager.PlaySE(_showerParticleTable.GetValue(key).AudioClip);
         }
 
         // 昇格可能な保留のインデックス番号を返す。無い場合は-1を返す
@@ -823,7 +899,22 @@ namespace Pachinko.GameMode.Base.Manager
         }
 
         // 保留チャージ時の演出
-        protected virtual void ChargeHoldDirect(HoldModel hold) { }
+        protected virtual void ChargeHoldDirect(HoldModel hold)
+        {
+            PlayCreateHoldSE((HoldIconState)hold.HoldId);
+        }
+
+        // 保留生成時音声再生
+        protected virtual async void PlayCreateHoldSE(HoldIconState state)
+        {
+            if (IsPause) return;
+            switch(state)
+            {
+                default:
+                    AudioManager.PlaySE("se_hold");
+                    break;
+            }
+        }
 
         // リーチ演出が入る保留がリストに存在するか(ただのテンパイは除く)
         protected virtual bool CheckReachHold(List<HoldModel> holdList)
@@ -837,10 +928,16 @@ namespace Pachinko.GameMode.Base.Manager
         }
 
         // スロット回転開始時の処理
-        protected virtual void StartSlotRotateAction() { }
+        protected virtual void StartSlotRotateAction()
+        {
+            AudioManager.PlayBGM("bgm_normal_mode");
+        }
 
         // スロット回転停止時の処理
-        protected virtual void EndSlotRotateAction() { }
+        protected virtual void EndSlotRotateAction()
+        {
+            AudioManager.StopBGM();
+        }
 
         // TODO スロット回転中の演出
         protected virtual Func<Task> CreateStartRotateCallback(HoldModel hold)
@@ -884,7 +981,7 @@ namespace Pachinko.GameMode.Base.Manager
                 valueState = ValueState.HIT;
             }
             // 疑似連
-            else if (value <= _reachDirectionCtrl.GetReachValue())
+            else if (value <= reachDirectionCtrl.GetReachValue())
             {
                 valueState = ValueState.PSEUDO;
             }
@@ -896,16 +993,132 @@ namespace Pachinko.GameMode.Base.Manager
             return valueState;
         }
 
+        // 会話演出の抽選
+        protected virtual void GetShowMessageDirect(HoldModel hold, DirectionModel direct, DirectionModel beforeDirect)
+        {
+            if (direct.NoticeDirectState != NoticeDirectState.MESSAGE) return;
+            if (_messageList.Count <= 0) return;
+
+            direct.IsMessageDirect = true;
+            AdvModel advModel = new AdvModel();
+            AdvModel tempAdvModel = _messageList[RandomUtils.GetRandomValue(_messageList.Count)].advModel;
+            advModel.MessageList.Add(tempAdvModel.MessageList[0]);
+            advModel.MessageList.Add(tempAdvModel.MessageList[1]);
+
+            if (hold.IsHit)
+            {
+                advModel.MessageList.Add(tempAdvModel.MessageList[2]);
+            }
+            else
+            {
+                if (RandomUtils.GetRandomBool(5))
+                {
+                    advModel.MessageList.Add(tempAdvModel.MessageList[2]);
+                }
+            }
+
+            direct.AdvModel = advModel;
+        }
+
+        // 会話演出
+        protected virtual async Task ShowMessageDirect(DirectionModel direct)
+        {
+            if (direct.NoticeDirectState == NoticeDirectState.MESSAGE && direct.AdvModel != default) 
+            {
+                MessageCutin messageCutin = (MessageCutin)panel.GetCutin(PachinkoUIConst.CUTIN_MESSAGE);
+                messageCutin.SetAudioManager(AudioManager);
+                messageCutin.SetAdvModel(direct.AdvModel);
+                messageCutin.SetShowMessage3Callback(() => {
+                    ShowShowerParticle(ShowerParticleState.SHOWER_MIDDLE, Color.red);
+                });
+                await messageCutin.Show();
+            }
+            await Task.CompletedTask;
+        }
+
         // パーティクル演出の抽選
-        protected virtual void GetShowParticleDirect(HoldModel hold, DirectionModel direct, DirectionModel beforeDirect) { }
+        protected virtual void GetShowParticleDirect(HoldModel hold, DirectionModel direct, DirectionModel beforeDirect)
+        {
+            if (direct.NoticeDirectState != NoticeDirectState.SHOWER_PARTICLE) return;
+            
+            // 表示パーティクルの抽選
+            List<ShowerParticleState> showParticleList = new List<ShowerParticleState>();
+            showParticleList.Add(ShowerParticleState.NONE);
+            if (_showerParticleTable.IsValue(ShowerParticleState.SHOWER_SMALL))
+            {
+                showParticleList.Add(ShowerParticleState.SHOWER_SMALL);
+            }
+            if (hold.HitRate > 10 && _showerParticleTable.IsValue(ShowerParticleState.SHOWER_MIDDLE)) 
+            {
+                showParticleList.Add(ShowerParticleState.SHOWER_MIDDLE);
+            }
+            if (hold.HitRate > 20 && _showerParticleTable.IsValue(ShowerParticleState.SHOWER_LARGE))
+            {
+                showParticleList.Add(ShowerParticleState.SHOWER_LARGE);
+            }
+            if (beforeDirect != null)
+            {
+                switch (beforeDirect.ParticleKey)
+                {
+                    case ShowerParticleState.SHOWER_LARGE:
+                    case ShowerParticleState.SHOWER_MIDDLE:
+                        showParticleList.Remove(ShowerParticleState.SHOWER_MIDDLE);
+                        showParticleList.Remove(ShowerParticleState.SHOWER_SMALL);
+                        showParticleList.Remove(ShowerParticleState.NONE);
+                        break;
+                    case ShowerParticleState.SHOWER_SMALL:
+                        showParticleList.Remove(ShowerParticleState.SHOWER_SMALL);
+                        showParticleList.Remove(ShowerParticleState.NONE);
+                        break;
+                    default:
+                        showParticleList.Remove(ShowerParticleState.NONE);
+                        break;
+                }
+            }
+            direct.ParticleKey = showParticleList[RandomUtils.GetRandomValue(showParticleList.Count)];
+
+            // パーティクルカラーの抽選
+            List<Color> showParticleColorList = new List<Color>();
+            showParticleColorList.Add(Color.white);
+            showParticleColorList.Add(Color.blue);
+            if (hold.HitRate > 10) showParticleColorList.Add(Color.green);
+            if (hold.HitRate > 20) showParticleColorList.Add(Color.red);
+            if (hold.HitRate > 30) showParticleColorList.Add(Color.yellow);
+            if (beforeDirect != null)
+            {
+                if (beforeDirect.ParticleColor == Color.yellow)
+                {
+                    showParticleColorList.Remove(Color.white);
+                    showParticleColorList.Remove(Color.blue);
+                    showParticleColorList.Remove(Color.green);
+                    showParticleColorList.Remove(Color.red);
+                }
+                else if (beforeDirect.ParticleColor == Color.red)
+                {
+                    showParticleColorList.Remove(Color.white);
+                    showParticleColorList.Remove(Color.blue);
+                    showParticleColorList.Remove(Color.green);
+                }
+                else if (beforeDirect.ParticleColor == Color.green)
+                {
+                    showParticleColorList.Remove(Color.white);
+                    showParticleColorList.Remove(Color.blue);
+                }
+                else if (beforeDirect.ParticleColor == Color.blue)
+                {
+                    showParticleColorList.Remove(Color.white);
+                }
+            }
+            direct.ParticleColor = showParticleColorList[RandomUtils.GetRandomValue(showParticleColorList.Count)];
+        }
 
         // パーティクル演出
         protected virtual Task ShowParticleDirect(DirectionModel direct)
         {
-            if (IsPause) return Task.CompletedTask;
-            if (direct.ParticleKey != default || direct.ParticleKey != null)
+            if (direct.NoticeDirectState != NoticeDirectState.SHOWER_PARTICLE) return Task.CompletedTask;
+            if (direct.ParticleKey != default || direct.ParticleKey != ShowerParticleState.NONE)
             {
-                ShowParticle(direct.ParticleKey, direct.ParticleColor);
+                ShowShowerParticle(direct.ParticleKey, direct.ParticleColor);
             }
             return Task.CompletedTask;
         }
@@ -945,10 +1158,6 @@ namespace Pachinko.GameMode.Base.Manager
         protected virtual async void ShowPseudoDirect(DirectionModel direct, Action callback = null)
         {
             if (IsPause) return;
-            _slotManager.ReelStop(() => {
-                AudioManager.PlaySE(PachinkoConst.SE_REEL_STOP);
-            });
-            await Task.Delay(2000);
             StartRotate(direct.PseudoSlotValue);
             ShowDirect(direct, callback);
         }

@@ -51,7 +51,6 @@ namespace Pachinko.Manager.Pachinko
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
-        public PachinkoMachineResourceScriptableObject _resource = default;
         public BaseModeManager curModeManager = default;
         private InputKeyController _keyController = default;
 
@@ -104,12 +103,6 @@ namespace Pachinko.Manager.Pachinko
             // HACK 画面の描画を待機する
             await Task.Delay(1500);
             startupPanel?.SetActive(false);
-        }
-
-        // パチンコリソースの設定
-        public void SetResource(PachinkoMachineResourceScriptableObject resource)
-        {
-            _resource = resource;
         }
 
         // 各マネージャーの設定

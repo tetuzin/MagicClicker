@@ -151,7 +151,7 @@ namespace Pachinko.FinalBattle.Manager
             int hitRate = 0;
             if (PachinkoUtils.CheckDirectHold(hold))
             {
-                ReachDirectionModel reachModel = _reachDirectionCtrl.GetReachDirection(hold.IsHit);
+                ReachDirectionModel reachModel = reachDirectionCtrl.GetReachDirection(hold.IsHit);
                 if (reachModel != null)
                 {
                     hitRate = reachModel.HitRate;
@@ -174,7 +174,7 @@ namespace Pachinko.FinalBattle.Manager
             int hitRate = 0;
             if (PachinkoUtils.CheckDirectHold(hold))
             {
-                ReachDirectionModel reachModel = _reachDirectionCtrl.GetReachDirection(hold.IsHit);
+                ReachDirectionModel reachModel = reachDirectionCtrl.GetReachDirection(hold.IsHit);
                 hitRate = reachModel.HitRate;
             }
             hold.ReachKey = null;

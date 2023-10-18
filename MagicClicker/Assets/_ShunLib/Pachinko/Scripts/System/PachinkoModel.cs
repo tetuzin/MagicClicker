@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ShunLib.Adv.Model;
+using ShunLib.Particle;
+
 using Pachinko.Const;
 using Pachinko.Dict;
 using Pachinko.GameMode.Base.Manager;
 using Pachinko.GameMode.Base.Panel;
+using Pachinko.Resource.Message;
 
 using Pachinko.Slot;
 using Pachinko.HoldView;
@@ -189,8 +193,14 @@ namespace Pachinko.Model
         [SerializeField] private bool _isFirstFindOut = false;
         // ７テンフラグ
         [SerializeField] private bool _isSevenReach = false;
+        // 予告演出種
+        [SerializeField] private NoticeDirectState _noticeDirectState = NoticeDirectState.NONE;
+        // 会話演出フラグ
+        [SerializeField] private bool _isMessageDirect = false;
+        // 会話演出モデル
+        [SerializeField] private AdvModel _advModel = default;
         // 表示パーティクルキー
-        [SerializeField] private string _particleKey = null;
+        [SerializeField] private ShowerParticleState _particleKey = ShowerParticleState.NONE;
         // 表示パーティクルカラー
         [SerializeField] private Color _particleColor = default;
         // 保留変化フラグ
@@ -213,6 +223,8 @@ namespace Pachinko.Model
         [SerializeField] private bool _isReachAccessory = false;
         // 疑似連フラグ
         [SerializeField] private bool _isPseudo = false;
+        // 現在の疑似連数
+        [SerializeField] private int _pseudoCount = 0;
         // 疑似連状態
         [SerializeField] private ReachDirectionState _reachState = ReachDirectionState.NONE;
         // 疑似連用演出データ
@@ -242,7 +254,22 @@ namespace Pachinko.Model
             get { return _isSevenReach; }
             set { _isSevenReach = value; }
         }
-        public string ParticleKey
+        public NoticeDirectState NoticeDirectState
+        {
+            get { return _noticeDirectState; }
+            set { _noticeDirectState = value; }
+        }
+        public bool IsMessageDirect
+        {
+            get { return _isMessageDirect; }
+            set { _isMessageDirect = value; }
+        }
+        public AdvModel AdvModel
+        {
+            get { return _advModel; }
+            set { _advModel = value; }
+        }
+        public ShowerParticleState ParticleKey
         {
             get { return _particleKey; }
             set { _particleKey = value; }
@@ -301,6 +328,11 @@ namespace Pachinko.Model
         {
             get { return _isPseudo; }
             set { _isPseudo = value; }
+        }
+        public int PseudoCount
+        {
+            get { return _pseudoCount; }
+            set { _pseudoCount = value; }
         }
         public ReachDirectionState ReachState
         {
@@ -378,43 +410,31 @@ namespace Pachinko.Model
         }
     }
 
-    // 予告演出モデル
+    // シャワーパーティクル演出用モデル
     [System.Serializable]
-    public class NoticeDirectionModel
+    public class ShowerParticleModel
     {
         // 演出名
         [SerializeField] private string _name;
-        // 予告種
-        [SerializeField] private List<NoticeDirectionState> _stateList = new List<NoticeDirectionState>();
-        // 大当たり確率（期待度・信頼度）
-        [SerializeField] private int _hitRate;
-        // 演出実行関数
-        [SerializeField] private Action _action;
+        // パーティクル種
+        [SerializeField] private CommonParticle _particle = default;
+        // SE
+        [SerializeField] private AudioClip _audioClip;
 
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
-        public List<NoticeDirectionState> StateList
+        public CommonParticle Particle
         {
-            get { return _stateList; }
-            set { _stateList = value; }
+            get { return _particle; }
+            set { _particle = value; }
         }
-        public int HitRate
+        public AudioClip AudioClip
         {
-            get { return _hitRate; }
-            set { _hitRate = value; }
-        }
-        public Action Action
-        {
-            get { return _action; }
-            set { _action = value; }
-        }
-
-        public NoticeDirectionState GetRandomState()
-        {
-            return StateList[new System.Random().Next(StateList.Count)];
+            get { return _audioClip; }
+            set { _audioClip = value; }
         }
     }
 
@@ -548,7 +568,9 @@ namespace Pachinko.Model
         [Header("演出")] 
         [SerializeField, Tooltip("背景動画")] private string _bgMovieKey = default;
         [SerializeField, Tooltip("リーチ演出")] private ReachDirectionTable _reachDirectionTable = new ReachDirectionTable();
-        [SerializeField, Tooltip("予告演出")] private NoticeDirectionTable _noticeDirectionTable = new NoticeDirectionTable();
+        [SerializeField, Tooltip("予告演出出現確率")] private NoticeDirectionTable _noticeDirectionTable;
+        [SerializeField, Tooltip("会話演出")] private List<PachinkoMessageScriptableObject> _messageDirectList;
+        [SerializeField, Tooltip("シャワーパーティクル")] private ShowerParticleTable _showerParticleTable;
 
         [Header("最終決戦モード")] 
         [SerializeField, Tooltip("最終決戦のチャージ時間")] private float _maxChargeTime = default;
@@ -638,6 +660,16 @@ namespace Pachinko.Model
         {
             get { return _noticeDirectionTable; }
             set { _noticeDirectionTable = value; }
+        }
+        public List<PachinkoMessageScriptableObject> MessageDirectList
+        {
+            get { return _messageDirectList; }
+            set { _messageDirectList = value; }
+        }
+        public ShowerParticleTable ShowerParticleTable
+        {
+            get { return _showerParticleTable; }
+            set { _showerParticleTable = value; }
         }
         public float MaxChargeTime
         {

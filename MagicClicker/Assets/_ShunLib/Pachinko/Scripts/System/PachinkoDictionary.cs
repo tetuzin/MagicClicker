@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using ShunLib.Dict;
+using ShunLib.Particle;
 
 using Pachinko.Const;
 using Pachinko.Model;
@@ -18,10 +19,22 @@ namespace Pachinko.Dict
     public class ReachDirectionPair : KeyAndValue<string, ReachDirectionModel>{}
 
     [System.Serializable]
-    public class NoticeDirectionTable : TableBase<string, NoticeDirectionModel, NoticeDirectionPair>{}
+    public class NoticeDirectionTable : TableBase<ValueState, NoticeDirectStateTable, NoticeDirectionPair>{}
 
     [System.Serializable]
-    public class NoticeDirectionPair : KeyAndValue<string, NoticeDirectionModel>{}
+    public class NoticeDirectionPair : KeyAndValue<ValueState, NoticeDirectStateTable>{}
+
+    [System.Serializable]
+    public class NoticeDirectStateTable : TableBase<NoticeDirectState, int, NoticeDirectStatePair>{}
+
+    [System.Serializable]
+    public class NoticeDirectStatePair : KeyAndValue<NoticeDirectState, int>{}
+
+    [System.Serializable]
+    public class ShowerParticleTable : TableBase<ShowerParticleState, ShowerParticleModel, ShowerParticlePair>{}
+
+    [System.Serializable]
+    public class ShowerParticlePair : KeyAndValue<ShowerParticleState, ShowerParticleModel>{}
 
     /// HoldIcon ///
     [System.Serializable]

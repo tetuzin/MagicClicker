@@ -1,0 +1,201 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05ab24f3cf0af64e81ae87e0a47241f, type: 3}
+  m_Name: DemoPachinkoResource
+  m_EditorClassIdentifier: 
+  maxHoldCount: 4
+  manager: {fileID: 9062269854627914465, guid: 374cdd59647c30248a2fb006ffd0dc04, type: 3}
+  modeSelectManager: {fileID: 3808343127700250010, guid: 3d07b415c5ca21d418a76d288f4825f7, type: 3}
+  maxStageChangeCount: 20
+  modeModelList:
+  - _name: "\u30C7\u30E2\u7528\uFF3F\u5DE6\u6253\u3061\u901A\u5E38\u30E2\u30FC\u30C9"
+    _isFever: 0
+    _state: 0
+    _selectState: 0
+    _feverNum: 0
+    _managerPrefab: {fileID: 7764794956535172477, guid: 85769502089a1624ca0baa762c3998ca, type: 3}
+    _panelPrefab: {fileID: 6006753262412522576, guid: c72d3a41178e81a46b5c28bc6686a549, type: 3}
+    _panel: {fileID: 0}
+    _resourceModel:
+      _hitProb: 10
+      _reachProb: 10
+      _endRotateCount: -1
+      _slotManager: {fileID: 291598847090299225, guid: 4b55b473894ff3744b8139c49e075a54, type: 3}
+      _reelCount: 3
+      _designCount: 7
+      _pseudoIndex: 0
+      _nonReachIndex: 
+      _nonHitIndex: 
+      _holdViewManager: {fileID: 1087000716331864939, guid: f3b5c6beaac8b894bbe3b78331262d0a, type: 3}
+      _holdIconObjects:
+        list:
+        - Key: 1
+          Value: {fileID: 6009460549617910526, guid: 278ef193fff8c2d40bd56fb58036e2c6, type: 3}
+        - Key: 2
+          Value: {fileID: 7431722823349257380, guid: cab707e046fd84b41a10ad80c8c87889, type: 3}
+        - Key: 3
+          Value: {fileID: 2051687494102317754, guid: 638c739c809eee04f95c3a8e3c74fd04, type: 3}
+        - Key: 4
+          Value: {fileID: 5869260498504485868, guid: 333912c04c4fce641a08652dd3907df5, type: 3}
+        - Key: 0
+          Value: {fileID: 6009460549617910526, guid: 278ef193fff8c2d40bd56fb58036e2c6, type: 3}
+        - Key: 100
+          Value: {fileID: 4145726349989754834, guid: 062da7792075a8447bef8c2704d59ee6, type: 3}
+      _maxHoldCount: 4
+      _isRemainHold: 1
+      _isHoldAnim: 1
+      _bgMovieKey: Movie
+      _reachDirectionTable:
+        list: []
+      _noticeDirectionTable:
+        list: []
+      _maxChargeTime: 0
+      _finalBattleIconTable:
+        list: []
+  - _name: "\u30C7\u30E2\u7528\uFF3F\u53F3\u6253\u3061\u901A\u5E38\u30E2\u30FC\u30C9"
+    _isFever: 1
+    _state: 1
+    _selectState: 2
+    _feverNum: 0
+    _managerPrefab: {fileID: 7764794956535172477, guid: 85769502089a1624ca0baa762c3998ca, type: 3}
+    _panelPrefab: {fileID: 6006753262412522576, guid: c72d3a41178e81a46b5c28bc6686a549, type: 3}
+    _panel: {fileID: 0}
+    _resourceModel:
+      _hitProb: 8
+      _reachProb: 10
+      _endRotateCount: 7
+      _slotManager: {fileID: 291598847090299225, guid: 4b55b473894ff3744b8139c49e075a54, type: 3}
+      _reelCount: 3
+      _designCount: 7
+      _pseudoIndex: -1
+      _nonReachIndex: 
+      _nonHitIndex: 
+      _holdViewManager: {fileID: 1087000716331864939, guid: f3b5c6beaac8b894bbe3b78331262d0a, type: 3}
+      _holdIconObjects:
+        list:
+        - Key: 1
+          Value: {fileID: 6009460549617910526, guid: 278ef193fff8c2d40bd56fb58036e2c6, type: 3}
+        - Key: 2
+          Value: {fileID: 7431722823349257380, guid: cab707e046fd84b41a10ad80c8c87889, type: 3}
+        - Key: 3
+          Value: {fileID: 2051687494102317754, guid: 638c739c809eee04f95c3a8e3c74fd04, type: 3}
+        - Key: 4
+          Value: {fileID: 5869260498504485868, guid: 333912c04c4fce641a08652dd3907df5, type: 3}
+        - Key: 0
+          Value: {fileID: 6009460549617910526, guid: 278ef193fff8c2d40bd56fb58036e2c6, type: 3}
+        - Key: 100
+          Value: {fileID: 4145726349989754834, guid: 062da7792075a8447bef8c2704d59ee6, type: 3}
+      _maxHoldCount: 4
+      _isRemainHold: 1
+      _isHoldAnim: 1
+      _bgMovieKey: Movie2
+      _reachDirectionTable:
+        list: []
+      _noticeDirectionTable:
+        list: []
+      _maxChargeTime: 0
+      _finalBattleIconTable:
+        list: []
+  - _name: "\u30C7\u30E2\u7528\uFF3F\u6700\u7D42\u6C7A\u6226\u30E2\u30FC\u30C9"
+    _isFever: 1
+    _state: 3
+    _selectState: 1
+    _feverNum: 1
+    _managerPrefab: {fileID: 2222375661316644139, guid: d933460390fd28440a14d87a2dc7e115, type: 3}
+    _panelPrefab: {fileID: 2362975009069328701, guid: 34ebfe21fb8ab7849bfc28fd5b68c02b, type: 3}
+    _panel: {fileID: 0}
+    _resourceModel:
+      _hitProb: 8
+      _reachProb: 10
+      _endRotateCount: -1
+      _slotManager: {fileID: 291598847090299225, guid: 4b55b473894ff3744b8139c49e075a54, type: 3}
+      _reelCount: 3
+      _designCount: 7
+      _pseudoIndex: -1
+      _nonReachIndex: 
+      _nonHitIndex: 
+      _holdViewManager: {fileID: 1087000716331864939, guid: f3b5c6beaac8b894bbe3b78331262d0a, type: 3}
+      _holdIconObjects:
+        list: []
+      _maxHoldCount: 5
+      _isRemainHold: 1
+      _isHoldAnim: 1
+      _bgMovieKey: 
+      _reachDirectionTable:
+        list: []
+      _noticeDirectionTable:
+        list: []
+      _maxChargeTime: 15
+      _finalBattleIconTable:
+        list:
+        - Key: 1
+          Value:
+            _name: Demo_icon_1
+            _sprite: {fileID: 21300000, guid: c4d6f32b258227043a517ed9bf302b48, type: 3}
+            _frameColor: {r: 0, g: 0, b: 1, a: 0}
+            _level: 1
+        - Key: 2
+          Value:
+            _name: Demo_icon_2
+            _sprite: {fileID: 21300000, guid: f64a38f3e76f73546be3d3387c1b0b9f, type: 3}
+            _frameColor: {r: 0, g: 1, b: 0, a: 0}
+            _level: 2
+        - Key: 3
+          Value:
+            _name: Demo_icon_3
+            _sprite: {fileID: 21300000, guid: eac406ce3156fd646b33a7ad612e9909, type: 3}
+            _frameColor: {r: 1, g: 0, b: 0, a: 0}
+            _level: 3
+  gameModeSelectPanel: {fileID: 4532437776463043151, guid: ad55bd323570c6947973ac27193d2ec2, type: 3}
+  modeSelectTime: 15
+  dataCountManager: {fileID: 1316326182335400878, guid: 8b243798b26a1e043a4e4757b875ae05, type: 3}
+  dataCountPanel: {fileID: 4741457194638351402, guid: 52492f7899b236c49a6e2cd5c7157738, type: 3}
+  roundManager: {fileID: 1440130826253996313, guid: 27a33af7b344934488b432eec6261099, type: 3}
+  roundPanel: {fileID: 7254638253514663868, guid: 08382701f7c94524981c4411dd05ddf8, type: 3}
+  roundEndTime: 15
+  roundPointValue: 15
+  resultManager: {fileID: 4783310552169046952, guid: 4f50ada2e0b204342bafec0869cdd6ac, type: 3}
+  resultPanel: {fileID: 1655240131069046057, guid: e0d13632ae03c8646bb689b6239bd356, type: 3}
+  videoManager: {fileID: 1541218877264636218, guid: 1744d50e16a761b4c813a2283ebdb8ce, type: 3}
+  videoClipTable:
+    list:
+    - Key: Movie
+      Value: {fileID: 32900000, guid: 1a05865e8fdbfb642a3c13a8d219c9aa, type: 3}
+    - Key: Movie2
+      Value: {fileID: 32900000, guid: 59a9c98079162e946a675ac2487b6396, type: 3}
+    - Key: Movie3
+      Value: {fileID: 32900000, guid: 0e15138a4e3a1a04581dca917ddd7176, type: 3}
+    - Key: Movie4
+      Value: {fileID: 32900000, guid: 61c40367b7e21d044988b6f6de3599b2, type: 3}
+  particleManager: {fileID: 2382597268134335231, guid: a9e3b80a0db8e0948ab7f843ac3ef9c3, type: 3}
+  particleTable:
+    list:
+    - Key: RingRainbow
+      Value: {fileID: 7911164396881608779, guid: b0e66af0dff129a43ab830d152f3c916, type: 3}
+    - Key: SideShower_Small
+      Value: {fileID: 1629600501558810305, guid: 013bb82149a64e4499931a53d854ab9a, type: 3}
+    - Key: SideShower_Middel
+      Value: {fileID: 1629600501558810305, guid: 6c838d54d265289488468b3af5d52574, type: 3}
+    - Key: SideShower_Large
+      Value: {fileID: 1629600501558810305, guid: 394428f42be28a742844ea603dde3e54, type: 3}
+    - Key: LongShower
+      Value: {fileID: 1629600501558810305, guid: c949aad6fb753b444a440ea4a3badaca, type: 3}
+    - Key: ChanceUpHold
+      Value: {fileID: 1629600501558810305, guid: 37cbb4edad8389b4f80a582ed7c8eae3, type: 3}
+  audioManager: {fileID: 1142969972756515430, guid: bceb8e5f1012810419caca241df3dada, type: 3}
+  seTable:
+    list: []
+  voiceTable:
+    list: []
+  bgmTable:
+    list: []
+  startupPanel: {fileID: 8432489531689730727, guid: 9327bc70f08ecdb4a9d6147b2872d212, type: 3}

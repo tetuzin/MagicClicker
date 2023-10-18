@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using ShunLib.Manager.CommonScene;
-using System.Drawing;
+using ShunLib.UI.ShowValue;
 
 namespace MagicClicker.Manager
 {
@@ -18,6 +18,13 @@ namespace MagicClicker.Manager
         private const string REMAIN_TIME_TEXT = "RemainTimeText";
 
         // ---------- ゲームオブジェクト参照変数宣言 ----------
+
+        [Header("クリック時の増加値表示テキストオブジェクト")]
+        [SerializeField] protected ShowValueObject _showValueObjectPrefab = default;
+
+        [Header("増加値表示テキストオブジェクトの親オブジェクト")]
+        [SerializeField] protected Transform _showValueObjectParent = default;
+
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
@@ -69,10 +76,15 @@ namespace MagicClicker.Manager
         }
 
         // ポイント増加
-        private void AddPoint(int point = 0)
+        private int AddPoint(int point = 0)
         {
-            _point += point;
+            int addPoint = 0;
+
+            addPoint = point;
+            _point += addPoint;
             _uiManager.SetText(POINT_TEXT, _point.ToString());
+
+            return addPoint;
         }
 
         // 時間経過処理
@@ -85,6 +97,7 @@ namespace MagicClicker.Manager
             _uiManager.SetText(REMAIN_TIME_TEXT, GetRemainTimeStr());
         }
 
+        // 残り時間文字列を返す
         private string GetRemainTimeStr()
         {   
             float time = _gameTime - _progressTime;
@@ -100,7 +113,22 @@ namespace MagicClicker.Manager
         private void OnClickClickerBtn()
         {
             if (!_isPlay) return;
-            AddPoint(_addClickValue);
+            int addPoint = AddPoint(_addClickValue);
+            ShowAddPointValue(addPoint);
+        }
+
+        // 増加値の表示
+        private void ShowAddPointValue(int point = 0)
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            ShowValueObject showValueObject = Instantiate(
+                _showValueObjectPrefab, mousePosition, Quaternion.identity, _showValueObjectParent
+            );
+            showValueObject.Initialize();
+            showValueObject.SetText("+" + point.ToString());
+            showValueObject.SetShowTime(2);
+            showValueObject.SetAnimation();
+            showValueObject.StartShow();
         }
 
         // ---------- protected関数 ---------

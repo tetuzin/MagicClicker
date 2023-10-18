@@ -210,8 +210,6 @@ namespace Pachinko.Machine
             accessoryManager?.Initialize();
 
             // パチンコマネージャーの初期化
-            manager.SetResource(resource);
-
             await manager.Initialize();
 
             InitializeEndCallback?.Invoke();

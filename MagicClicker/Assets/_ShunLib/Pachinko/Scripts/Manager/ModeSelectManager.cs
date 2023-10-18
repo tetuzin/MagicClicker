@@ -179,7 +179,14 @@ namespace Pachinko.ModeSelect.Manager
         {
             if (isFever)
             {
-                return _feverModeDictionary[key];
+                if (_feverModeDictionary.ContainsKey(key))
+                {
+                    return _feverModeDictionary[key];
+                }
+                else
+                {
+                    return _normalModeDictionary[key];
+                }
             }
             else
             {
@@ -230,7 +237,8 @@ namespace Pachinko.ModeSelect.Manager
                     model.Resource.HitProb, model.Resource.ReachProb, model.Resource.EndRotateCount,
                     model.Resource.MaxHoldCount, model.Resource.IsRemainHold,
                     model.Resource.BGMovieKey,
-                    model.Resource.ReachDirectionTable, model.Resource.NoticeDirectionTable
+                    model.Resource.ReachDirectionTable, model.Resource.NoticeDirectionTable,
+                    model.Resource.MessageDirectList, model.Resource.ShowerParticleTable
                 );
 
                 // ゲームモードマネージャー初期化

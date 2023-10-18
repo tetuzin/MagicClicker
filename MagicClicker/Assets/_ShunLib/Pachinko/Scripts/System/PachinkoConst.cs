@@ -46,6 +46,9 @@ namespace Pachinko.Const
         public const string BACK_GOURND_PLAYER = "BackGroundPlayer";
         public const string BASE_MODE_FRONT_PLAYER = "BaseModeFrontPlayer";
         public const string FINAL_BATTLE_FRONT_PLAYER = "FinalBattleFrontPlayer";
+
+        // カットイン
+        public const string CUTIN_MESSAGE = "MessageCutin";
     }
 
     // 入賞穴の種類
@@ -100,14 +103,20 @@ namespace Pachinko.Const
     }
 
     // 予告演出
-    public enum NoticeDirectionState
+    public enum NoticeDirectState
     {
         NONE,
-        DIALOG, // 会話演出
-        GROUP,  // 群演出
-        VIBRATION,  // バイブ
-        FREEZE, // フリーズ
-        // カットイン
+        MESSAGE,    // 会話演出
+        SHOWER_PARTICLE,    // シャワーパーティクル
+    }
+
+    // シャワー演出
+    public enum ShowerParticleState
+    {
+        NONE,
+        SHOWER_SMALL,
+        SHOWER_MIDDLE,
+        SHOWER_LARGE
     }
 
     // 保留の状態
