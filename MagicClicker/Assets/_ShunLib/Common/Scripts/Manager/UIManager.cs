@@ -115,6 +115,13 @@ namespace ShunLib.Manager.UI
             if (!_textList.IsValue(key)) return;
             _textList.GetValue(key).color = color;
         }
+
+        // ボタンの取得
+        public CommonButton GetButton(string key)
+        {
+            if (!_buttonList.IsValue(key)) return default;
+            return _buttonList.GetValue(key);
+        }
         
         // ボタンの表示・非表示
         public void SetButtonActive(string key, bool isActive)

@@ -4,6 +4,9 @@ using UnityEngine;
 
 using ShunLib.Manager.CommonScene;
 using ShunLib.UI.ShowValue;
+using ShunLib.Controller.UpdateAction;
+
+using MagicClicker.Unit;
 
 namespace MagicClicker.Manager
 {
@@ -30,6 +33,10 @@ namespace MagicClicker.Manager
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
+        // クリッカーユニット
+        private ClickerUnit _clicker = default;
+        // UpdateActionController
+        private UpdateActionController updateActionCtrl = default;
         // ゲーム時間
         private float _gameTime = 15f;
         // 経過時間
@@ -38,10 +45,6 @@ namespace MagicClicker.Manager
         private bool _isPlay = false;
         // ポイント値
         private int _point = 0;
-        // 1クリックで増える値
-        private int _addClickValue = 20;
-        // 時間経過で増える値
-        private int _addProgressValue = 1;
 
         // ---------- Unity組込関数 ----------
 
@@ -91,7 +94,10 @@ namespace MagicClicker.Manager
         private void ProgressEvent()
         {
             // TODO 仮実装
-            AddPoint(_addProgressValue);
+            AddPoint(_clicker.TimeValue);
+
+            // その他登録した処理
+            updateActionCtrl.UpdateAction();
 
             // 残り時間表示
             _uiManager.SetText(REMAIN_TIME_TEXT, GetRemainTimeStr());
@@ -113,14 +119,29 @@ namespace MagicClicker.Manager
         private void OnClickClickerBtn()
         {
             if (!_isPlay) return;
-            int addPoint = AddPoint(_addClickValue);
-            ShowAddPointValue(addPoint);
+            Vector3 mousePosition = Input.mousePosition;
+            for (int i = 0; i < _clicker.ClickCount; i++)
+            {   
+                int addPoint = AddPoint(_clicker.ClickValue);
+                ShowAddPointValue(addPoint, mousePosition);
+            }
+        }
+
+        // 自動クリックの処理
+        private void AutoClickClickerBtn()
+        {
+            if (!_isPlay) return;
+            Vector3 mousePosition = _uiManager.GetButton(CLICKER_BUTTON).transform.position;
+            for (int i = 0; i < _clicker.ClickCount; i++)
+            {   
+                int addPoint = AddPoint(_clicker.ClickValue);
+                ShowAddPointValue(addPoint, mousePosition);
+            }
         }
 
         // 増加値の表示
-        private void ShowAddPointValue(int point = 0)
+        private void ShowAddPointValue(int point, Vector3 mousePosition)
         {
-            Vector3 mousePosition = Input.mousePosition;
             ShowValueObject showValueObject = Instantiate(
                 _showValueObjectPrefab, mousePosition, Quaternion.identity, _showValueObjectParent
             );
@@ -131,7 +152,35 @@ namespace MagicClicker.Manager
             showValueObject.StartShow();
         }
 
+        // クリッカーユニットの初期化
+        public void InitializeClickerUnit()
+        {
+            _clicker = new ClickerUnit();
+            _clicker.Initialize();
+
+            updateActionCtrl = new UpdateActionController();
+            updateActionCtrl.Initialize();
+
+            // TODO 仮実装
+            _clicker.ClickValue = 20;
+            _clicker.TimeValue = 1;
+
+            // TODO 仮実装 一定間隔で自動クリック
+            updateActionCtrl.AddUpdateAction(
+                new UpdateActionData(){
+                    progressTime = 0f, actionTime = 1f, action = AutoClickClickerBtn, actionType = UpdateActionType.ROOP, count = 0
+                }
+            );
+        }
+
         // ---------- protected関数 ---------
+
+        // データ設定
+        protected override void InitializeData()
+        {
+            // クリッカーユニットの初期化
+            InitializeClickerUnit();
+        }
 
         // UIボタンの設定
         protected override void InitializeUI()

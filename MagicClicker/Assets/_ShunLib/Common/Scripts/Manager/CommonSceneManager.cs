@@ -67,12 +67,18 @@ namespace ShunLib.Manager.CommonScene
                 _inputKeyController.EnableKeyCtrl = true;
             }
 
+            // データ設定
+            InitializeData();
+
             // UIの設定
             InitializeUI();
 
             // イベントの設定
             InitEvent();
         }
+
+        // データ設定
+        protected virtual void InitializeData(){ }
 
         // UIの設定
         protected virtual void InitializeUI(){ }
