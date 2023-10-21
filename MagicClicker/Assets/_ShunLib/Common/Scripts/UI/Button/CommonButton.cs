@@ -14,17 +14,33 @@ namespace ShunLib.Btn.Common
     {
         // ---------- 定数宣言 ----------
         // ---------- ゲームオブジェクト参照変数宣言 ----------
-        
+
+        [Header("ボタンオブジェクト")]
         [SerializeField, Tooltip("ボタンオブジェクト")] public GameObject obj = default;
+
+        [Header("イベントトリガー")]
         [SerializeField, Tooltip("イベントトリガー")] public EventTrigger eventTrigger = default;
+
+        [Header("テキスト")]
         [SerializeField, Tooltip("テキスト")] public TextMeshProUGUI text = default;
         
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
         
-        [SerializeField, Tooltip("長押しする時間")] public float downWaitTime = 1.0f;
-        [SerializeField, Tooltip("SEを再生するかどうか")] public bool isPlaySE = true;
-        [SerializeField, Tooltip("ホバー時アニメーションを再生するかどうか")] public bool isHoverAnim = true;
+        [Header("長押しする時間")]
+        [SerializeField] public float downWaitTime = 1.0f;
+
+        [Header("SEを再生するかどうか")]
+        [SerializeField] public bool isPlaySE = false;
+
+        [Header("ボタンホバー時の音")]
+        [SerializeField] protected AudioClip onHoverAudioClip = default;
+
+        [Header("ボタンホバーアウト時の音")]
+        [SerializeField] protected AudioClip offHoverAudioClip = default;
+
+        [Header("ホバー時アニメーションを再生するかどうか")]
+        [SerializeField] public bool isHoverAnim = true;
         
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
@@ -150,9 +166,9 @@ namespace ShunLib.Btn.Common
         // ボタンにポインターが入ったとき
         protected virtual void OnPointerEnterButton(PointerEventData data)
         {
-            if (isPlaySE && GameManager.IsInstance())
+            if (isPlaySE && GameManager.IsInstance() && onHoverAudioClip != default)
             {
-                GameManager.Instance.audioManager.PlaySE(AudioConst.SE_BUTTON_HOVER);
+                GameManager.Instance.audioManager.PlaySE(onHoverAudioClip);
             }
             if (isHoverAnim)
             {
@@ -189,9 +205,9 @@ namespace ShunLib.Btn.Common
             {
                 if (_isActiveOnEvent)
                 {
-                    if (isPlaySE && GameManager.IsInstance())
+                    if (isPlaySE && GameManager.IsInstance() && offHoverAudioClip != default)
                     {
-                        GameManager.Instance.audioManager.PlaySE(AudioConst.SE_BUTTON_PUSH);
+                        GameManager.Instance.audioManager.PlaySE(offHoverAudioClip);
                     }
                     _onEvent?.Invoke();
                 }
