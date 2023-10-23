@@ -18,6 +18,8 @@ namespace ShunLib.Editor.Btn.Common
             PropertyField(nameof(component.text), "Text");
             PropertyField(nameof(component.downWaitTime), "DownWaitTime");
             PropertyField(nameof(component.isPlaySE), "IsPlaySE");
+            PropertyField(nameof(component.onHoverAudioClip), "OnHoverAudioClip");
+            PropertyField(nameof(component.offHoverAudioClip), "OffHoverAudioClip");
             PropertyField(nameof(component.isHoverAnim), "IsHoverAnim");
             serializedObject.ApplyModifiedProperties();
         }

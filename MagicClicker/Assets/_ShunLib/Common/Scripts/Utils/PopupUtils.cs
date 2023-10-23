@@ -10,8 +10,6 @@ namespace ShunLib.Utils.Popup
     {
         // ---------- 定数宣言 ----------
         
-        // モーダルウィンドウサイズ
-        private static Vector2 WINDOW_SCALE = new Vector2(1920, 1080);
         // モーダル名
         private static string MODAL_NAME = "ModalButton";
         // モーダルカラー
@@ -48,6 +46,7 @@ namespace ShunLib.Utils.Popup
 
             // Popupをキャンバスの下に配置
             obj.transform.SetParent(parentObj.transform);
+            obj.transform.localScale = Vector3.one;
 
             // Popup表示
             popup.InitPopup(actions);
@@ -100,7 +99,12 @@ namespace ShunLib.Utils.Popup
             }
             rectTrans.localPosition = Vector3.zero;
             rectTrans.localScale = Vector3.one;
-            rectTrans.sizeDelta = WINDOW_SCALE;
+
+            // モーダルのアンカーをAllStretchに設定
+            rectTrans.anchorMax = Vector2.one;
+            rectTrans.anchorMin = Vector2.zero;
+            rectTrans.offsetMax = Vector2.zero;
+            rectTrans.offsetMin = Vector2.zero;
 
             // Image
             modal.AddComponent<Image>();

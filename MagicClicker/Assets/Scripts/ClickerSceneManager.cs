@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using ShunLib.UI.ShowValue;
 using ShunLib.Controller.UpdateAction;
 
 using MagicClicker.Unit;
+using MagicClicker.Popup.Pause;
 
 namespace MagicClicker.Manager
 {
@@ -15,6 +17,12 @@ namespace MagicClicker.Manager
         // ---------- 定数宣言 ----------
         // クリッカーボタン
         private const string CLICKER_BUTTON = "ClickerButton";
+        // ポーズボタン
+        private const string PAUSE_BUTTON = "PauseButton";
+        // 進化ボタン
+        private const string EVOLVE_BUTTON = "EvolveButton";
+        // ポーズポップアップ
+        private const string PAUSE_POPUP = "PausePopup";
         // ポイント値
         private const string POINT_TEXT = "PointText";
         // 残り時間
@@ -43,6 +51,8 @@ namespace MagicClicker.Manager
         private float _progressTime = 0f;
         // ゲーム中フラグ
         private bool _isPlay = false;
+        // ポーズ中フラグ
+        private bool _isPause = false;
         // ポイント値
         private int _point = 0;
 
@@ -53,6 +63,9 @@ namespace MagicClicker.Manager
             // ゲーム中処理
             if (_isPlay)
             {
+                // ポーズ中なら処理しない
+                if (_isPause) return;
+
                 _progressTime += Time.deltaTime;
                 ProgressEvent();
                 if (_progressTime >= _gameTime)
@@ -70,12 +83,14 @@ namespace MagicClicker.Manager
         private void StartGame()
         {
             _isPlay = true;
+            _isPause = false;
         }
 
         // ゲーム終了
         private void EndGame()
         {
             _isPlay = false;
+            _isPause = false;
         }
 
         // ポイント増加
@@ -85,7 +100,7 @@ namespace MagicClicker.Manager
 
             addPoint = point;
             _point += addPoint;
-            _uiManager.SetText(POINT_TEXT, _point.ToString());
+            _uiManager.SetText(POINT_TEXT, _point.ToString() + "P");
 
             return addPoint;
         }
@@ -93,6 +108,8 @@ namespace MagicClicker.Manager
         // 時間経過処理
         private void ProgressEvent()
         {
+            if (_isPause) return;
+
             // TODO 仮実装
             AddPoint(_clicker.TimeValue);
 
@@ -119,6 +136,8 @@ namespace MagicClicker.Manager
         private void OnClickClickerBtn()
         {
             if (!_isPlay) return;
+            if (_isPause) return;
+
             Vector3 mousePosition = Input.mousePosition;
             for (int i = 0; i < _clicker.ClickCount; i++)
             {   
@@ -131,6 +150,8 @@ namespace MagicClicker.Manager
         private void AutoClickClickerBtn()
         {
             if (!_isPlay) return;
+            if (_isPause) return;
+
             Vector3 mousePosition = _uiManager.GetButton(CLICKER_BUTTON).transform.position;
             for (int i = 0; i < _clicker.ClickCount; i++)
             {   
@@ -152,8 +173,38 @@ namespace MagicClicker.Manager
             showValueObject.StartShow();
         }
 
+        // ポーズボタン処理
+        private void OnClickPauseBtn()
+        {
+            if (!_isPlay) return;
+
+            OnPause();
+
+            Dictionary<string, Action> actions = new Dictionary<string, Action>();
+            actions.Add(PausePopup.CANCEL_BUTTON_EVENT, OffPause);
+            _uiManager.CreateOpenPopup(PAUSE_POPUP, actions);
+        }
+
+        // ポーズ開始処理
+        private void OnPause()
+        {
+            _isPause = true;
+        }
+
+        // ポーズ解除処理
+        private void OffPause()
+        {
+            _isPause = false;
+        }
+
+        // 進化ボタン処理
+        private void OnClickEvolveBtn()
+        {
+
+        }
+
         // クリッカーユニットの初期化
-        public void InitializeClickerUnit()
+        private void InitializeClickerUnit()
         {
             _clicker = new ClickerUnit();
             _clicker.Initialize();
@@ -178,6 +229,8 @@ namespace MagicClicker.Manager
         // データ設定
         protected override void InitializeData()
         {
+            _isPause = false;
+
             // クリッカーユニットの初期化
             InitializeClickerUnit();
         }
@@ -187,6 +240,12 @@ namespace MagicClicker.Manager
         {
             // クリッカーボタンの処理設定
             _uiManager.SetButtonEvent(CLICKER_BUTTON, OnClickClickerBtn);
+
+            // ポーズボタンの処理設定
+            _uiManager.SetButtonEvent(PAUSE_BUTTON, OnClickPauseBtn);
+
+            // 進化ボタンの処理設定
+            _uiManager.SetButtonEvent(EVOLVE_BUTTON, OnClickEvolveBtn);
         }
 
         // イベントの設定

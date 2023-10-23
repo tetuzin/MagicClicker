@@ -143,6 +143,20 @@ namespace ShunLib.Popup
         {
             OpenCallback = null;
             CloseCallback = null;
+
+            // ポップアップのアンカーをAllStretchに設定
+            RectTransform objRect = popupObject.GetComponent<RectTransform>();
+            objRect.anchorMax = Vector2.one;
+            objRect.anchorMin = Vector2.zero;
+            objRect.offsetMax = Vector2.zero;
+            objRect.offsetMin = Vector2.zero;
+
+            // モーダルのアンカーをAllStretchに設定
+            RectTransform modalRect = modalObject.GetComponent<RectTransform>();
+            modalRect.anchorMax = Vector2.one;
+            modalRect.anchorMin = Vector2.zero;
+            modalRect.offsetMax = Vector2.zero;
+            modalRect.offsetMin = Vector2.zero;
         }
         
         // ポップアップを開くときの処理

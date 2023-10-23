@@ -34,10 +34,10 @@ namespace ShunLib.Btn.Common
         [SerializeField] public bool isPlaySE = false;
 
         [Header("ボタンホバー時の音")]
-        [SerializeField] protected AudioClip onHoverAudioClip = default;
+        [SerializeField] public AudioClip onHoverAudioClip = default;
 
         [Header("ボタンホバーアウト時の音")]
-        [SerializeField] protected AudioClip offHoverAudioClip = default;
+        [SerializeField] public AudioClip offHoverAudioClip = default;
 
         [Header("ホバー時アニメーションを再生するかどうか")]
         [SerializeField] public bool isHoverAnim = true;

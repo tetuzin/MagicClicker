@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   replicators:
   - {fileID: 3224557005158434003, guid: dcb5c683fd8da2f42b80e124d1a36835, type: 3}
+  - {fileID: 9170927210847713451, guid: a2405ed3ac8d9e743a4e5a9825ea62f5, type: 3}
+  - {fileID: 9170927210847713451, guid: 0a654b6040e366945aac50ab473bd5df, type: 3}
   - {fileID: 8121035293794190374, guid: c93ef883cb2dad34cb90838adb7abdf3, type: 3}
   - {fileID: 221640785800588214, guid: 5fbacb322b44a8145981e71795444531, type: 3}
