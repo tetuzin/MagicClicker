@@ -9,6 +9,8 @@ using ShunLib.Controller.UpdateAction;
 
 using MagicClicker.Unit;
 using MagicClicker.Popup.Pause;
+using MagicClicker.Popup.Magic;
+using MagicClicker.Model.Magic;
 
 namespace MagicClicker.Manager
 {
@@ -20,9 +22,11 @@ namespace MagicClicker.Manager
         // ポーズボタン
         private const string PAUSE_BUTTON = "PauseButton";
         // 進化ボタン
-        private const string EVOLVE_BUTTON = "EvolveButton";
+        private const string Magic_BUTTON = "MagicButton";
         // ポーズポップアップ
         private const string PAUSE_POPUP = "PausePopup";
+        // 進化ポップアップ
+        private const string Magic_POPUP = "MagicPopup";
         // ポイント値
         private const string POINT_TEXT = "PointText";
         // 残り時間
@@ -55,6 +59,10 @@ namespace MagicClicker.Manager
         private bool _isPause = false;
         // ポイント値
         private int _point = 0;
+        // 魔法一覧
+        private List<MagicModel> _magicModelList = default;
+        // 魔法強化時の倍率
+        private int _evolveValue = 2;
 
         // ---------- Unity組込関数 ----------
 
@@ -182,7 +190,7 @@ namespace MagicClicker.Manager
 
             Dictionary<string, Action> actions = new Dictionary<string, Action>();
             actions.Add(PausePopup.CANCEL_BUTTON_EVENT, OffPause);
-            _uiManager.CreateOpenPopup(PAUSE_POPUP, actions);
+            _uiManager.CreateOpenPopup(PAUSE_POPUP, actions, null, false);
         }
 
         // ポーズ開始処理
@@ -198,9 +206,18 @@ namespace MagicClicker.Manager
         }
 
         // 進化ボタン処理
-        private void OnClickEvolveBtn()
+        private void OnClickMagicBtn()
         {
+            if (!_isPlay) return;
 
+            OnPause();
+
+            Dictionary<string, Action> actions = new Dictionary<string, Action>();
+            actions.Add(PausePopup.CANCEL_BUTTON_EVENT, OffPause);
+            _uiManager.CreateOpenPopup(Magic_POPUP, actions, (p) => {
+                MagicPopup popup = (MagicPopup)p;
+                popup.SetContent(_magicModelList);
+            }, false);
         }
 
         // クリッカーユニットの初期化
@@ -231,6 +248,14 @@ namespace MagicClicker.Manager
         {
             _isPause = false;
 
+            // TODO 仮実装
+            _magicModelList = new List<MagicModel>(){
+                new MagicModel(){MagicName = "魔法の聖水", ConsumptionPoint = 50, EffectType = EffectType.ADD_CLICK_VALUE},
+                new MagicModel(){MagicName = "精神と時の魔法", ConsumptionPoint = 50, EffectType = EffectType.ADD_TIME_VALUE},
+                new MagicModel(){MagicName = "自律型ステッキ", ConsumptionPoint = 100, EffectType = EffectType.ADD_MAGIC_VALUE},
+                new MagicModel(){MagicName = "マジカルフィンガー", ConsumptionPoint = 100, EffectType = EffectType.AUTO_CLICK},
+            };
+
             // クリッカーユニットの初期化
             InitializeClickerUnit();
         }
@@ -245,7 +270,7 @@ namespace MagicClicker.Manager
             _uiManager.SetButtonEvent(PAUSE_BUTTON, OnClickPauseBtn);
 
             // 進化ボタンの処理設定
-            _uiManager.SetButtonEvent(EVOLVE_BUTTON, OnClickEvolveBtn);
+            _uiManager.SetButtonEvent(Magic_BUTTON, OnClickMagicBtn);
         }
 
         // イベントの設定

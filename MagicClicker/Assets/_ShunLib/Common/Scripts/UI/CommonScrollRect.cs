@@ -63,8 +63,9 @@ namespace ShunLib.UI.Scroll
         // オブジェクトの追加
         public void AddContent(GameObject obj)
         {
-            obj.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
             obj.transform.SetParent(content.transform);
+            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localScale = Vector3.one;
         }
         
         // オブジェクトの全削除

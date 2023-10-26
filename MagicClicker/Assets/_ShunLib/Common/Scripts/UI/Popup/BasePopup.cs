@@ -118,24 +118,6 @@ namespace ShunLib.Popup
             }
         }
 
-        // モーダルの設定
-        private void SetModal(bool isModal = true)
-        {
-            // モーダルが無ければ何もしない
-            if (modalObject == null) { return; }
-
-            // モーダル生成
-            _modal = PopupUtils.CreateModal(modalObject);
-
-            // モーダルにポップアップ閉じる処理を設定
-            Button button = _modal.GetComponent<Button>();
-            _modalBtn = button;
-            if (isModal)
-            {
-                SetModalEvent(Close);
-            }
-        }
-
         // ---------- protected関数 ---------
         
         // 初期化
@@ -256,6 +238,24 @@ namespace ShunLib.Popup
             {
                 startCallback?.Invoke();
                 endCallback?.Invoke();
+            }
+        }
+
+        // モーダルの設定
+        protected virtual void SetModal(bool isModal = true)
+        {
+            // モーダルが無ければ何もしない
+            if (modalObject == null) { return; }
+
+            // モーダル生成
+            _modal = PopupUtils.CreateModal(modalObject);
+
+            // モーダルにポップアップ閉じる処理を設定
+            Button button = _modal.GetComponent<Button>();
+            _modalBtn = button;
+            if (isModal)
+            {
+                SetModalEvent(Close);
             }
         }
     }
