@@ -11,6 +11,8 @@ using MagicClicker.Unit;
 using MagicClicker.Popup.Pause;
 using MagicClicker.Popup.Magic;
 using MagicClicker.Model.Magic;
+using MagicClicker.Unit.Magic;
+using MagicClicker.UI.Magic;
 
 namespace MagicClicker.Manager
 {
@@ -40,6 +42,9 @@ namespace MagicClicker.Manager
         [Header("増加値表示テキストオブジェクトの親オブジェクト")]
         [SerializeField] protected Transform _showValueObjectParent = default;
 
+        [Header("MagicIconのPrefab")]
+        [SerializeField] protected MagicIcon _magicIconPrefab = default;
+
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
@@ -61,6 +66,8 @@ namespace MagicClicker.Manager
         private int _point = 0;
         // 魔法一覧
         private List<MagicModel> _magicModelList = default;
+        // 魔法ユニット一覧
+        private List<MagicUnit> _magicUnitList = default;
         // 魔法強化時の倍率
         private int _evolveValue = 2;
 
@@ -101,16 +108,11 @@ namespace MagicClicker.Manager
             _isPause = false;
         }
 
-        // ポイント増加
-        private int AddPoint(int point = 0)
+        // ポイント増減
+        private void IncreasePoint(int addPoint)
         {
-            int addPoint = 0;
-
-            addPoint = point;
             _point += addPoint;
             _uiManager.SetText(POINT_TEXT, _point.ToString() + "P");
-
-            return addPoint;
         }
 
         // 時間経過処理
@@ -119,7 +121,7 @@ namespace MagicClicker.Manager
             if (_isPause) return;
 
             // TODO 仮実装
-            AddPoint(_clicker.TimeValue);
+            IncreasePoint(_clicker.TimeValue);
 
             // その他登録した処理
             updateActionCtrl.UpdateAction();
@@ -149,8 +151,8 @@ namespace MagicClicker.Manager
             Vector3 mousePosition = Input.mousePosition;
             for (int i = 0; i < _clicker.ClickCount; i++)
             {   
-                int addPoint = AddPoint(_clicker.ClickValue);
-                ShowAddPointValue(addPoint, mousePosition);
+                IncreasePoint(_clicker.ClickValue);
+                ShowAddPointValue(_clicker.ClickValue, mousePosition);
             }
         }
 
@@ -163,8 +165,8 @@ namespace MagicClicker.Manager
             Vector3 mousePosition = _uiManager.GetButton(CLICKER_BUTTON).transform.position;
             for (int i = 0; i < _clicker.ClickCount; i++)
             {   
-                int addPoint = AddPoint(_clicker.ClickValue);
-                ShowAddPointValue(addPoint, mousePosition);
+                IncreasePoint(_clicker.ClickValue);
+                ShowAddPointValue(_clicker.ClickValue, mousePosition);
             }
         }
 
@@ -205,7 +207,7 @@ namespace MagicClicker.Manager
             _isPause = false;
         }
 
-        // 進化ボタン処理
+        // 強化ポップアップ内の取得・強化ボタン設定
         private void OnClickMagicBtn()
         {
             if (!_isPlay) return;
@@ -216,8 +218,81 @@ namespace MagicClicker.Manager
             actions.Add(PausePopup.CANCEL_BUTTON_EVENT, OffPause);
             _uiManager.CreateOpenPopup(Magic_POPUP, actions, (p) => {
                 MagicPopup popup = (MagicPopup)p;
-                popup.SetContent(_magicModelList);
+                foreach (MagicUnit unit in _magicUnitList)
+                {
+                    // 魔法強化アイコンの生成
+                    MagicIcon icon = Instantiate(_magicIconPrefab, Vector3.zero, Quaternion.identity);
+                    icon.Initialize();
+
+                    // 魔法強化アイコンの描画設定
+                    icon.SetNameText(unit.MagicModel.MagicName);
+                    icon.SetLevelText(unit.Level);
+                    icon.SetGetButtonActive(!unit.GetFlag);
+                    icon.SetMagicButtonActive(unit.GetFlag);
+                    icon.SetGrayOutActive(_point < unit.ConsumptionPoint);
+
+                    // 取得ボタン押下時の処理
+                    icon.SetGetButtonEvent(
+                        () => {
+                            if (_point >= unit.ConsumptionPoint)
+                            {
+                                // ポイントの消費
+                                IncreasePoint(-unit.ConsumptionPoint);
+
+                                // 魔法習得
+                                unit.Learn();
+
+                                // 魔法強化アイコンの描画更新
+                                UpdateMagicIconView();
+                            }
+                            else
+                            {
+                                icon.SetGrayOutActive(true);
+                            }
+                        }
+                    );
+
+                    // 強化ボタン押下時の処理
+                    icon.SetMagicButtonEvent(
+                        () => {
+                            if (_point >= unit.ConsumptionPoint)
+                            {
+                                // ポイントの消費
+                                IncreasePoint(-unit.ConsumptionPoint);
+
+                                // 魔法レベルアップ
+                                unit.LevelUp();
+
+                                // 魔法強化アイコンの描画更新
+                                UpdateMagicIconView();
+                            }
+                            else
+                            {
+                                icon.SetGrayOutActive(true);
+                            }
+                        }
+                    );
+                    popup.AddContent(icon.gameObject);
+                    unit.MagicIcon = icon;
+                }
             }, false);
+        }
+
+        // 強化ポップアップ内の魔法強化アイコンの描画更新
+        private void UpdateMagicIconView()
+        {
+            foreach (MagicUnit unit in _magicUnitList)
+            {
+                if (unit.MagicIcon != default && unit.MagicIcon != null)
+                {
+                    MagicIcon icon = unit.MagicIcon;
+                    icon.SetNameText(unit.MagicModel.MagicName);
+                    icon.SetLevelText(unit.Level);
+                    icon.SetGetButtonActive(!unit.GetFlag);
+                    icon.SetMagicButtonActive(unit.GetFlag);
+                    icon.SetGrayOutActive(_point < unit.ConsumptionPoint);
+                }
+            }
         }
 
         // クリッカーユニットの初期化
@@ -255,6 +330,15 @@ namespace MagicClicker.Manager
                 new MagicModel(){MagicName = "自律型ステッキ", ConsumptionPoint = 100, EffectType = EffectType.ADD_MAGIC_VALUE},
                 new MagicModel(){MagicName = "マジカルフィンガー", ConsumptionPoint = 100, EffectType = EffectType.AUTO_CLICK},
             };
+
+            // 魔法ユニットの初期化
+            _magicUnitList = new List<MagicUnit>();
+            foreach (MagicModel model in _magicModelList)
+            {
+                MagicUnit unit = new MagicUnit();
+                unit.Initialize(model);
+                _magicUnitList.Add(unit);
+            }
 
             // クリッカーユニットの初期化
             InitializeClickerUnit();

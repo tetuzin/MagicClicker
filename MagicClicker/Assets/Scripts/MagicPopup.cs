@@ -7,9 +7,6 @@ using ShunLib.Popup;
 using ShunLib.Btn.Common;
 using ShunLib.UI.Scroll;
 
-using MagicClicker.UI.Magic;
-using MagicClicker.Model.Magic;
-
 namespace MagicClicker.Popup.Magic
 {
     public class MagicPopup : BasePopup
@@ -27,31 +24,17 @@ namespace MagicClicker.Popup.Magic
         [Header("スクロールビュー")]
         [SerializeField] protected CommonScrollRect _commonScrollRect = default;
 
-        [Header("MagicIconのPrefab")]
-        [SerializeField] protected MagicIcon _magicIconPrefab = default;
-
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
-
-        // モデルリスト
-        private List<MagicModel> _magicModelList = default;
-
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
 
-        // コンテンツの初期化
-        public void SetContent(List<MagicModel> modelList)
+        // コンテンツの追加
+        public void AddContent(GameObject gameObject)
         {
-            _magicModelList = modelList;
-            foreach (MagicModel model in modelList)
-            {
-                MagicIcon icon = Instantiate(_magicIconPrefab, Vector3.zero, Quaternion.identity);
-                icon.Initialize();
-                icon.SetMagicModel(model);
-                _commonScrollRect.AddContent(icon.gameObject);
-            }
+            _commonScrollRect.AddContent(gameObject);
         }
 
         // ---------- Private関数 ----------

@@ -5,7 +5,6 @@ using TMPro;
 
 using ShunLib.Btn.Common;
 
-using MagicClicker.Model.Magic;
 using System;
 
 namespace MagicClicker.UI.Magic
@@ -34,10 +33,6 @@ namespace MagicClicker.UI.Magic
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
-
-        // モデル
-        private MagicModel _model = default;
-
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
 
@@ -49,12 +44,10 @@ namespace MagicClicker.UI.Magic
             SetGrayOutActive(false);
         }
 
-        // データ設定
-        public void SetMagicModel(MagicModel model)
+        // 名前テキストの設定
+        public void SetNameText(string name)
         {
-            _model = model;
-            _magicName.text = model.MagicName;
-            SetLevelText(0);
+            _magicName.text = name;
         }
 
         // レベルテキストの設定
