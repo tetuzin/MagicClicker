@@ -1524,7 +1524,7 @@ PrefabInstance:
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _PopupList.list.Array.data[1].Value
       value: 
-      objectReference: {fileID: 2770964788138920459, guid: c0e1b5626f9a91246a4b21c68daa5e27, type: 3}
+      objectReference: {fileID: 7519057559683574385, guid: c0e1b5626f9a91246a4b21c68daa5e27, type: 3}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Value
       value: 
@@ -1758,7 +1758,7 @@ MonoBehaviour:
   _inputKeyController: {fileID: 3938339217118717880}
   _showValueObjectPrefab: {fileID: 3178246652577824722, guid: f4f8f454bb3c0564d9c9e947b73f9682, type: 3}
   _showValueObjectParent: {fileID: 1641395820}
-  _magicIconPrefab: {fileID: 787442252834802424, guid: d8c2324c5e8ef7640b3bbf46cd8b28ba, type: 3}
+  _magicIconPrefab: {fileID: 6033249389419312363, guid: d8c2324c5e8ef7640b3bbf46cd8b28ba, type: 3}
 --- !u!114 &6756514136262271140
 MonoBehaviour:
   m_ObjectHideFlags: 0

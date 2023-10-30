@@ -26,6 +26,9 @@ namespace MagicClicker.UI.Magic
         [Header("レベル")]
         [SerializeField] protected TextMeshProUGUI _magicLevel = default;
 
+        [Header("消費ポイント")]
+        [SerializeField] protected TextMeshProUGUI _consumptionPointText = default;
+
         [Header("グレーアウト")]
         [SerializeField] protected GameObject _grayOut = default;
 
@@ -53,7 +56,13 @@ namespace MagicClicker.UI.Magic
         // レベルテキストの設定
         public void SetLevelText(int level)
         {
-            _magicLevel.text = "LEVEL" + level;
+            _magicLevel.text = "LEVEL:" + level.ToString();
+        }
+
+        // 消費ポイントテキストの設定
+        public void SetConsumptionPointText(int point)
+        {
+            _consumptionPointText.text = "消費ポイント:" + point.ToString();
         }
 
         // 取得ボタンのイベント設定

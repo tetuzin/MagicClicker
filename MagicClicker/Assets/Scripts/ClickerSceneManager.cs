@@ -227,6 +227,7 @@ namespace MagicClicker.Manager
                     // 魔法強化アイコンの描画設定
                     icon.SetNameText(unit.MagicModel.MagicName);
                     icon.SetLevelText(unit.Level);
+                    icon.SetConsumptionPointText(unit.ConsumptionPoint);
                     icon.SetGetButtonActive(!unit.GetFlag);
                     icon.SetMagicButtonActive(unit.GetFlag);
                     icon.SetGrayOutActive(_point < unit.ConsumptionPoint);
@@ -288,6 +289,7 @@ namespace MagicClicker.Manager
                     MagicIcon icon = unit.MagicIcon;
                     icon.SetNameText(unit.MagicModel.MagicName);
                     icon.SetLevelText(unit.Level);
+                    icon.SetConsumptionPointText(unit.ConsumptionPoint);
                     icon.SetGetButtonActive(!unit.GetFlag);
                     icon.SetMagicButtonActive(unit.GetFlag);
                     icon.SetGrayOutActive(_point < unit.ConsumptionPoint);
