@@ -37,6 +37,7 @@ namespace MagicClicker.Unit.Magic
         {
             GetFlag = true;
             Level = 1;
+            ConsumptionPoint*=2;
         }
 
         // レベルアップ

@@ -68,8 +68,6 @@ namespace MagicClicker.Manager
         private List<MagicModel> _magicModelList = default;
         // 魔法ユニット一覧
         private List<MagicUnit> _magicUnitList = default;
-        // 魔法強化時の倍率
-        private int _evolveValue = 2;
 
         // ---------- Unity組込関数 ----------
 
