@@ -1,17 +1,24 @@
 using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using ShunLib.Manager.Game;
 using ShunLib.Manager.CommonScene;
 using ShunLib.UI.ShowValue;
 using ShunLib.Controller.UpdateAction;
+using ShunLib.Popup.Simple;
 
 using MagicClicker.Unit;
 using MagicClicker.Popup.Pause;
 using MagicClicker.Popup.Magic;
+using MagicClicker.Popup.NurtureResult;
+using MagicClicker.Popup.Nurture;
 using MagicClicker.Model.Magic;
+using MagicClicker.Model.Character;
 using MagicClicker.Unit.Magic;
+using MagicClicker.Unit.Character;
 using MagicClicker.UI.Magic;
 
 namespace MagicClicker.Manager
@@ -29,6 +36,14 @@ namespace MagicClicker.Manager
         private const string PAUSE_POPUP = "PausePopup";
         // 進化ポップアップ
         private const string Magic_POPUP = "MagicPopup";
+        // 育成ポップアップ
+        private const string NURTURE_POPUP = "NurturePopup";
+        // スタートテキストポップアップ
+        private const string START_TEXT_POPUP = "StartTextPopup";
+        // 魔力充填完了テキストポップアップ
+        private const string MAGIC_POWER_TEXT_POPUP = "MagicPowerTextPopup";
+        // 育成完了ポップアップ
+        private const string NURTURE_RESULT_POPUP = "NurtureResultPopup";
         // ポイント値
         private const string POINT_TEXT = "PointText";
         // 残り時間
@@ -42,6 +57,9 @@ namespace MagicClicker.Manager
         private const string MAGIC_CLICK_KEY = "MagicClickKey";
         // 自動クリック用定数
         private const string AUTO_CLICK_KEY = "AutoClickKey";
+
+        // ステータス1増加させるのに必要なポイント
+        private const int STATUS_UP_COST_POINT = 100;
 
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
@@ -59,12 +77,16 @@ namespace MagicClicker.Manager
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
+        // 育成キャラクターモデル
+        private CharacterModel _characterModel = default;
+        // 育成キャラクターユニット
+        private CharacterUnit _characterUnit = default;
         // クリッカーユニット
         private ClickerUnit _clicker = default;
         // UpdateActionController
         private UpdateActionController updateActionCtrl = default;
         // ゲーム時間
-        private float _gameTime = 100f;
+        private float _gameTime = 10f;
         // 経過時間
         private float _progressTime = 0f;
         // ゲーム中フラグ
@@ -102,24 +124,150 @@ namespace MagicClicker.Manager
         // ---------- Private関数 ----------
 
         // ゲーム開始
-        private void StartGame()
+        private async void StartGame()
         {
+            _uiManager.CreateOpenPopup(START_TEXT_POPUP, isModal:false);
+            await Task.Delay(1500);
+
             _isPlay = true;
             _isPause = false;
         }
 
         // ゲーム終了
-        private void EndGame()
+        private async void EndGame()
         {
             _isPlay = false;
             _isPause = false;
+
+            _uiManager.CreateOpenPopup(MAGIC_POWER_TEXT_POPUP, isModal:false);
+            await Task.Delay(1500);
+
+            // 育成ポップアップ表示
+            _uiManager.CreateOpenPopup(NURTURE_POPUP, isModal:false, popupAction:(p) => {
+                NurturePopup popup = (NurturePopup)p;
+                popup.SetPointText(_point);
+
+                // たいりょく
+                popup.FrameHp.Initialize();
+                popup.FrameHp.SetUpButtonEvent(() => {
+                    if (_point < STATUS_UP_COST_POINT) return;
+                    UpStatusByPoint(StatusType.HP, 1, STATUS_UP_COST_POINT);
+                    popup.FrameHp.SetValue(_characterUnit.StatusHp);
+                    popup.SetPointText(_point);
+                });
+                popup.FrameHp.SetDownButtonEvent(() => {
+                    if (_characterUnit.StatusHp <= 0) return;
+                    UpStatusByPoint(StatusType.HP, -1, -STATUS_UP_COST_POINT);
+                    popup.FrameHp.SetValue(_characterUnit.StatusHp);
+                    popup.SetPointText(_point);
+                });
+
+                // きんりょく
+                popup.FramePower.Initialize();
+                popup.FramePower.SetUpButtonEvent(() => {
+                    if (_point < STATUS_UP_COST_POINT) return;
+                    UpStatusByPoint(StatusType.POWER, 1, STATUS_UP_COST_POINT);
+                    popup.FramePower.SetValue(_characterUnit.StatusPower);
+                    popup.SetPointText(_point);
+                });
+                popup.FramePower.SetDownButtonEvent(() => {
+                    if (_characterUnit.StatusPower <= 0) return;
+                    UpStatusByPoint(StatusType.POWER, -1, -STATUS_UP_COST_POINT);
+                    popup.FramePower.SetValue(_characterUnit.StatusPower);
+                    popup.SetPointText(_point);
+                });
+
+                // まりょく
+                popup.FrameMagic.Initialize();
+                popup.FrameMagic.SetUpButtonEvent(() => {
+                    if (_point < STATUS_UP_COST_POINT) return;
+                    UpStatusByPoint(StatusType.MAGIC, 1, STATUS_UP_COST_POINT);
+                    popup.FrameMagic.SetValue(_characterUnit.StatusMagic);
+                    popup.SetPointText(_point);
+                });
+                popup.FrameMagic.SetDownButtonEvent(() => {
+                    if (_characterUnit.StatusMagic <= 0) return;
+                    UpStatusByPoint(StatusType.MAGIC, -1, -STATUS_UP_COST_POINT);
+                    popup.FrameMagic.SetValue(_characterUnit.StatusMagic);
+                    popup.SetPointText(_point);
+                });
+
+                // しゅんぱつりょく
+                popup.FrameSpeed.Initialize();
+                popup.FrameSpeed.SetUpButtonEvent(() => {
+                    if (_point < STATUS_UP_COST_POINT) return;
+                    UpStatusByPoint(StatusType.SPEED, 1, STATUS_UP_COST_POINT);
+                    popup.FrameSpeed.SetValue(_characterUnit.StatusSpeed);
+                    popup.SetPointText(_point);
+                });
+                popup.FrameSpeed.SetDownButtonEvent(() => {
+                    if (_characterUnit.StatusSpeed <= 0) return;
+                    UpStatusByPoint(StatusType.SPEED, -1, -STATUS_UP_COST_POINT);
+                    popup.FrameSpeed.SetValue(_characterUnit.StatusSpeed);
+                    popup.SetPointText(_point);
+                });
+
+                // ぎじゅつりょく
+                popup.FrameTechnic.Initialize();
+                popup.FrameTechnic.SetUpButtonEvent(() => {
+                    if (_point < STATUS_UP_COST_POINT) return;
+                    UpStatusByPoint(StatusType.TECHNIC, 1, STATUS_UP_COST_POINT);
+                    popup.FrameTechnic.SetValue(_characterUnit.StatusTechnic);
+                    popup.SetPointText(_point);
+                });
+                popup.FrameTechnic.SetDownButtonEvent(() => {
+                    if (_characterUnit.StatusTechnic <= 0) return;
+                    UpStatusByPoint(StatusType.TECHNIC, -1, -STATUS_UP_COST_POINT);
+                    popup.FrameTechnic.SetValue(_characterUnit.StatusTechnic);
+                    popup.SetPointText(_point);
+                });
+
+                popup.SetNurtureCompleteBtnEvent(async () => {
+                    GameManager.Instance.dataManager.Data.Game.CharacterUnitList.Add(_characterUnit);
+                    await GameManager.Instance.dataManager.Save();
+                    _uiManager.CreateOpenPopup(NURTURE_RESULT_POPUP, null, (p) => {
+                        NurtureResultPopup resultPopup = (NurtureResultPopup)p;
+                        resultPopup.SetCharacterName(_characterUnit.Model.Name);
+                        resultPopup.SetRank(3);
+                        resultPopup.SetScore(12345);
+                        resultPopup.SetReturnBtnEvent(() => {
+                            // TODO 仮実装
+                            Debug.Log("ホームへ戻る");
+                        });
+                    });
+                });
+            });
         }
 
         // ポイント増減
-        private void IncreasePoint(int addPoint)
+        private void IncreasePoint(long addPoint)
         {
             _point += addPoint;
             _uiManager.SetText(POINT_TEXT, _point.ToString() + "P");
+        }
+
+        // ポイントを消費してステータスアップ
+        private void UpStatusByPoint(StatusType status, int upValue, long costPoint)
+        {
+            switch(status)
+            {
+                case StatusType.HP:
+                    _characterUnit.StatusHp += upValue;
+                    break;
+                case StatusType.POWER:
+                    _characterUnit.StatusPower += upValue;
+                    break;
+                case StatusType.MAGIC:
+                    _characterUnit.StatusMagic += upValue;
+                    break;
+                case StatusType.SPEED:
+                    _characterUnit.StatusSpeed += upValue;
+                    break;
+                case StatusType.TECHNIC:
+                    _characterUnit.StatusTechnic += upValue;
+                    break;
+            }
+            IncreasePoint(-costPoint);
         }
 
         // 時間経過処理
@@ -156,11 +304,13 @@ namespace MagicClicker.Manager
             if (_isPause) return;
 
             Vector3 mousePosition = Input.mousePosition;
-            for (int i = 0; i < _clicker.ClickCount; i++)
-            {   
-                IncreasePoint(_clicker.ClickValue);
-                ShowAddPointValue(_clicker.ClickValue, mousePosition);
-            }
+            // for (int i = 0; i < _clicker.ClickCount; i++)
+            // {   
+            //     IncreasePoint(_clicker.ClickValue);
+            //     ShowAddPointValue(_clicker.ClickValue, mousePosition);
+            // }
+            IncreasePoint(_clicker.ClickValue);
+            ShowAddPointValue(_clicker.ClickValue, mousePosition);
         }
 
         // 一定時間で値増加の処理
@@ -409,13 +559,24 @@ namespace MagicClicker.Manager
         {
             _isPause = false;
 
-            // TODO 仮実装
+            // TODO 仮実装 魔法モデルリストの用意
             _magicModelList = new List<MagicModel>(){
                 new MagicModel(){MagicName = "魔法の聖水", ConsumptionPoint = 50, EffectType = EffectType.ADD_CLICK_VALUE, EffectValue = 10},
                 new MagicModel(){MagicName = "精神と時の魔法", ConsumptionPoint = 50, EffectType = EffectType.ADD_TIME_VALUE, EffectValue = 1},
                 new MagicModel(){MagicName = "自律型ステッキ", ConsumptionPoint = 100, EffectType = EffectType.ADD_MAGIC_VALUE, EffectValue = 10, ActivateTime = 3f},
                 new MagicModel(){MagicName = "マジカルフィンガー", ConsumptionPoint = 100, EffectType = EffectType.AUTO_CLICK, EffectValue = 1, ActivateTime = 1f},
             };
+
+            // TODO 仮実装 キャラクターモデルの用意
+            _characterModel = new CharacterModel(){
+                Name = "テス子",
+                Explanation = "開発用キャラクター。",
+            };
+
+            // 育成キャラクターユニットの初期化
+            _characterUnit = new CharacterUnit();
+            _characterUnit.Initialize();
+            _characterUnit.Model = _characterModel;
 
             // 魔法ユニットの初期化
             _magicUnitList = new List<MagicUnit>();

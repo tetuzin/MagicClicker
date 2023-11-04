@@ -1,24 +1,26 @@
 using System;
 using UnityEngine;
 
-using ShunLib.Model.Room;
+using MagicClicker.Unit.Character;
+using System.Collections.Generic;
 
 namespace ShunLib.Data.Game
 {
     [Serializable]
     public class GameData : BaseData
     {
-        // ルームインテリアリスト
-        [SerializeField] private BaseRoomInteriorModelList _roomInteriorList = default;
+        // キャラクターユニットリスト
+        [SerializeField] private List<CharacterUnit> _characterUnitList = default;
 
-        public BaseRoomInteriorModelList RoomInteriorList
+        public List<CharacterUnit> CharacterUnitList
         {
-            get { return _roomInteriorList; }
-            set { _roomInteriorList = value; }
+            get { return _characterUnitList; }
+            set { _characterUnitList = value; }
         }
+        
         public void Initialize()
         {
-            _roomInteriorList = new BaseRoomInteriorModelList();
+            _characterUnitList = new List<CharacterUnit>();
         }
     }
 }

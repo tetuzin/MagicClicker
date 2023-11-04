@@ -28,6 +28,13 @@ namespace MagicClicker.Popup.Pause
         // ---------- Private関数 ----------
         // ---------- protected関数 ---------
 
+        // 初期化
+        protected override void Initialize()
+        {
+            base.Initialize();
+            _cancelButton.Initialize();
+        }
+
         // ボタンイベントの設定
         protected override void SetButtonEvents()
         {   

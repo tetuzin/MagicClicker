@@ -126,6 +126,8 @@ namespace ShunLib.Popup
             OpenCallback = null;
             CloseCallback = null;
 
+            _actions = new Dictionary<string, Action>();
+
             // ポップアップのアンカーをAllStretchに設定
             RectTransform objRect = popupObject.GetComponent<RectTransform>();
             objRect.anchorMax = Vector2.one;
@@ -174,9 +176,16 @@ namespace ShunLib.Popup
         // コールバックの取得
         protected Action GetAction(string key)
         {
-            if (_actions.ContainsKey(key)) { return _actions[key]; }
-            
-            return () => {};
+            if (_actions == default || _actions == null) return () => { };
+
+            if (_actions.ContainsKey(key)) 
+            {
+                return _actions[key];
+            }
+            else
+            {
+                return () => {};
+            }
         }
         
         // ポップアップを開いたときのSE

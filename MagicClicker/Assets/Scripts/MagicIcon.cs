@@ -42,6 +42,8 @@ namespace MagicClicker.UI.Magic
         // 初期化
         public void Initialize()
         {
+            _magicButton.Initialize();
+            _getButton.Initialize();
             SetMagicButtonActive(false);
             SetGetButtonActive(false);
             SetGrayOutActive(false);

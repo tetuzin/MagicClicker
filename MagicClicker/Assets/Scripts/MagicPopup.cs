@@ -44,7 +44,7 @@ namespace MagicClicker.Popup.Magic
         protected override void Initialize()
         {
             base.Initialize();
-
+            _cancelButton.Initialize();
             _commonScrollRect.Initialize();
         }
 

@@ -306,6 +306,13 @@ namespace ShunLib.Manager.UI
             return _popupParent;
         }
 
+        // ポップアップの取得
+        public BasePopup GetPopup(string key)
+        {
+            if (!_PopupList.IsValue(key)) return null;
+            return _PopupList.GetValue(key);
+        }
+
         // ポップアップの表示
         public void ShowPopup(string key, bool isModal = true)
         {

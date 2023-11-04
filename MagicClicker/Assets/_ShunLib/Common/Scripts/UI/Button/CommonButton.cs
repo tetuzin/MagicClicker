@@ -90,6 +90,9 @@ namespace ShunLib.Btn.Common
             _isDown = false;
             _isOnDownEvent = false;
             _downTime = 0.0f;
+
+            RemoveOnEvent();
+            RemoveOnDownEvent();
             
             if (eventTrigger == default) return;
             

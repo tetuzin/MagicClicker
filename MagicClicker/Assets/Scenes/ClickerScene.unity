@@ -1475,7 +1475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _PopupList.list.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.size
@@ -1496,6 +1496,22 @@ PrefabInstance:
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _PopupList.list.Array.data[1].Key
       value: MagicPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[2].Key
+      value: MagicPowerTextPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[3].Key
+      value: StartTextPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[4].Key
+      value: NurturePopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[5].Key
+      value: NurtureResultPopup
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Key
@@ -1525,6 +1541,22 @@ PrefabInstance:
       propertyPath: _PopupList.list.Array.data[1].Value
       value: 
       objectReference: {fileID: 7519057559683574385, guid: c0e1b5626f9a91246a4b21c68daa5e27, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[2].Value
+      value: 
+      objectReference: {fileID: 4286321899918466436, guid: dbc4285dd479e39428844f1ba3c56303, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[3].Value
+      value: 
+      objectReference: {fileID: 4286321899918466436, guid: 2f619ceafefe2ad43a996c36ea1aaa13, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[4].Value
+      value: 
+      objectReference: {fileID: 2647508928128658747, guid: 3542294fdb41f494c9f759c501cee9a8, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[5].Value
+      value: 
+      objectReference: {fileID: 6384689769236516335, guid: d2290fd3ab2b65a48bdb77bb98f4a88b, type: 3}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Value
       value: 
