@@ -421,6 +421,7 @@ namespace ShunLib.Manager.UI
         {
             foreach (CommonButton button in _buttonList.GetValueArray())
             {
+                button.Initialize();
                 button.RemoveOnEvent();
             }
         }

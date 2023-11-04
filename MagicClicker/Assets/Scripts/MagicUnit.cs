@@ -17,6 +17,10 @@ namespace MagicClicker.Unit.Magic
         [SerializeField] public MagicModel MagicModel { get; set; }
         // 魔法レベル
         [SerializeField] public int Level { get; set; }
+        // 効果値
+        [SerializeField] public int EffectValue { get; set; }
+        // 発動時間
+        [SerializeField] public float ActivateTime { get; set; }
         // 消費ポイント
         [SerializeField] public int ConsumptionPoint { get; set; }
         // 習得フラグ
@@ -28,6 +32,7 @@ namespace MagicClicker.Unit.Magic
             MagicIcon = default;
             MagicModel = model;
             Level = 0;
+            ActivateTime = model.ActivateTime;
             ConsumptionPoint = model.ConsumptionPoint;
             GetFlag = false;
         }
@@ -37,6 +42,7 @@ namespace MagicClicker.Unit.Magic
         {
             GetFlag = true;
             Level = 1;
+            EffectValue = MagicModel.EffectValue;
             ConsumptionPoint*=2;
         }
 
@@ -44,6 +50,27 @@ namespace MagicClicker.Unit.Magic
         public void LevelUp()
         {
             Level++;
+            switch (MagicModel.EffectType)
+            {
+                case EffectType.ADD_CLICK_VALUE:
+                    EffectValue += MagicModel.EffectValue;
+                    break;
+
+                case EffectType.ADD_TIME_VALUE:
+                    EffectValue *= 2;
+                    break;
+
+                case EffectType.ADD_MAGIC_VALUE:
+                    EffectValue *= 3;
+                    break;
+
+                case EffectType.AUTO_CLICK:
+                    EffectValue++;
+                    break;
+
+                default:
+                    break;
+            }
             ConsumptionPoint*=2;
         }
     }

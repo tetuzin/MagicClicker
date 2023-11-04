@@ -63,8 +63,6 @@ namespace ShunLib.Btn.Common
         
         // ---------- Unity組込関数 ----------
 
-        void Awake() { Initialize(); }
-
         private void FixedUpdate()
         {
             // ボタン長押し検知処理
@@ -80,6 +78,46 @@ namespace ShunLib.Btn.Common
         }
 
         // ---------- Public関数 ----------
+
+        // 初期化
+        public virtual void Initialize()
+        {
+            _isActiveOnEvent = true;
+            _isActiveDownEvent = true;
+
+            _buttonScale = this.gameObject.transform.localScale;
+            
+            _isDown = false;
+            _isOnDownEvent = false;
+            _downTime = 0.0f;
+            
+            if (eventTrigger == default) return;
+            
+            
+            // ポインターがオブジェクトに入るときのイベント
+            _onEnter = new EventTrigger.Entry();
+            _onEnter.eventID = EventTriggerType.PointerEnter;
+            _onEnter.callback.AddListener((data) => { OnPointerEnterButton((PointerEventData)data); });
+            eventTrigger.triggers.Add(_onEnter);
+            
+            // ポインターがオブジェクトから出たときのイベント
+            _onExit = new EventTrigger.Entry();
+            _onExit.eventID = EventTriggerType.PointerExit;
+            _onExit.callback.AddListener((data) => { OnPointerExitButton((PointerEventData)data); });
+            eventTrigger.triggers.Add(_onExit);
+            
+            // ボタンを長押ししたときのイベント
+            _onDown = new EventTrigger.Entry();
+            _onDown.eventID = EventTriggerType.PointerDown;
+            _onDown.callback.AddListener((data) => { OnPointerDownButton((PointerEventData)data); });
+            eventTrigger.triggers.Add(_onDown);
+            
+            // ボタンを離したときのイベント
+            _onUp = new EventTrigger.Entry();
+            _onUp.eventID = EventTriggerType.PointerUp;
+            _onUp.callback.AddListener((data) => { OnPointerUpButton((PointerEventData)data); });
+            eventTrigger.triggers.Add(_onUp);
+        }
         
         // ボタン長押し時のイベントを設定
         public void SetOnDownEvent(Action action)
@@ -123,45 +161,6 @@ namespace ShunLib.Btn.Common
 
         // ---------- Private関数 ----------
         // ---------- protected関数 ---------
-        
-        // 初期化
-        protected virtual void Initialize()
-        {
-            _isActiveOnEvent = true;
-            _isActiveDownEvent = true;
-
-            _buttonScale = this.gameObject.transform.localScale;
-            
-            _isDown = false;
-            _isOnDownEvent = false;
-            _downTime = 0.0f;
-            
-            if (eventTrigger == default) return;
-            
-            // ポインターがオブジェクトに入るときのイベント
-            _onEnter = new EventTrigger.Entry();
-            _onEnter.eventID = EventTriggerType.PointerEnter;
-            _onEnter.callback.AddListener((data) => { OnPointerEnterButton((PointerEventData)data); });
-            eventTrigger.triggers.Add(_onEnter);
-            
-            // ポインターがオブジェクトから出たときのイベント
-            _onExit = new EventTrigger.Entry();
-            _onExit.eventID = EventTriggerType.PointerExit;
-            _onExit.callback.AddListener((data) => { OnPointerExitButton((PointerEventData)data); });
-            eventTrigger.triggers.Add(_onExit);
-            
-            // ボタンを長押ししたときのイベント
-            _onDown = new EventTrigger.Entry();
-            _onDown.eventID = EventTriggerType.PointerDown;
-            _onDown.callback.AddListener((data) => { OnPointerDownButton((PointerEventData)data); });
-            eventTrigger.triggers.Add(_onDown);
-            
-            // ボタンを離したときのイベント
-            _onUp = new EventTrigger.Entry();
-            _onUp.eventID = EventTriggerType.PointerUp;
-            _onUp.callback.AddListener((data) => { OnPointerUpButton((PointerEventData)data); });
-            eventTrigger.triggers.Add(_onUp);
-        }
         
         // ボタンにポインターが入ったとき
         protected virtual void OnPointerEnterButton(PointerEventData data)

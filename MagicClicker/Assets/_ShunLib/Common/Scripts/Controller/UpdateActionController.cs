@@ -14,7 +14,7 @@ namespace ShunLib.Controller.UpdateAction
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
-        private List<UpdateActionData> _updateActionList = default;
+        private Dictionary<string, UpdateActionData> _updateActionList = default;
 
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
@@ -22,13 +22,22 @@ namespace ShunLib.Controller.UpdateAction
         // 初期化
         public void Initialize()
         {
-            _updateActionList = new List<UpdateActionData>();
+            _updateActionList = new Dictionary<string, UpdateActionData>();
         }
 
         // 処理を追加
-        public void AddUpdateAction(UpdateActionData updateAction)
+        public void AddUpdateAction(string key, UpdateActionData updateAction)
         {
-            _updateActionList.Add(updateAction);
+            if (_updateActionList.ContainsKey(key))
+            {
+                float progressTime = _updateActionList[key].progressTime;
+                _updateActionList[key] = updateAction;
+                _updateActionList[key].progressTime = progressTime;
+            }
+            else
+            {
+                _updateActionList.Add(key, updateAction);
+            }
         }
 
         // Update文で処理はしらせるとき
@@ -40,8 +49,9 @@ namespace ShunLib.Controller.UpdateAction
         // Update文以外で処理を走らせるとき
         public void UpdateAction(float progressTime)
         {
-            foreach(UpdateActionData data in _updateActionList)
+            foreach(var kvp in _updateActionList)
             {
+                UpdateActionData data = kvp.Value;
                 data.progressTime += progressTime;
 
                 // 処理の実行
@@ -60,20 +70,21 @@ namespace ShunLib.Controller.UpdateAction
         // 一回限りの実行済みUpdateActionを削除する
         private void RemoveUpdateAction()
         {
-            List<UpdateActionData> removeDataList = new List<UpdateActionData>();
-            foreach (UpdateActionData data in _updateActionList)
+            List<string> removeDataList = new List<string>();
+            foreach (var kvp in _updateActionList)
             {
+                UpdateActionData data = kvp.Value;
                 if (data.actionType != UpdateActionType.ROOP)
                 {
                     if (data.count > 0)
                     {
-                        removeDataList.Add(data);
+                        removeDataList.Add(kvp.Key);
                     }
                 }
             }
-            foreach (UpdateActionData data in removeDataList)
+            foreach (string key in removeDataList)
             {
-                _updateActionList.Remove(data);
+                _updateActionList.Remove(key);
             }
         }
 

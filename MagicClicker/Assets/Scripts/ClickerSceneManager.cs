@@ -34,6 +34,15 @@ namespace MagicClicker.Manager
         // 残り時間
         private const string REMAIN_TIME_TEXT = "RemainTimeText";
 
+        // クリック時増加値の基礎値
+        private const int BASIC_ADD_CLICK_VALUE = 20;
+        // 時間経過による増加値の基礎値
+        private const int BASIC_ADD_TIME_VALUE = 0;
+        // 一定時間で増加する用定数
+        private const string MAGIC_CLICK_KEY = "MagicClickKey";
+        // 自動クリック用定数
+        private const string AUTO_CLICK_KEY = "AutoClickKey";
+
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
         [Header("クリック時の増加値表示テキストオブジェクト")]
@@ -55,7 +64,7 @@ namespace MagicClicker.Manager
         // UpdateActionController
         private UpdateActionController updateActionCtrl = default;
         // ゲーム時間
-        private float _gameTime = 15f;
+        private float _gameTime = 100f;
         // 経過時間
         private float _progressTime = 0f;
         // ゲーム中フラグ
@@ -63,7 +72,7 @@ namespace MagicClicker.Manager
         // ポーズ中フラグ
         private bool _isPause = false;
         // ポイント値
-        private int _point = 0;
+        private long _point = 0;
         // 魔法一覧
         private List<MagicModel> _magicModelList = default;
         // 魔法ユニット一覧
@@ -154,6 +163,17 @@ namespace MagicClicker.Manager
             }
         }
 
+        // 一定時間で値増加の処理
+        private void MagicClickClickerBtn(MagicUnit unit)
+        {
+            if (!_isPlay) return;
+            if (_isPause) return;
+
+            Vector3 mousePosition = _uiManager.GetButton(CLICKER_BUTTON).transform.position;
+            IncreasePoint(unit.EffectValue);
+            ShowAddPointValue(unit.EffectValue, mousePosition);
+        }
+
         // 自動クリックの処理
         private void AutoClickClickerBtn()
         {
@@ -205,6 +225,20 @@ namespace MagicClicker.Manager
             _isPause = false;
         }
 
+        // 指定魔法効果の効果値合計を取得
+        private int GetTotalEffectValue(EffectType type)
+        {  
+            int value = 0;
+            foreach (MagicUnit unit in _magicUnitList)
+            {
+                if (unit.MagicModel.EffectType == type)
+                {
+                    value += unit.EffectValue;
+                }
+            }
+            return value;
+        }
+
         // 強化ポップアップ内の取得・強化ボタン設定
         private void OnClickMagicBtn()
         {
@@ -240,6 +274,20 @@ namespace MagicClicker.Manager
 
                                 // 魔法習得
                                 unit.Learn();
+                                UpdateClickerUnit();
+                                if (unit.MagicModel.EffectType == EffectType.AUTO_CLICK)
+                                {
+                                    updateActionCtrl.AddUpdateAction(
+                                        AUTO_CLICK_KEY,
+                                        new UpdateActionData(){
+                                            progressTime = 0f, 
+                                            actionTime = GetTotalEffectValue(EffectType.AUTO_CLICK), 
+                                            action = AutoClickClickerBtn, 
+                                            actionType = UpdateActionType.ROOP, 
+                                            count = 0
+                                        }
+                                    );
+                                }
 
                                 // 魔法強化アイコンの描画更新
                                 UpdateMagicIconView();
@@ -261,6 +309,7 @@ namespace MagicClicker.Manager
 
                                 // 魔法レベルアップ
                                 unit.LevelUp();
+                                UpdateClickerUnit();
 
                                 // 魔法強化アイコンの描画更新
                                 UpdateMagicIconView();
@@ -304,16 +353,53 @@ namespace MagicClicker.Manager
             updateActionCtrl = new UpdateActionController();
             updateActionCtrl.Initialize();
 
-            // TODO 仮実装
-            _clicker.ClickValue = 20;
-            _clicker.TimeValue = 1;
+            _clicker.ClickValue = BASIC_ADD_CLICK_VALUE;
+            _clicker.TimeValue = BASIC_ADD_TIME_VALUE;
+            _clicker.ClickCount = 1;
+        }
 
-            // TODO 仮実装 一定間隔で自動クリック
-            updateActionCtrl.AddUpdateAction(
-                new UpdateActionData(){
-                    progressTime = 0f, actionTime = 1f, action = AutoClickClickerBtn, actionType = UpdateActionType.ROOP, count = 0
+        private void UpdateClickerUnit()
+        {
+            _clicker.ClickValue = BASIC_ADD_CLICK_VALUE + GetTotalEffectValue(EffectType.ADD_CLICK_VALUE);
+            _clicker.TimeValue = BASIC_ADD_TIME_VALUE + GetTotalEffectValue(EffectType.ADD_TIME_VALUE);
+            _clicker.ClickCount = GetTotalEffectValue(EffectType.AUTO_CLICK);
+            
+            foreach (MagicUnit unit in _magicUnitList)
+            {
+                if (!unit.GetFlag)
+                {
+                    continue;
                 }
-            );
+                if (unit.MagicModel.EffectType == EffectType.ADD_MAGIC_VALUE)
+                {
+                    // 一定時間で値増加
+                    updateActionCtrl.AddUpdateAction(
+                        unit.MagicModel.MagicName,
+                        new UpdateActionData(){
+                            progressTime = 0f, 
+                            actionTime = unit.ActivateTime, 
+                            action = () => {MagicClickClickerBtn(unit);}, 
+                            actionType = UpdateActionType.ROOP, 
+                            count = 0
+                        }
+                    );
+                }
+
+                if (unit.MagicModel.EffectType == EffectType.AUTO_CLICK)
+                {
+                    // 自動クリック
+                    updateActionCtrl.AddUpdateAction(
+                        AUTO_CLICK_KEY,
+                        new UpdateActionData(){
+                            progressTime = 0f, 
+                            actionTime = unit.ActivateTime,  
+                            action = AutoClickClickerBtn, 
+                            actionType = UpdateActionType.ROOP, 
+                            count = 0
+                        }
+                    );
+                }
+            }
         }
 
         // ---------- protected関数 ---------
@@ -325,10 +411,10 @@ namespace MagicClicker.Manager
 
             // TODO 仮実装
             _magicModelList = new List<MagicModel>(){
-                new MagicModel(){MagicName = "魔法の聖水", ConsumptionPoint = 50, EffectType = EffectType.ADD_CLICK_VALUE},
-                new MagicModel(){MagicName = "精神と時の魔法", ConsumptionPoint = 50, EffectType = EffectType.ADD_TIME_VALUE},
-                new MagicModel(){MagicName = "自律型ステッキ", ConsumptionPoint = 100, EffectType = EffectType.ADD_MAGIC_VALUE},
-                new MagicModel(){MagicName = "マジカルフィンガー", ConsumptionPoint = 100, EffectType = EffectType.AUTO_CLICK},
+                new MagicModel(){MagicName = "魔法の聖水", ConsumptionPoint = 50, EffectType = EffectType.ADD_CLICK_VALUE, EffectValue = 10},
+                new MagicModel(){MagicName = "精神と時の魔法", ConsumptionPoint = 50, EffectType = EffectType.ADD_TIME_VALUE, EffectValue = 1},
+                new MagicModel(){MagicName = "自律型ステッキ", ConsumptionPoint = 100, EffectType = EffectType.ADD_MAGIC_VALUE, EffectValue = 10, ActivateTime = 3f},
+                new MagicModel(){MagicName = "マジカルフィンガー", ConsumptionPoint = 100, EffectType = EffectType.AUTO_CLICK, EffectValue = 1, ActivateTime = 1f},
             };
 
             // 魔法ユニットの初期化

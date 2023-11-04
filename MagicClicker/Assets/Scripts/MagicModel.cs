@@ -14,7 +14,10 @@ namespace MagicClicker.Model.Magic
         [SerializeField] public int ConsumptionPoint { get; set; }
         // 効果
         [SerializeField] public EffectType EffectType { get; set; }
-        
+        // 基本効果値
+        [SerializeField] public int EffectValue { get; set; }
+        // 発動時間
+        [SerializeField] public float ActivateTime { get; set; }
     }
 
     [Serializable]
