@@ -6,9 +6,9 @@ using UnityEngine;
 
 using ShunLib.Manager.Game;
 using ShunLib.Manager.CommonScene;
+using ShunLib.Manager.Scene;
 using ShunLib.UI.ShowValue;
 using ShunLib.Controller.UpdateAction;
-using ShunLib.Popup.Simple;
 
 using MagicClicker.Unit;
 using MagicClicker.Popup.Pause;
@@ -233,6 +233,7 @@ namespace MagicClicker.Manager
                         resultPopup.SetReturnBtnEvent(() => {
                             // TODO 仮実装
                             Debug.Log("ホームへ戻る");
+                            SceneLoadManager.Instance.TransitionScene("HomeScene");
                         });
                     });
                 });

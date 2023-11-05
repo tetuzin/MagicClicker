@@ -127,6 +127,7 @@ ShunLib改修
 
 ・ShunLib
     ・ShunLibドキュメント作成
+    ・UIManagerの定数指定化
     ・CommonInputFieldのEditorを作成
     ・いろんなクラスのEditorクラスを作成（インスペクターでチェックをつけたら内容が変わるなど）
     ・ポップアップのボタン押下時処理の設定をコールバック設定でできるように改修する
