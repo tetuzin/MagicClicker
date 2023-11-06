@@ -306,6 +306,7 @@ MonoBehaviour:
   _characterController3D: {fileID: 0}
   _inputKeyController: {fileID: 434852306}
   _header: {fileID: 1648928170}
+  _characterUnitIconPrefab: {fileID: 7020273422024167489, guid: 5263877ffeafb174087ea5ad61bf0da7, type: 3}
 --- !u!1 &587807515
 GameObject:
   m_ObjectHideFlags: 1
@@ -673,7 +674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4265266273507789355, guid: 1e28ddec7f9c5ce4aada21782881e73d, type: 3}
       propertyPath: m_Name
-      value: CharacterBtn
+      value: InventoryBtn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e28ddec7f9c5ce4aada21782881e73d, type: 3}
@@ -1211,12 +1212,28 @@ PrefabInstance:
       value: UIManager
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _popupParent
+      value: 
+      objectReference: {fileID: 2830077280618505171}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[0].Key
+      value: InventoryPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[1].Key
+      value: CharacterUnitListPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Key
-      value: CharacterButton
+      value: InventoryButton
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[1].Key
@@ -1226,6 +1243,14 @@ PrefabInstance:
       propertyPath: _buttonList.list.Array.data[2].Key
       value: BattleButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[0].Value
+      value: 
+      objectReference: {fileID: 3957380411524352951, guid: a762697b6f79ef04f9405911afe4dd60, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[1].Value
+      value: 
+      objectReference: {fileID: 4637502191847543411, guid: f869e160dbbcc424985027ebcc167198, type: 3}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Value
       value: 

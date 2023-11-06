@@ -61,6 +61,7 @@ namespace ShunLib.Popup
         {
             if (!_isOpen)
             {
+                _isOpen = true;
                 ShowOpenAnimation(() =>
                 {
                     ShowPopup(isModal);
@@ -75,6 +76,7 @@ namespace ShunLib.Popup
         {
             if (_isOpen)
             {
+                _isOpen = false;
                 ShowCloseAnimation(() => 
                 {
                     CloseCallback?.Invoke();
