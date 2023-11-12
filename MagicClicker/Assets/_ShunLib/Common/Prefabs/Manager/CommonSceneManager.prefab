@@ -54,6 +54,7 @@ MonoBehaviour:
   _uiManager: {fileID: 7716228711153770607}
   _characterController3D: {fileID: 0}
   _inputKeyController: {fileID: 7187757971379707779}
+  _developTextPopup: {fileID: 5206909257035938164, guid: ace316e5056613a4eaca7c399d5ab712, type: 3}
 --- !u!1 &2673697920229146307
 GameObject:
   m_ObjectHideFlags: 0

@@ -305,6 +305,7 @@ MonoBehaviour:
   _uiManager: {fileID: 434852307}
   _characterController3D: {fileID: 0}
   _inputKeyController: {fileID: 434852306}
+  _developTextPopup: {fileID: 5206909257035938164, guid: 0fdc69c34d7cd7c4fb8d87814e33acfe, type: 3}
   _header: {fileID: 1648928170}
   _characterUnitIconPrefab: {fileID: 7020273422024167489, guid: 5263877ffeafb174087ea5ad61bf0da7, type: 3}
 --- !u!1 &587807515

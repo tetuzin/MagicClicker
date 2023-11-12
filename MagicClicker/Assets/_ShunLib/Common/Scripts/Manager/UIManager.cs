@@ -335,7 +335,27 @@ namespace ShunLib.Manager.UI
             bool isModal = true
         )
         {
-            if (!_PopupList.IsValue(key)) return;
+            if (!_PopupList.IsValue(key))
+            {
+                Debug.LogWarning("key[" + key + "]からポップアッププレハブを取得できませんでした。");
+                return;
+            }
+            CreateOpenPopup(_PopupList.GetValue(key), actions, popupAction, isModal);
+        }
+
+        // ポップアップの生成と表示
+        public void CreateOpenPopup(
+            BasePopup popupPrefab,
+            Dictionary<string, Action> actions = null,
+            Action<BasePopup> popupAction = null,
+            bool isModal = true
+        )
+        {
+            if (popupPrefab == null || popupPrefab == default)
+            {
+                Debug.LogWarning("ポップアッププレハブがNullまたはdefaultです。");
+                return;
+            }
             if (_popupParent == default)
             {
                 Debug.LogWarning("ポップアップを生成するための親オブジェクトが設定されていません！");
@@ -343,7 +363,7 @@ namespace ShunLib.Manager.UI
             }
             BasePopup popup = PopupUtils.OpenPopup(
                 _popupParent,
-                _PopupList.GetValue(key).gameObject,
+                popupPrefab.gameObject,
                 actions
             );
             if (popup != null) 

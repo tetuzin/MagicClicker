@@ -94,7 +94,10 @@ namespace MagicClicker.Manager.Home
             _uiManager.SetButtonEvent(INVENTORY_BUTTON, () => {
                 _uiManager.CreateOpenPopup(INVENTORY_POPUP, null, (p) => {
                     InventoryPopup popup = (InventoryPopup)p;
+                    popup.SetBattleTeamButton(ShowDevelopText);
                     popup.SetCharacterUnitButton(OpenCharacterUnitListPopup);
+                    popup.SetEquipmentTeamButton(ShowDevelopText);
+                    popup.SetEquipmentListButton(ShowDevelopText);
                 });
             });
 
@@ -102,6 +105,12 @@ namespace MagicClicker.Manager.Home
             _uiManager.SetButtonEvent(NURTURE_BUTTON, () => {
                 // TODO 仮実装
                 SceneLoadManager.Instance.TransitionScene("ClickerScene");
+            });
+
+            // 対戦ボタン
+            _uiManager.SetButtonEvent(BATTLE_BUTTON, () => {
+                // TODO 仮実装
+                ShowDevelopText();
             });
         }
 

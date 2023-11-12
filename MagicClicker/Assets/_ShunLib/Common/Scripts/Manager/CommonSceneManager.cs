@@ -5,6 +5,7 @@ using ShunLib.Manager.Initialize;
 using ShunLib.Manager.Camera;
 using ShunLib.Controller.Character3D;
 using ShunLib.Controller.InputKey;
+using ShunLib.Popup.Simple;
 
 namespace ShunLib.Manager.CommonScene
 {
@@ -25,6 +26,9 @@ namespace ShunLib.Manager.CommonScene
         [Header("キーコントローラ")]
         [SerializeField] protected InputKeyController _inputKeyController = default;
 
+        [Header("「開発中」表示用プレハブ")] 
+        [SerializeField] private SimpleTextPopup _developTextPopup = default;
+
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
@@ -39,6 +43,17 @@ namespace ShunLib.Manager.CommonScene
         }
 
         // ---------- Public関数 ----------
+
+        // 「開発中」テキスト表示
+        public void ShowDevelopText()
+        {
+            _uiManager.CreateOpenPopup(_developTextPopup, null, (p) => {
+                SimpleTextPopup popup = (SimpleTextPopup)p;
+                popup.SetMainText("開発中");
+                popup.SetShowTime(1f);
+            });
+        }
+
         // ---------- Private関数 ----------
         // ---------- protected関数 ---------
 

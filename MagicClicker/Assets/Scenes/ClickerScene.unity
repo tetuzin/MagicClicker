@@ -1788,6 +1788,7 @@ MonoBehaviour:
   _uiManager: {fileID: 4147117331021256163}
   _characterController3D: {fileID: 0}
   _inputKeyController: {fileID: 3938339217118717880}
+  _developTextPopup: {fileID: 5206909257035938164, guid: 0fdc69c34d7cd7c4fb8d87814e33acfe, type: 3}
   _showValueObjectPrefab: {fileID: 3178246652577824722, guid: f4f8f454bb3c0564d9c9e947b73f9682, type: 3}
   _showValueObjectParent: {fileID: 1641395820}
   _magicIconPrefab: {fileID: 6033249389419312363, guid: d8c2324c5e8ef7640b3bbf46cd8b28ba, type: 3}

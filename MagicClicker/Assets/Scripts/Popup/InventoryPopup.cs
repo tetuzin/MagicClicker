@@ -32,10 +32,28 @@ namespace MagicClicker.Popup.Inventory
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
 
+        // バトルチーム編成ボタンの処理設定
+        public void SetBattleTeamButton(Action action)
+        {
+            _battleTeamButton.SetOnEvent(action);
+        }
+
         // 育成済み魔法少女ボタンの処理設定
         public void SetCharacterUnitButton(Action action)
         {
             _characterUnitButton.SetOnEvent(action);
+        }
+
+        // 装備編成ボタンの処理設定
+        public void SetEquipmentTeamButton(Action action)
+        {
+            _equipmentTeamButton.SetOnEvent(action);
+        }
+
+        // 所持装備一覧ボタンの処理設定
+        public void SetEquipmentListButton(Action action)
+        {
+            _equipmentListButton.SetOnEvent(action);
         }
 
         // ---------- Private関数 ----------

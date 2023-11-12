@@ -32,7 +32,7 @@ namespace MagicClicker.Manager.Header
         // 初期化
         public void Initialize()
         {
-            
+            _menuBtn.Initialize();
         }
 
         // ---------- Private関数 ----------
