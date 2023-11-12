@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using ShunLib.UI.RadioIcon.Common;
+using ShunLib.Btn.Common;
 
 using MagicClicker.Unit.Character;
+using System;
 
 namespace MagicClicker.UI.Icon.Character.Unit
 {
@@ -19,6 +21,9 @@ namespace MagicClicker.UI.Icon.Character.Unit
 
         [Header("フレーム画像")]
         [SerializeField] private Image _frameImage = default;
+
+        [Header("アイコンボタン")]
+        [SerializeField] private CommonButton _baseButton = default;
         
         [Header("ランクアイコン")]
         [SerializeField] private List<CommonRadioIcon> _rankIcons = default;
@@ -37,6 +42,19 @@ namespace MagicClicker.UI.Icon.Character.Unit
             {
                 icon.Initialize();
             }
+            _baseButton.Initialize();
+        }
+
+        // ボタン処理の設定
+        public void SetBaseButtonEvent(Action action)
+        {
+            _baseButton.SetOnEvent(action);
+        }
+
+        // ボタン処理の設定(長押し)
+        public void SetBaseButtonDownEvent(Action action)
+        {
+            _baseButton.SetOnDownEvent(action);
         }
 
         // キャラクターユニットの設定

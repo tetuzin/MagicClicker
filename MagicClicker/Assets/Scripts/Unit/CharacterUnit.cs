@@ -26,6 +26,10 @@ namespace MagicClicker.Unit.Character
         [SerializeField] public int StatusSpeed { get; set; }
         // ぎじゅつりょく
         [SerializeField] public int StatusTechnic { get; set; }
+        // クリック回数
+        [SerializeField] public int ClickCount { get; set; }
+        // 稼いだ合計ポイント
+        [SerializeField] public int TotalGetPoint { get; set; }
 
         // 初期化
         public void Initialize()
@@ -37,6 +41,8 @@ namespace MagicClicker.Unit.Character
             StatusMagic = 0;
             StatusSpeed = 0;
             StatusTechnic = 0;
+            ClickCount = 0;
+            TotalGetPoint = 0;
         }
     }
 }

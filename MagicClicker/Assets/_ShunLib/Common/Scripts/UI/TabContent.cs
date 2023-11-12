@@ -22,12 +22,6 @@ namespace ShunLib.UI.Tab
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
         // ---------- Unity組込関数 ----------
-
-        void Start()
-        {
-            Initialize();
-        }
-
         // ---------- Public関数 ----------
 
         // 初期化
@@ -83,6 +77,7 @@ namespace ShunLib.UI.Tab
         {
             foreach (CommonButton button in _tabContentTable.GetKeyList())
             {
+                button.Initialize();
                 button.SetOnEvent(() => {
                     HideAllPanel();
                     ActiveAllButton();

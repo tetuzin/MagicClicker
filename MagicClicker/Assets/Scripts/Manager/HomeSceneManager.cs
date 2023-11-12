@@ -9,6 +9,7 @@ using ShunLib.Manager.CommonScene;
 using MagicClicker.Manager.Header;
 using MagicClicker.Popup.Inventory;
 using MagicClicker.Popup.CharacterUnitList;
+using MagicClicker.Popup.CharacterUnitDetails;
 using MagicClicker.Unit.Character;
 using MagicClicker.UI.Icon.Character.Unit;
 
@@ -29,6 +30,8 @@ namespace MagicClicker.Manager.Home
         private const string INVENTORY_POPUP = "InventoryPopup";
         // 育成済み魔法少女ポップアップ
         private const string CHARACTER_UNIT_LIST_POPUP = "CharacterUnitListPopup";
+        // 魔法少女詳細ポップアップ
+        private const string CHARACTER_UNIT_DETAILS_POPUP = "CharacterUnitDetailsPopup";
 
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
@@ -47,7 +50,7 @@ namespace MagicClicker.Manager.Home
         // ---------- Private関数 ----------
 
         // 育成済み魔法少女ポップアップを開く
-        private void OpneCharacterUnitListPopup()
+        private void OpenCharacterUnitListPopup()
         {
             _uiManager.CreateOpenPopup(CHARACTER_UNIT_LIST_POPUP, null, (p) => {
                 CharacterUnitListPopup popup = (CharacterUnitListPopup)p;
@@ -60,8 +63,19 @@ namespace MagicClicker.Manager.Home
                     CharacterUnitIcon icon = Instantiate(_characterUnitIconPrefab);
                     icon.Initialize();
                     icon.SetCharacterUnit(unit);
+                    icon.SetBaseButtonEvent(() => { OpenCharacterUnitDetailsPopup(unit); });
+                    icon.SetBaseButtonDownEvent(() => { OpenCharacterUnitDetailsPopup(unit); });
                     popup.AddContent(icon.gameObject);
                 }
+            });
+        }
+
+        // 魔法少女詳細ポップアップを開く
+        private void OpenCharacterUnitDetailsPopup(CharacterUnit unit)
+        {
+            _uiManager.CreateOpenPopup(CHARACTER_UNIT_DETAILS_POPUP, null, (p) => {
+                CharacterUnitDetailsPopup popup = (CharacterUnitDetailsPopup)p;
+                popup.SetCharacterUnit(unit);
             });
         }
 
@@ -80,7 +94,7 @@ namespace MagicClicker.Manager.Home
             _uiManager.SetButtonEvent(INVENTORY_BUTTON, () => {
                 _uiManager.CreateOpenPopup(INVENTORY_POPUP, null, (p) => {
                     InventoryPopup popup = (InventoryPopup)p;
-                    popup.SetCharacterUnitButton(OpneCharacterUnitListPopup);
+                    popup.SetCharacterUnitButton(OpenCharacterUnitListPopup);
                 });
             });
 
