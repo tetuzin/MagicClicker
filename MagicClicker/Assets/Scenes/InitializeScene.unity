@@ -598,9 +598,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030ea4d01d3beeb41b1a846aee1b8d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jsonDict:
-    list: []
-  _namespace: 
+  jsonDict:
+    list:
+    - Key: CharacterDao
+      Value: {fileID: 4900000, guid: 11c2eb1c3b829314c92475ef6bf603bf, type: 3}
+    - Key: EquipmentDao
+      Value: {fileID: 4900000, guid: 37a165f7d2cc0254b9ecea5317c38f64, type: 3}
+    - Key: MagicDao
+      Value: {fileID: 4900000, guid: c0954aba9e6daf74da275f4c25485e74, type: 3}
+  namespaceStr: MagicClicker.Dao.
 --- !u!4 &1472326936
 Transform:
   m_ObjectHideFlags: 0

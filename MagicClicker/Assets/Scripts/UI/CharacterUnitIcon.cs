@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 using ShunLib.UI.RadioIcon.Common;
 using ShunLib.Btn.Common;
+using ShunLib.Utils.Resource;
 
 using MagicClicker.Unit.Character;
 using System;
@@ -63,7 +64,7 @@ namespace MagicClicker.UI.Icon.Character.Unit
             // キャラクター画像
             if (unit.Model.CharacterIconSprite != default && unit.Model.CharacterIconSprite != null)
             {
-                _characterImage.sprite = unit.Model.CharacterIconSprite;
+                _characterImage.sprite = ResourceUtils.GetSprite(unit.Model.CharacterIconSprite);
             }
 
             // TODO フレーム画像

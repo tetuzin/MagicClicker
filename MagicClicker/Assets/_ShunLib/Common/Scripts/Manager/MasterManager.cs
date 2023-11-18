@@ -15,10 +15,10 @@ namespace ShunLib.Manager.Master
 
         [Header("読み込むJSON一覧")]
         [SerializeField, Tooltip("Daoクラス名の文字列とJSONファイルを設定する")]
-        protected TextAssetTable _jsonDict = default;
+        protected TextAssetTable jsonDict = default;
 
         [Header("Daoクラスの名前空間")]
-        [SerializeField] protected string _namespace = default;
+        [SerializeField] protected string namespaceStr = default;
 
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
@@ -47,14 +47,14 @@ namespace ShunLib.Manager.Master
         // マスタ配列の初期化
         private Task InitializeMaster()
         {
-            if (_jsonDict == default || _namespace == default) return Task.CompletedTask;
+            if (jsonDict == default || namespaceStr == default) return Task.CompletedTask;
 
             _daoDict = new Dictionary<string, BaseDao>();
             foreach (string daoName in GetDaoClassNameList())
             {
-                Type daoType = Type.GetType(_namespace + daoName, true);
+                Type daoType = Type.GetType(namespaceStr + daoName, true);
                 BaseDao dao = (BaseDao)Activator.CreateInstance(daoType);
-                TextAsset json = _jsonDict.GetValue(daoName);
+                TextAsset json = jsonDict.GetValue(daoName);
                 dao.SetJsonFile(json.name, json);
                 dao.LoadJsonMasterList();
                 _daoDict.Add(daoName, dao);
@@ -67,7 +67,7 @@ namespace ShunLib.Manager.Master
         private List<string> GetDaoClassNameList()
         {
             List<string> daoClassNameList = new List<string>();
-            foreach (var kvp in _jsonDict.GetTable())
+            foreach (var kvp in jsonDict.GetTable())
             {
                 daoClassNameList.Add(kvp.Key);
             }

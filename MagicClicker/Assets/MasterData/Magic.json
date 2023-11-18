@@ -1,0 +1,30 @@
+﻿[
+    {
+        "MagicName": "魔法の聖水",
+        "ConsumptionPoint": 50,
+        "EffectType": 10,
+        "EffectValue": 10,
+        "ActivateTime": 0.0
+    },
+    {
+        "MagicName": "精神と時の魔法",
+        "ConsumptionPoint": 50,
+        "EffectType": 20,
+        "EffectValue": 1,
+        "ActivateTime": 0.0
+    },
+    {
+        "MagicName": "自律型ステッキ",
+        "ConsumptionPoint": 100,
+        "EffectType": 30,
+        "EffectValue": 10,
+        "ActivateTime": 3.0
+    },
+    {
+        "MagicName": "マジカルフィンガー",
+        "ConsumptionPoint": 100,
+        "EffectType": 40,
+        "EffectValue": 1,
+        "ActivateTime": 1.0
+    }
+]

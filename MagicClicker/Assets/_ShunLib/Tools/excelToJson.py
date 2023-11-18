@@ -3,8 +3,8 @@ import json
 import os
     
 try:
-    excelPath = "../Assets/Resources/MasterData/excel"
-    jsonPath = "../Assets/Resources/MasterData/json"
+    excelPath = "." #使用ディレクトリによって書き換える
+    jsonPath = "." #使用ディレクトリによって書き換える
     files = os.listdir(excelPath)
     for excelfile in files:
         if excelfile.endswith('.xlsx'):
@@ -20,10 +20,10 @@ try:
 
                 #カラム名の抽出
                 for columnIndex in range(1, columnCount+1):
-                    columnNames += [sheet.cell(column=columnIndex, row=1).value]
+                    columnNames += [sheet.cell(column=columnIndex, row=2).value]
 
                 #データをカラム名と紐づけて連想配列に格納
-                for rowIndex in range(2, rowCount+1):
+                for rowIndex in range(3, rowCount+1):
                     valueDict = {}
                     for columnIndex in range(1, columnCount+1):
                         cellValue = sheet.cell(column=columnIndex, row=rowIndex).value

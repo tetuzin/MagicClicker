@@ -10,6 +10,7 @@ using ShunLib.Manager.Scene;
 using ShunLib.UI.ShowValue;
 using ShunLib.Controller.UpdateAction;
 
+using MagicClicker.Const;
 using MagicClicker.Unit;
 using MagicClicker.Popup.Pause;
 using MagicClicker.Popup.Magic;
@@ -20,6 +21,7 @@ using MagicClicker.Model.Character;
 using MagicClicker.Unit.Magic;
 using MagicClicker.Unit.Character;
 using MagicClicker.UI.Magic;
+using MagicClicker.Dao;
 
 namespace MagicClicker.Manager
 {
@@ -561,18 +563,10 @@ namespace MagicClicker.Manager
             _isPause = false;
 
             // TODO 仮実装 魔法モデルリストの用意
-            _magicModelList = new List<MagicModel>(){
-                new MagicModel(){MagicName = "魔法の聖水", ConsumptionPoint = 50, EffectType = EffectType.ADD_CLICK_VALUE, EffectValue = 10},
-                new MagicModel(){MagicName = "精神と時の魔法", ConsumptionPoint = 50, EffectType = EffectType.ADD_TIME_VALUE, EffectValue = 1},
-                new MagicModel(){MagicName = "自律型ステッキ", ConsumptionPoint = 100, EffectType = EffectType.ADD_MAGIC_VALUE, EffectValue = 10, ActivateTime = 3f},
-                new MagicModel(){MagicName = "マジカルフィンガー", ConsumptionPoint = 100, EffectType = EffectType.AUTO_CLICK, EffectValue = 1, ActivateTime = 1f},
-            };
+            _magicModelList = ((MagicDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_MAGIC)).Get();
 
             // TODO 仮実装 キャラクターモデルの用意
-            _characterModel = new CharacterModel(){
-                Name = "テス子",
-                Explanation = "開発用キャラクター。",
-            };
+            _characterModel = ((CharacterDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_CHARACTER)).Get()[0];
 
             // 育成キャラクターユニットの初期化
             _characterUnit = new CharacterUnit();

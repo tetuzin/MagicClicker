@@ -21,9 +21,9 @@ namespace ShunLib.Dao
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
-        protected List<T> _list = default;
-        protected string _jsonFileName = default;
-        protected TextAsset _json = default;
+        protected List<T> list = default;
+        protected string jsonFileName = default;
+        protected TextAsset json = default;
 
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
@@ -31,38 +31,38 @@ namespace ShunLib.Dao
         // リストの初期化
         public void Initialize()
         {
-            _list = new List<T>();
+            list = new List<T>();
         }
 
         // Modelのリストを取得
         public List<T> Get()
         {
-            return _list;
+            return list;
         }
 
         // Modelのリストを設定
-        public void Set(List<T> list)
+        public void Set(List<T> data)
         {
-            _list = list;
+            list = data;
         }
 
         // JSONファイルの設定
-        public void SetJsonFile(string fileName, TextAsset json)
+        public void SetJsonFile(string fileName, TextAsset textAsset)
         {
-            _jsonFileName = fileName;
-            _json = json;
+            jsonFileName = fileName;
+            json = textAsset;
         }
 
         // JSONからデータを読み込みリストを返す
         public virtual void LoadJsonMasterList()
         {
-            Set(JsonUtils.ConvertJsonToList<T>(_json));
+            Set(JsonUtils.ConvertJsonToList<T>(json));
         }
 
         // リストを読み込みJSONに保存する
         public virtual void SaveJsonMasterList()
         {
-            JsonUtils.SaveJsonList<T>(Get(), _jsonFileName);
+            JsonUtils.SaveJsonList<T>(Get(), jsonFileName);
         }
 
         // ---------- Private関数 ----------

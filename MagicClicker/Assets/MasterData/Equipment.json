@@ -1,0 +1,37 @@
+﻿[
+    {
+        "Name": "ネックレス",
+        "Type": 10,
+        "Explanation": "ネックレスです。",
+        "IconSprite": "",
+        "MainSprite": ""
+    },
+    {
+        "Name": "杖",
+        "Type": 20,
+        "Explanation": "杖です。",
+        "IconSprite": "",
+        "MainSprite": ""
+    },
+    {
+        "Name": "指輪",
+        "Type": 30,
+        "Explanation": "指輪です。",
+        "IconSprite": "",
+        "MainSprite": ""
+    },
+    {
+        "Name": "腕輪",
+        "Type": 40,
+        "Explanation": "腕輪です。",
+        "IconSprite": "",
+        "MainSprite": ""
+    },
+    {
+        "Name": "イヤリング",
+        "Type": 50,
+        "Explanation": "イヤリングです。",
+        "IconSprite": "",
+        "MainSprite": ""
+    }
+]

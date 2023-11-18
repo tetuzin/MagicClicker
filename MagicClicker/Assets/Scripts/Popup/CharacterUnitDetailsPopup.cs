@@ -9,6 +9,7 @@ using ShunLib.Btn.Common;
 using ShunLib.UI.Tab;
 using ShunLib.UI.Panel;
 using ShunLib.UI.RadioIcon.Common;
+using ShunLib.Utils.Resource;
 
 using MagicClicker.Unit.Character;
 using System;
@@ -58,7 +59,7 @@ namespace MagicClicker.Popup.CharacterUnitDetails
         public void SetCharacterUnit(CharacterUnit unit)
         {
             _nameText.text = unit.Model.Name;
-            _characterImage.sprite = unit.Model.CharacterSprite;
+            _characterImage.sprite = ResourceUtils.GetSprite(unit.Model.CharacterSprite);
             SetStatusPanel(unit);
         }
 

@@ -13,9 +13,9 @@ namespace MagicClicker.Model.Character
         // 説明
         [SerializeField] public string Explanation { get; set; }
         // アイコン用画像
-        [SerializeField] public Sprite CharacterIconSprite { get; set; }
+        [SerializeField] public string CharacterIconSprite { get; set; }
         // 立ち絵画像
-        [SerializeField] public Sprite CharacterSprite { get; set; }
+        [SerializeField] public string CharacterSprite { get; set; }
     }
 
     [Serializable]
