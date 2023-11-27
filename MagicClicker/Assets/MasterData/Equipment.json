@@ -1,35 +1,45 @@
 ﻿[
     {
-        "Name": "ネックレス",
+        "EquipmentId": 100001,
+        "Name": "きれいなネックレス",
         "Type": 10,
+        "EquipmentGroupId": 10000101,
         "Explanation": "ネックレスです。",
         "IconSprite": "",
         "MainSprite": ""
     },
     {
-        "Name": "杖",
+        "EquipmentId": 200001,
+        "Name": "きれいな杖",
         "Type": 20,
+        "EquipmentGroupId": 20000101,
         "Explanation": "杖です。",
         "IconSprite": "",
         "MainSprite": ""
     },
     {
-        "Name": "指輪",
+        "EquipmentId": 300001,
+        "Name": "きれいな指輪",
         "Type": 30,
+        "EquipmentGroupId": 30000101,
         "Explanation": "指輪です。",
         "IconSprite": "",
         "MainSprite": ""
     },
     {
-        "Name": "腕輪",
+        "EquipmentId": 400001,
+        "Name": "きれいな腕輪",
         "Type": 40,
+        "EquipmentGroupId": 40000101,
         "Explanation": "腕輪です。",
         "IconSprite": "",
         "MainSprite": ""
     },
     {
-        "Name": "イヤリング",
+        "EquipmentId": 500001,
+        "Name": "きれいなイヤリング",
         "Type": 50,
+        "EquipmentGroupId": 50000101,
         "Explanation": "イヤリングです。",
         "IconSprite": "",
         "MainSprite": ""

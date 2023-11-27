@@ -1,0 +1,47 @@
+﻿[
+    {
+        "SkillEffectGroupId": 0,
+        "ActivateConditionType": 0,
+        "ValueA": 0,
+        "ValueB": 0,
+        "ValueC": 0,
+        "ActivateOrder": 0,
+        "SkillEffectId": 0
+    },
+    {
+        "SkillEffectGroupId": 1,
+        "ActivateConditionType": 9000,
+        "ValueA": 0,
+        "ValueB": 0,
+        "ValueC": 0,
+        "ActivateOrder": 1,
+        "SkillEffectId": 20100200
+    },
+    {
+        "SkillEffectGroupId": 2,
+        "ActivateConditionType": 9000,
+        "ValueA": 0,
+        "ValueB": 0,
+        "ValueC": 0,
+        "ActivateOrder": 1,
+        "SkillEffectId": 32100200
+    },
+    {
+        "SkillEffectGroupId": 3,
+        "ActivateConditionType": 9000,
+        "ValueA": 0,
+        "ValueB": 0,
+        "ValueC": 0,
+        "ActivateOrder": 1,
+        "SkillEffectId": 34100100
+    },
+    {
+        "SkillEffectGroupId": 4,
+        "ActivateConditionType": 9000,
+        "ValueA": 0,
+        "ValueB": 0,
+        "ValueC": 0,
+        "ActivateOrder": 1,
+        "SkillEffectId": 33200100
+    }
+]

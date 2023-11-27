@@ -8,12 +8,14 @@ namespace MagicClicker.Model.Magic
     [Serializable]
     public class MagicModel
     {
+        // 魔法ID
+        [SerializeField] public int MagicId { get; set; }
         // 魔法名
         [SerializeField] public string MagicName { get; set; }
         // 消費ポイント
         [SerializeField] public int ConsumptionPoint { get; set; }
-        // 効果
-        [SerializeField] public EffectType EffectType { get; set; }
+        // 魔法タイプ
+        [SerializeField] public MagicType MagicType { get; set; }
         // 基本効果値
         [SerializeField] public int EffectValue { get; set; }
         // 発動時間
@@ -21,7 +23,8 @@ namespace MagicClicker.Model.Magic
     }
 
     [Serializable]
-    public enum EffectType
+    // 魔法タイプ
+    public enum MagicType
     {
         NONE = 0,
 

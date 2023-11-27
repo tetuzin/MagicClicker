@@ -602,10 +602,20 @@ MonoBehaviour:
     list:
     - Key: CharacterDao
       Value: {fileID: 4900000, guid: 11c2eb1c3b829314c92475ef6bf603bf, type: 3}
+    - Key: CharacterDetailsDao
+      Value: {fileID: 4900000, guid: 4587b346971a8c446b0629c2d5f88adf, type: 3}
     - Key: EquipmentDao
       Value: {fileID: 4900000, guid: 37a165f7d2cc0254b9ecea5317c38f64, type: 3}
+    - Key: EquipmentGroupDao
+      Value: {fileID: 4900000, guid: 839710344d425d14e9f79a00c6a97bc7, type: 3}
     - Key: MagicDao
       Value: {fileID: 4900000, guid: c0954aba9e6daf74da275f4c25485e74, type: 3}
+    - Key: SkillDao
+      Value: {fileID: 4900000, guid: 8ca7d0b528c0745428db10d3424fb4e6, type: 3}
+    - Key: SkillEffectDao
+      Value: {fileID: 4900000, guid: 822ce5ef7fc3b66409c4fc11e612f247, type: 3}
+    - Key: SkillEffectGroupDao
+      Value: {fileID: 4900000, guid: 8563ebac1b830fe449470d1a7bd7fc09, type: 3}
   namespaceStr: MagicClicker.Dao.
 --- !u!4 &1472326936
 Transform:

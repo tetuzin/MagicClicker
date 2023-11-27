@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+
+using ShunLib.Utils.Debug;
 
 namespace ShunLib.Utils.Resource
 {
@@ -7,13 +10,23 @@ namespace ShunLib.Utils.Resource
         // 画像ファイルパス名からTextureを取得
         public static Texture2D GetTexture2D(string path)
         {
-            byte[] bytes = System.IO.File.ReadAllBytes(path);
-            return ConvertTexture(bytes);
+            try
+            {
+                byte[] bytes = System.IO.File.ReadAllBytes(path);
+                return ConvertTexture(bytes);
+            }
+            catch(Exception e)
+            {
+                DebugUtils.LogWarning(e.Message);
+                return null;
+            }
         }
 
         // バイト配列をTextureに変換
         public static Texture2D ConvertTexture(byte[] array)
         {
+            if (array == null || array == default) return null;
+
             Texture2D texture = new Texture2D(2, 2);
             texture.LoadImage(array);
             return texture;
@@ -22,6 +35,8 @@ namespace ShunLib.Utils.Resource
         // 画像ファイル名からSpriteを取得
         public static Sprite GetSprite(string path)
         {
+            if (path == null || path == "") return null;
+            
             Texture2D texture = GetTexture2D(path);
             return ConvertSprite(texture);
         }
@@ -29,6 +44,8 @@ namespace ShunLib.Utils.Resource
         // TextureをSpriteに変換
         public static Sprite ConvertSprite(Texture2D texture)
         {
+            if (texture == null || texture == default) return null;
+
             Rect rect = new Rect(0f, 0f, texture.width, texture.height);
             Sprite sprite = Sprite.Create(texture, rect, Vector2.zero);
             return sprite;

@@ -1,0 +1,35 @@
+﻿[
+    {
+        "CharacterDetailsId": 100101,
+        "DetailsName": "見習い魔法使い",
+        "Explanation": "赤属性の魔法が得意な見習い魔法使い。",
+        "SkillID": 110001,
+        "BaseHp": 30,
+        "BasePower": 10,
+        "BaseMagic": 15,
+        "BaseSpeed": 10,
+        "BaseTechnic": 5
+    },
+    {
+        "CharacterDetailsId": 100201,
+        "DetailsName": "見習い魔法使い",
+        "Explanation": "青属性の魔法が得意な見習い魔法使い。",
+        "SkillID": 120001,
+        "BaseHp": 30,
+        "BasePower": 5,
+        "BaseMagic": 10,
+        "BaseSpeed": 15,
+        "BaseTechnic": 10
+    },
+    {
+        "CharacterDetailsId": 100301,
+        "DetailsName": "見習い魔法使い",
+        "Explanation": "緑属性の魔法が得意な見習い魔法使い。",
+        "SkillID": 130001,
+        "BaseHp": 30,
+        "BasePower": 10,
+        "BaseMagic": 10,
+        "BaseSpeed": 5,
+        "BaseTechnic": 15
+    }
+]

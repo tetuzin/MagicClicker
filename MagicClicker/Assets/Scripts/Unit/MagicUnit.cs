@@ -50,21 +50,21 @@ namespace MagicClicker.Unit.Magic
         public void LevelUp()
         {
             Level++;
-            switch (MagicModel.EffectType)
+            switch (MagicModel.MagicType)
             {
-                case EffectType.ADD_CLICK_VALUE:
+                case MagicType.ADD_CLICK_VALUE:
                     EffectValue += MagicModel.EffectValue;
                     break;
 
-                case EffectType.ADD_TIME_VALUE:
+                case MagicType.ADD_TIME_VALUE:
                     EffectValue *= 2;
                     break;
 
-                case EffectType.ADD_MAGIC_VALUE:
+                case MagicType.ADD_MAGIC_VALUE:
                     EffectValue *= 3;
                     break;
 
-                case EffectType.AUTO_CLICK:
+                case MagicType.AUTO_CLICK:
                     EffectValue++;
                     break;
 

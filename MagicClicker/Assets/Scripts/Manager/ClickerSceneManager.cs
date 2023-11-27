@@ -11,13 +11,13 @@ using ShunLib.UI.ShowValue;
 using ShunLib.Controller.UpdateAction;
 
 using MagicClicker.Const;
-using MagicClicker.Unit;
 using MagicClicker.Popup.Pause;
 using MagicClicker.Popup.Magic;
 using MagicClicker.Popup.NurtureResult;
 using MagicClicker.Popup.Nurture;
 using MagicClicker.Model.Magic;
 using MagicClicker.Model.Character;
+using MagicClicker.Unit.Clicker;
 using MagicClicker.Unit.Magic;
 using MagicClicker.Unit.Character;
 using MagicClicker.UI.Magic;
@@ -379,12 +379,12 @@ namespace MagicClicker.Manager
         }
 
         // 指定魔法効果の効果値合計を取得
-        private int GetTotalEffectValue(EffectType type)
+        private int GetTotalEffectValue(MagicType type)
         {  
             int value = 0;
             foreach (MagicUnit unit in _magicUnitList)
             {
-                if (unit.MagicModel.EffectType == type)
+                if (unit.MagicModel.MagicType == type)
                 {
                     value += unit.EffectValue;
                 }
@@ -428,13 +428,13 @@ namespace MagicClicker.Manager
                                 // 魔法習得
                                 unit.Learn();
                                 UpdateClickerUnit();
-                                if (unit.MagicModel.EffectType == EffectType.AUTO_CLICK)
+                                if (unit.MagicModel.MagicType == MagicType.AUTO_CLICK)
                                 {
                                     updateActionCtrl.AddUpdateAction(
                                         AUTO_CLICK_KEY,
                                         new UpdateActionData(){
                                             progressTime = 0f, 
-                                            actionTime = GetTotalEffectValue(EffectType.AUTO_CLICK), 
+                                            actionTime = GetTotalEffectValue(MagicType.AUTO_CLICK), 
                                             action = AutoClickClickerBtn, 
                                             actionType = UpdateActionType.ROOP, 
                                             count = 0
@@ -513,9 +513,9 @@ namespace MagicClicker.Manager
 
         private void UpdateClickerUnit()
         {
-            _clicker.ClickValue = BASIC_ADD_CLICK_VALUE + GetTotalEffectValue(EffectType.ADD_CLICK_VALUE);
-            _clicker.TimeValue = BASIC_ADD_TIME_VALUE + GetTotalEffectValue(EffectType.ADD_TIME_VALUE);
-            _clicker.ClickCount = GetTotalEffectValue(EffectType.AUTO_CLICK);
+            _clicker.ClickValue = BASIC_ADD_CLICK_VALUE + GetTotalEffectValue(MagicType.ADD_CLICK_VALUE);
+            _clicker.TimeValue = BASIC_ADD_TIME_VALUE + GetTotalEffectValue(MagicType.ADD_TIME_VALUE);
+            _clicker.ClickCount = GetTotalEffectValue(MagicType.AUTO_CLICK);
             
             foreach (MagicUnit unit in _magicUnitList)
             {
@@ -523,7 +523,7 @@ namespace MagicClicker.Manager
                 {
                     continue;
                 }
-                if (unit.MagicModel.EffectType == EffectType.ADD_MAGIC_VALUE)
+                if (unit.MagicModel.MagicType == MagicType.ADD_MAGIC_VALUE)
                 {
                     // 一定時間で値増加
                     updateActionCtrl.AddUpdateAction(
@@ -538,7 +538,7 @@ namespace MagicClicker.Manager
                     );
                 }
 
-                if (unit.MagicModel.EffectType == EffectType.AUTO_CLICK)
+                if (unit.MagicModel.MagicType == MagicType.AUTO_CLICK)
                 {
                     // 自動クリック
                     updateActionCtrl.AddUpdateAction(

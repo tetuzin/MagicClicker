@@ -1,0 +1,38 @@
+﻿[
+    {
+        "SkillEffectId": 20100200,
+        "Explanation": "たいりょくを20回復する。",
+        "EffectType": 201,
+        "ValueA": 20,
+        "ValueB": 0,
+        "ValueC": 0,
+        "Probability": 100
+    },
+    {
+        "SkillEffectId": 32100200,
+        "Explanation": "まりょくを20上げる。",
+        "EffectType": 321,
+        "ValueA": 20,
+        "ValueB": 0,
+        "ValueC": 0,
+        "Probability": 100
+    },
+    {
+        "SkillEffectId": 33200100,
+        "Explanation": "しゅんぱつりょくを10下げる。",
+        "EffectType": 332,
+        "ValueA": 10,
+        "ValueB": 0,
+        "ValueC": 0,
+        "Probability": 100
+    },
+    {
+        "SkillEffectId": 34100100,
+        "Explanation": "ぎじゅつりょくを10上げる。",
+        "EffectType": 341,
+        "ValueA": 10,
+        "ValueB": 0,
+        "ValueC": 0,
+        "Probability": 100
+    }
+]

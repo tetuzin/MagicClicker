@@ -1,8 +1,26 @@
 ﻿[
     {
-        "Name": "テス子",
-        "Explanation": "テスト用のキャラクター",
-        "CharacterIconSprite": "img_icon_tesuko",
-        "CharacterSprite": "img_tesuko"
+        "CharacterId": 1001,
+        "Name": "アナリン",
+        "Explanation": "明るく活発な魔法少女。",
+        "CharacterDetailsId": 100101,
+        "CharacterIconSprite": "",
+        "CharacterSprite": ""
+    },
+    {
+        "CharacterId": 1002,
+        "Name": "シェリー",
+        "Explanation": "おとなしく引っ込み思案な魔法少女。",
+        "CharacterDetailsId": 100201,
+        "CharacterIconSprite": "",
+        "CharacterSprite": ""
+    },
+    {
+        "CharacterId": 1003,
+        "Name": "メーベル",
+        "Explanation": "面倒見がよくお姉さん気質な魔法少女。",
+        "CharacterDetailsId": 100301,
+        "CharacterIconSprite": "",
+        "CharacterSprite": ""
     }
 ]

@@ -1,0 +1,82 @@
+﻿[
+    {
+        "SkillId": 100001,
+        "Name": "はげしい閃光",
+        "Explanation": "強く光り輝く魔法。相手にダメージを与える。",
+        "ElementType": 0,
+        "SkillType": 10,
+        "TargetType": 10,
+        "AttackValue": 40,
+        "SkillEffectGroupId": 0
+    },
+    {
+        "SkillId": 110001,
+        "Name": "赤の閃光",
+        "Explanation": "赤く光る魔法で攻撃する。赤属性のダメージを与える。",
+        "ElementType": 1,
+        "SkillType": 10,
+        "TargetType": 10,
+        "AttackValue": 30,
+        "SkillEffectGroupId": 0
+    },
+    {
+        "SkillId": 120001,
+        "Name": "青の閃光",
+        "Explanation": "青く光る魔法で攻撃する。青属性のダメージを与える。",
+        "ElementType": 2,
+        "SkillType": 10,
+        "TargetType": 10,
+        "AttackValue": 30,
+        "SkillEffectGroupId": 0
+    },
+    {
+        "SkillId": 130001,
+        "Name": "緑の閃光",
+        "Explanation": "緑に光る魔法で攻撃する。緑属性のダメージを与える。",
+        "ElementType": 3,
+        "SkillType": 10,
+        "TargetType": 10,
+        "AttackValue": 30,
+        "SkillEffectGroupId": 0
+    },
+    {
+        "SkillId": 201001,
+        "Name": "癒しの魔法",
+        "Explanation": "元気を回復させる魔法。仲間ひとりのたいりょくを回復する。",
+        "ElementType": 0,
+        "SkillType": 20,
+        "TargetType": 20,
+        "AttackValue": 0,
+        "SkillEffectGroupId": 1
+    },
+    {
+        "SkillId": 321001,
+        "Name": "パワフルマジック",
+        "Explanation": "魔法が強くなる魔法。仲間のまりょくを強化する。",
+        "ElementType": 0,
+        "SkillType": 20,
+        "TargetType": 20,
+        "AttackValue": 0,
+        "SkillEffectGroupId": 2
+    },
+    {
+        "SkillId": 332001,
+        "Name": "のろのろい",
+        "Explanation": "のろのろになる魔法。相手ひとりのしゅんぱつりょくを下げる。",
+        "ElementType": 0,
+        "SkillType": 20,
+        "TargetType": 10,
+        "AttackValue": 0,
+        "SkillEffectGroupId": 4
+    },
+    {
+        "SkillId": 341001,
+        "Name": "テクニックアッパー",
+        "Explanation": "手先が器用になる魔法。仲間全員のぎじゅつりょくを強化する。",
+        "ElementType": 0,
+        "SkillType": 20,
+        "TargetType": 21,
+        "AttackValue": 0,
+        "SkillEffectGroupId": 3
+    }
+]
