@@ -13,8 +13,8 @@ namespace MagicClicker.Unit.Character
     [Serializable]
     public class CharacterUnit
     {
-        // キャラクター
-        [SerializeField] public CharacterModel Model { get; set; }
+        // キャラクターID
+        [SerializeField] public int CharacterId { get; set; }
         // スコア
         [SerializeField] public int Score { get; set; }
         // ランク
@@ -39,7 +39,7 @@ namespace MagicClicker.Unit.Character
         // 初期化
         public void Initialize()
         {
-            Model = null;
+            CharacterId = 0;
             Score = 0;
             Rank = 0;
             StatusHp = 0;

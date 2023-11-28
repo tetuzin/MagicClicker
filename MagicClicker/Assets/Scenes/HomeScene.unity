@@ -308,6 +308,7 @@ MonoBehaviour:
   _developTextPopup: {fileID: 5206909257035938164, guid: 0fdc69c34d7cd7c4fb8d87814e33acfe, type: 3}
   _header: {fileID: 1648928170}
   _characterUnitIconPrefab: {fileID: 7020273422024167489, guid: 5263877ffeafb174087ea5ad61bf0da7, type: 3}
+  _equipmentUnitIconPrefab: {fileID: 0}
 --- !u!1 &587807515
 GameObject:
   m_ObjectHideFlags: 1
@@ -1218,7 +1219,7 @@ PrefabInstance:
       objectReference: {fileID: 2830077280618505171}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _PopupList.list.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.size
@@ -1235,6 +1236,14 @@ PrefabInstance:
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _PopupList.list.Array.data[2].Key
       value: CharacterUnitDetailsPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[3].Key
+      value: EquipmentUnitListPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[4].Key
+      value: EquipmentUnitDetailsPopup
       objectReference: {fileID: 0}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Key
@@ -1260,6 +1269,14 @@ PrefabInstance:
       propertyPath: _PopupList.list.Array.data[2].Value
       value: 
       objectReference: {fileID: 4402371919516067366, guid: ce98110a13afd3b48998bdf66e715724, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[3].Value
+      value: 
+      objectReference: {fileID: 939120432536985008, guid: 3b56abd60ba4ec945a6cb2bfe72d13b1, type: 3}
+    - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
+      propertyPath: _PopupList.list.Array.data[4].Value
+      value: 
+      objectReference: {fileID: 4402371919516067366, guid: e47742291a6d6c84ea7fcf3da500e383, type: 3}
     - target: {fileID: 5951515825542570823, guid: fa1e052ba1babfc48bf22f2b844e69f9, type: 3}
       propertyPath: _buttonList.list.Array.data[0].Value
       value: 

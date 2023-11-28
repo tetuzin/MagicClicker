@@ -6,9 +6,9 @@ using ShunLib.Popup;
 using ShunLib.Btn.Common;
 using ShunLib.UI.Scroll;
 
-namespace MagicClicker.Popup.EquipmentList
+namespace MagicClicker.Popup.EquipmentUnitList
 {
-    public class EquipmentListPopup : BasePopup
+    public class EquipmentUnitListPopup : BasePopup
     {
         // ---------- 定数宣言 ----------
         // ---------- ゲームオブジェクト参照変数宣言 ----------

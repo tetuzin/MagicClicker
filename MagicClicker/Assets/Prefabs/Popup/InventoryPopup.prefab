@@ -160,8 +160,8 @@ MonoBehaviour:
   isAnimation: 1
   _battleTeamButton: {fileID: 4232736241502487316}
   _characterUnitButton: {fileID: 4539554584800411664}
-  _equipmentTeamButton: {fileID: 7822438282124841085}
-  _equipmentListButton: {fileID: 3627254950404644933}
+  _equipmentUnitTeamButton: {fileID: 7822438282124841085}
+  _equipmentUnitListButton: {fileID: 3627254950404644933}
   _cancelButton: {fileID: 1611050529838155239}
 --- !u!1 &6524755581241234220
 GameObject:
@@ -833,7 +833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4265266273507789355, guid: 1e28ddec7f9c5ce4aada21782881e73d, type: 3}
       propertyPath: m_Name
-      value: EquipmentListButton
+      value: EquipmentUnitListButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e28ddec7f9c5ce4aada21782881e73d, type: 3}
@@ -1187,7 +1187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4265266273507789355, guid: 1e28ddec7f9c5ce4aada21782881e73d, type: 3}
       propertyPath: m_Name
-      value: EquipmentTeamButton
+      value: EquipmentUnitTeamButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e28ddec7f9c5ce4aada21782881e73d, type: 3}

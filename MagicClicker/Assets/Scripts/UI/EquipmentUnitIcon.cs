@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,17 +5,17 @@ using UnityEngine;
 using ShunLib.UI.RadioIcon.Common;
 using ShunLib.Utils.Resource;
 
-using MagicClicker.Unit.Character;
+using MagicClicker.Unit.Equipment;
 using MagicClicker.UI.Icon.CommonInventory;
-using MagicClicker.Model.Character;
+using MagicClicker.Model.Equipment;
 
-namespace MagicClicker.UI.Icon.Character.Unit
+namespace MagicClicker.UI.Icon.Equipment.Unit
 {
-    public class CharacterUnitIcon : CommonInventoryIcon
+    public class EquipmentUnitIcon : CommonInventoryIcon
     {
         // ---------- 定数宣言 ----------
         // ---------- ゲームオブジェクト参照変数宣言 ----------
-        
+
         [Header("ランクアイコン")]
         [SerializeField] private List<CommonRadioIcon> _rankIcons = default;
 
@@ -37,13 +36,13 @@ namespace MagicClicker.UI.Icon.Character.Unit
             }
         }
 
-        // キャラクターの設定
-        public void SetCharacterUnit(CharacterUnit unit, CharacterModel model)
+        // 装備の設定
+        public void SetEquipmentUnit(EquipmentUnit unit, EquipmentModel model)
         {
             if (unit == default || unit == null) return;
             if (model == default || model == null) return;
-
-            // キャラクター画像
+            
+            // 装備画像
             if (model.IconSprite != default && model.IconSprite != null)
             {
                 SetMainImage(ResourceUtils.GetSprite(model.IconSprite));
@@ -52,7 +51,7 @@ namespace MagicClicker.UI.Icon.Character.Unit
             // TODO フレーム画像
 
             // ランクアイコン
-            for (int i = 0; i < unit.Rank; i++)
+            for (int i = 0; i < unit.Level; i++)
             {
                 if (i < _rankIcons.Count)
                 {
@@ -66,5 +65,4 @@ namespace MagicClicker.UI.Icon.Character.Unit
         // ---------- デバッグ用関数 ---------
     }
 }
-
 

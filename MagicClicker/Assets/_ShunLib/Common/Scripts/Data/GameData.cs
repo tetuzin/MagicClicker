@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 using MagicClicker.Unit.Character;
-using System.Collections.Generic;
+using MagicClicker.Unit.Equipment;
 
 namespace ShunLib.Data.Game
 {
@@ -10,17 +11,14 @@ namespace ShunLib.Data.Game
     public class GameData : BaseData
     {
         // キャラクターユニットリスト
-        [SerializeField] private List<CharacterUnit> _characterUnitList = default;
-
-        public List<CharacterUnit> CharacterUnitList
-        {
-            get { return _characterUnitList; }
-            set { _characterUnitList = value; }
-        }
+        [SerializeField] public List<CharacterUnit> CharacterUnitList { get; set; }
+        // 装備ユニットリスト
+        [SerializeField] public List<EquipmentUnit> EquipmentUnitList { get; set; }
         
         public void Initialize()
         {
-            _characterUnitList = new List<CharacterUnit>();
+            CharacterUnitList = new List<CharacterUnit>();
+            EquipmentUnitList = new List<EquipmentUnit>();
         }
     }
 }

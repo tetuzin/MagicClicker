@@ -13,6 +13,7 @@ using ShunLib.Utils.Resource;
 
 using MagicClicker.Unit.Character;
 using System;
+using MagicClicker.Model.Character;
 
 namespace MagicClicker.Popup.CharacterUnitDetails
 {
@@ -56,10 +57,10 @@ namespace MagicClicker.Popup.CharacterUnitDetails
         // ---------- Public関数 ----------
 
         // キャラクターユニットの設定
-        public void SetCharacterUnit(CharacterUnit unit)
+        public void SetCharacterUnit(CharacterUnit unit, CharacterModel model)
         {
-            _nameText.text = unit.Model.Name;
-            _characterImage.sprite = ResourceUtils.GetSprite(unit.Model.CharacterSprite);
+            _nameText.text = model.Name;
+            _characterImage.sprite = ResourceUtils.GetSprite(model.MainSprite);
             SetStatusPanel(unit);
         }
 

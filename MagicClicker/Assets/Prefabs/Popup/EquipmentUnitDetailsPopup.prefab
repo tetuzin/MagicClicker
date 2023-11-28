@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 4402371919516067365}
   - component: {fileID: 4402371919516067366}
   m_Layer: 5
-  m_Name: EquipmentDetailsPopup
+  m_Name: EquipmentUnitDetailsPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

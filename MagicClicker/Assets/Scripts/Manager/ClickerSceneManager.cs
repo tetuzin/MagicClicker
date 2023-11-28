@@ -229,7 +229,9 @@ namespace MagicClicker.Manager
                     await GameManager.Instance.dataManager.Save();
                     _uiManager.CreateOpenPopup(NURTURE_RESULT_POPUP, null, (p) => {
                         NurtureResultPopup resultPopup = (NurtureResultPopup)p;
-                        resultPopup.SetCharacterName(_characterUnit.Model.Name);
+                        CharacterDao dao = (CharacterDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_CHARACTER);
+                        CharacterModel model = dao.GetModelById(_characterUnit.CharacterId);
+                        resultPopup.SetCharacterName(model.Name);
                         resultPopup.SetRank(3);
                         resultPopup.SetScore(12345);
                         resultPopup.SetReturnBtnEvent(() => {
@@ -571,7 +573,7 @@ namespace MagicClicker.Manager
             // 育成キャラクターユニットの初期化
             _characterUnit = new CharacterUnit();
             _characterUnit.Initialize();
-            _characterUnit.Model = _characterModel;
+            _characterUnit.CharacterId = _characterModel.CharacterId;
 
             // 魔法ユニットの初期化
             _magicUnitList = new List<MagicUnit>();

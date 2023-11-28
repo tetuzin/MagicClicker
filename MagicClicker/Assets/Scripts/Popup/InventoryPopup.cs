@@ -18,9 +18,9 @@ namespace MagicClicker.Popup.Inventory
         [Header("育成済み魔法少女ボタン")]
         [SerializeField] private CommonButton _characterUnitButton = default;
         [Header("装備編成ボタン")]
-        [SerializeField] private CommonButton _equipmentTeamButton = default;
+        [SerializeField] private CommonButton _equipmentUnitTeamButton = default;
         [Header("所持装備一覧ボタン")]
-        [SerializeField] private CommonButton _equipmentListButton = default;
+        [SerializeField] private CommonButton _equipmentUnitListButton = default;
 
         [Header("キャンセルボタン")]
         [SerializeField] private CommonButton _cancelButton = default;
@@ -47,13 +47,13 @@ namespace MagicClicker.Popup.Inventory
         // 装備編成ボタンの処理設定
         public void SetEquipmentTeamButton(Action action)
         {
-            _equipmentTeamButton.SetOnEvent(action);
+            _equipmentUnitTeamButton.SetOnEvent(action);
         }
 
         // 所持装備一覧ボタンの処理設定
         public void SetEquipmentListButton(Action action)
         {
-            _equipmentListButton.SetOnEvent(action);
+            _equipmentUnitListButton.SetOnEvent(action);
         }
 
         // ---------- Private関数 ----------
@@ -65,8 +65,8 @@ namespace MagicClicker.Popup.Inventory
             base.Initialize();
             _battleTeamButton.Initialize();
             _characterUnitButton.Initialize();
-            _equipmentTeamButton.Initialize();
-            _equipmentListButton.Initialize();
+            _equipmentUnitTeamButton.Initialize();
+            _equipmentUnitListButton.Initialize();
             _cancelButton.Initialize();
         }
 

@@ -6,12 +6,20 @@ using ShunLib.Manager.Game;
 using ShunLib.Manager.Scene;
 using ShunLib.Manager.CommonScene;
 
+using MagicClicker.Dao;
+using MagicClicker.Const;
 using MagicClicker.Manager.Header;
 using MagicClicker.Popup.Inventory;
 using MagicClicker.Popup.CharacterUnitList;
 using MagicClicker.Popup.CharacterUnitDetails;
+using MagicClicker.Popup.EquipmentUnitList;
+using MagicClicker.Popup.EquipmentUnitDetails;
 using MagicClicker.Unit.Character;
 using MagicClicker.UI.Icon.Character.Unit;
+using MagicClicker.UI.Icon.Equipment.Unit;
+using MagicClicker.Model.Character;
+using MagicClicker.Unit.Equipment;
+using MagicClicker.Model.Equipment;
 
 namespace MagicClicker.Manager.Home
 {
@@ -32,6 +40,10 @@ namespace MagicClicker.Manager.Home
         private const string CHARACTER_UNIT_LIST_POPUP = "CharacterUnitListPopup";
         // 魔法少女詳細ポップアップ
         private const string CHARACTER_UNIT_DETAILS_POPUP = "CharacterUnitDetailsPopup";
+        // 所持装備一覧ポップアップ
+        private const string EQUIPMENT_UNIT_LIST_POPUP = "EquipmentUnitListPopup";
+        // 装備詳細ポップアップ
+        private const string EQUIPMENT_UNIT_DETAILS_POPUP = "EquipmentUnitDetailsPopup";
 
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
@@ -40,6 +52,9 @@ namespace MagicClicker.Manager.Home
 
         [Header("キャラクターユニットアイコンプレハブ")]
         [SerializeField] private CharacterUnitIcon _characterUnitIconPrefab = default;
+
+        [Header("装備ユニットアイコンプレハブ")]
+        [SerializeField] private EquipmentUnitIcon _equipmentUnitIconPrefab = default;
 
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
@@ -58,11 +73,14 @@ namespace MagicClicker.Manager.Home
 
                 // TODO ユニットソート処理実装箇所
 
+                // データ取得しアイコン生成
+                CharacterDao dao = (CharacterDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_CHARACTER);
                 foreach (CharacterUnit unit in unitList)
                 {
+                    CharacterModel model = dao.GetModelById(unit.CharacterId);
                     CharacterUnitIcon icon = Instantiate(_characterUnitIconPrefab);
                     icon.Initialize();
-                    icon.SetCharacterUnit(unit);
+                    icon.SetCharacterUnit(unit, model);
                     icon.SetBaseButtonEvent(() => { OpenCharacterUnitDetailsPopup(unit); });
                     icon.SetBaseButtonDownEvent(() => { OpenCharacterUnitDetailsPopup(unit); });
                     popup.AddContent(icon.gameObject);
@@ -75,7 +93,44 @@ namespace MagicClicker.Manager.Home
         {
             _uiManager.CreateOpenPopup(CHARACTER_UNIT_DETAILS_POPUP, null, (p) => {
                 CharacterUnitDetailsPopup popup = (CharacterUnitDetailsPopup)p;
-                popup.SetCharacterUnit(unit);
+                CharacterDao dao = (CharacterDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_CHARACTER);
+                CharacterModel model = dao.GetModelById(unit.CharacterId);
+                popup.SetCharacterUnit(unit, model);
+            });
+        }
+
+        // 所持装備一覧ポップアップを開く
+        private void OpenEquipmentUnitListPopup()
+        {
+            _uiManager.CreateOpenPopup(EQUIPMENT_UNIT_LIST_POPUP, null, (p) => {
+                EquipmentUnitListPopup popup = (EquipmentUnitListPopup)p;
+                List<EquipmentUnit> unitList = GameManager.Instance.dataManager.Data.Game.EquipmentUnitList;
+
+                // TODO ユニットソート処理実装箇所
+
+                // データ取得しアイコン生成
+                EquipmentDao dao = (EquipmentDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_EQUIPMENT);
+                foreach (EquipmentUnit unit in unitList)
+                {
+                    EquipmentModel model = dao.GetModelById(unit.EquipmentId);
+                    EquipmentUnitIcon icon = Instantiate(_equipmentUnitIconPrefab);
+                    icon.Initialize();
+                    icon.SetEquipmentUnit(unit, model);
+                    icon.SetBaseButtonEvent(() => { OpenEquipmentUnitDetailsPopup(unit); });
+                    icon.SetBaseButtonDownEvent(() => { OpenEquipmentUnitDetailsPopup(unit); });
+                    popup.AddContent(icon.gameObject);
+                }
+            });
+        }
+
+        // 装備詳細ポップアップを開く
+        private void OpenEquipmentUnitDetailsPopup(EquipmentUnit unit)
+        {
+            _uiManager.CreateOpenPopup(EQUIPMENT_UNIT_DETAILS_POPUP, null, (p) => {
+                EquipmentUnitDetailsPopup popup = (EquipmentUnitDetailsPopup)p;
+                EquipmentDao dao = (EquipmentDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_EQUIPMENT);
+                EquipmentModel model = dao.GetModelById(unit.EquipmentId);
+                popup.SetEquipmentUnit(unit, model);
             });
         }
 
@@ -97,7 +152,7 @@ namespace MagicClicker.Manager.Home
                     popup.SetBattleTeamButton(ShowDevelopText);
                     popup.SetCharacterUnitButton(OpenCharacterUnitListPopup);
                     popup.SetEquipmentTeamButton(ShowDevelopText);
-                    popup.SetEquipmentListButton(ShowDevelopText);
+                    popup.SetEquipmentListButton(OpenEquipmentUnitListPopup);
                 });
             });
 

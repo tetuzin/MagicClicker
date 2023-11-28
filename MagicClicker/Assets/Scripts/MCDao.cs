@@ -14,11 +14,33 @@ namespace MagicClicker.Dao
     public class MCDao : MonoBehaviour{}
 
     // キャラクター
-    public class CharacterDao : BaseDao<CharacterModel>{}
+    public class CharacterDao : BaseDao<CharacterModel>
+    {
+        // ID検索
+        public CharacterModel GetModelById(int id)
+        {
+            foreach (CharacterModel model in Get())
+            {
+                if (model.CharacterId == id) return model;
+            }
+            return null;
+        }
+    }
     public class CharacterDetailsDao : BaseDao<CharacterDetailsModel>{}
 
     // 装備
-    public class EquipmentDao : BaseDao<EquipmentModel>{}
+    public class EquipmentDao : BaseDao<EquipmentModel>
+    {
+        // ID検索
+        public EquipmentModel GetModelById(int id)
+        {
+            foreach (EquipmentModel model in Get())
+            {
+                if (model.EquipmentId == id) return model;
+            }
+            return null;
+        }
+    }
     public class EquipmentGroupDao : BaseDao<EquipmentGroupModel>{}
 
     // 魔法
