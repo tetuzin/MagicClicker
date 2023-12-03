@@ -41,13 +41,35 @@ namespace MagicClicker.Dao
             return null;
         }
     }
-    public class EquipmentGroupDao : BaseDao<EquipmentGroupModel>{}
+    public class EquipmentGroupDao : BaseDao<EquipmentGroupModel>
+    {
+        // ID検索
+        public EquipmentGroupModel GetModelById(int id)
+        {
+            foreach (EquipmentGroupModel model in Get())
+            {
+                if (model.EquipmentGroupId == id) return model;
+            }
+            return null;
+        }
+    }
 
     // 魔法
     public class MagicDao : BaseDao<MagicModel>{}
 
     // スキル
-    public class SkillDao : BaseDao<SkillModel>{}
+    public class SkillDao : BaseDao<SkillModel>
+    {
+        // ID検索
+        public SkillModel GetModelById(int id)
+        {
+            foreach (SkillModel model in Get())
+            {
+                if (model.SkillId == id) return model;
+            }
+            return null;
+        }
+    }
     public class SkillEffectGroupDao : BaseDao<SkillEffectGroupModel>{}
     public class SkillEffectDao : BaseDao<SkillEffectModel>{}
 }

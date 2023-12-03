@@ -130,7 +130,7 @@ namespace MagicClicker.Manager.Home
                 EquipmentUnitDetailsPopup popup = (EquipmentUnitDetailsPopup)p;
                 EquipmentDao dao = (EquipmentDao)GameManager.Instance.masterManager.GetDao(MCConst.DAO_NAME_EQUIPMENT);
                 EquipmentModel model = dao.GetModelById(unit.EquipmentId);
-                popup.SetEquipmentUnit(unit, model);
+                popup.SetEquipmentUnit(unit);
             });
         }
 
@@ -173,6 +173,16 @@ namespace MagicClicker.Manager.Home
         protected override void InitEvent()
         {
             // TODO おしらせ　ログボ
+
+            // TODO 仮　装備ユニット付与
+            GameManager.Instance.dataManager.Data.Game.EquipmentUnitList.Add(
+                new EquipmentUnit(){
+                    EquipmentId = 100001,
+                    Level = 1,
+                    FavoriteFlag = false,
+                }
+            );
+            GameManager.Instance.dataManager.Save();
         }
 
         // ---------- デバッグ用関数 ---------

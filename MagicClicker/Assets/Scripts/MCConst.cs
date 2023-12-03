@@ -17,6 +17,13 @@ namespace MagicClicker.Const
 
         // キャラクターが習得できるスキルの数
         public const int CHARACTER_SKILL_COUNT = 3;
+
+        // 装備種名
+        public const string EQUIPMENT_KIND_NECKLACE = "ネックレス";
+        public const string EQUIPMENT_KIND_CANE = "杖";
+        public const string EQUIPMENT_KIND_RING = "指輪";
+        public const string EQUIPMENT_KIND_BANGLE = "腕輪";
+        public const string EQUIPMENT_KIND_EARRINGS = "イヤリング";
     }
 }
 
