@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using ShunLib.Popup.Slide;
+using ShunLib.Btn.Common;
+using System;
 
-using MagicClicker.UI.Page.EquipmentUnitTeam;
-
-namespace MagicClicker.Popup.EquipmentUnitTeam
+namespace MagicClicker.UI.Icon.Empty
 {
-    public class EquipmentUnitTeamPopup : SlidePagePopup
+    public class EmptyIcon : MonoBehaviour
     {
         // ---------- 定数宣言 ----------
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
-        [Header("装備編成ページリスト")]
-        [SerializeField] private List<EquipmentUnitTeamPage> _teamPages = default;
+        [Header("選択ボタン")]
+        [SerializeField] private CommonButton _selectButton = default;
 
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
@@ -22,6 +21,19 @@ namespace MagicClicker.Popup.EquipmentUnitTeam
         // ---------- インスタンス変数宣言 ----------
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
+
+        // 初期化
+        public void Initialize()
+        {
+            _selectButton.Initialize();
+        }
+
+        // 選択ボタン設定
+        public void SetSelectButton(Action action)
+        {
+            _selectButton.SetOnEvent(action);
+        }
+
         // ---------- Private関数 ----------
         // ---------- protected関数 ---------
         // ---------- デバッグ用関数 ---------

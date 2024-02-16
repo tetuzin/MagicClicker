@@ -50,6 +50,12 @@ namespace MagicClicker.UI.Rank
             }
         }
 
+        // 表示・非表示
+        public void SetActive(bool b)
+        {
+            this.gameObject.SetActive(b);
+        }
+
         // ---------- Private関数 ----------
         // ---------- protected関数 ---------
         // ---------- デバッグ用関数 ---------

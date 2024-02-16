@@ -6,6 +6,7 @@ using ShunLib.UI.RadioIcon.Common;
 using ShunLib.Utils.Resource;
 
 using MagicClicker.Unit.Equipment;
+using MagicClicker.UI.Rank;
 using MagicClicker.UI.Icon.CommonInventory;
 using MagicClicker.Model.Equipment;
 
@@ -17,7 +18,7 @@ namespace MagicClicker.UI.Icon.Equipment.Unit
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
         [Header("ランクアイコン")]
-        [SerializeField] private List<CommonRadioIcon> _rankIcons = default;
+        [SerializeField] private RankView _rankView = default;
 
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
@@ -30,10 +31,7 @@ namespace MagicClicker.UI.Icon.Equipment.Unit
         public override void Initialize()
         {
             base.Initialize();
-            foreach (CommonRadioIcon icon in _rankIcons)
-            {
-                icon.Initialize();
-            }
+            _rankView.Initialize();
         }
 
         // 装備の設定
@@ -51,13 +49,7 @@ namespace MagicClicker.UI.Icon.Equipment.Unit
             // TODO フレーム画像
 
             // ランクアイコン
-            for (int i = 0; i < unit.Level; i++)
-            {
-                if (i < _rankIcons.Count)
-                {
-                    _rankIcons[i].SetIconState(true);
-                }
-            }
+            _rankView.SetRankView(unit.Level);
         }
 
         // ---------- Private関数 ----------

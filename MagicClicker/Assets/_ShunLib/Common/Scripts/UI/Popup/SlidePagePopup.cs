@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using ShunLib.Btn.Arrow;
-using ShunLib.Page.Slide;
 using ShunLib.UI.Scroll;
+using ShunLib.UI.PageIcon;
 
 namespace ShunLib.Popup.Slide
 {
@@ -12,38 +12,46 @@ namespace ShunLib.Popup.Slide
         // ---------- 定数宣言 ----------
         // ---------- ゲームオブジェクト参照変数宣言 ----------
 
-        [SerializeField, Tooltip("ScrollRect")] protected CommonScrollRect _scrollRect = default;
-        [SerializeField, Tooltip("Arrowボタン")] protected ArrowButton _arrowButton = default;
-        [SerializeField, Tooltip("ページPrefab")] protected List<SlidePage> _slidePages = default;
+        [Header("ScrollRect")]
+        [SerializeField] protected CommonScrollRect scrollRect = default;
+
+        [Header("Arrowボタン")]
+        [SerializeField] protected ArrowButton arrowButton = default;
+
+        [Header("ページ数アイコン")]
+        [SerializeField] protected Indicator indicator = default;
+
+        [Header("ページオブジェクト")]
+        [SerializeField] protected List<GameObject> pageObjects = default;
 
         // ---------- プレハブ ----------
         // ---------- プロパティ ----------
         // ---------- クラス変数宣言 ----------
         // ---------- インスタンス変数宣言 ----------
 
-        private int _curPage = default;
+        protected int curPage = default;
 
         // ---------- Unity組込関数 ----------
         // ---------- Public関数 ----------
         // ---------- Private関数 ----------
 
         // ArrowButtonの表示設定
-        private void SetActiveArrowButton(int curPage)
+        private void SetActiveArrowButton(int setPage)
         {
-            if (curPage == 0)
+            if (setPage == 0)
             {
-                _arrowButton.SetActiveLeftButton(false);
-                _arrowButton.SetActiveRightButton(true);
+                arrowButton.SetActiveLeftButton(false);
+                arrowButton.SetActiveRightButton(true);
             }
-            else if(curPage == _slidePages.Count - 1)
+            else if(setPage == pageObjects.Count - 1)
             {
-                _arrowButton.SetActiveLeftButton(true);
-                _arrowButton.SetActiveRightButton(false);
+                arrowButton.SetActiveLeftButton(true);
+                arrowButton.SetActiveRightButton(false);
             }
             else
             {
-                _arrowButton.SetActiveLeftButton(true);
-                _arrowButton.SetActiveRightButton(true);
+                arrowButton.SetActiveLeftButton(true);
+                arrowButton.SetActiveRightButton(true);
             }
         }
 
@@ -52,48 +60,40 @@ namespace ShunLib.Popup.Slide
         // 初期化
         protected override void Initialize()
         {
-            for (int i = 0; i < _slidePages.Count; i++)
-            {
-                _slidePages[i].Initialize(_slidePages.Count, i);
-                _slidePages[i].SetCloseButtonEvent(() => {
-                    Close();
-                });
-            }
-
-            _scrollRect.Initialize();
+            scrollRect.Initialize();
             List<Vector2> posList = new List<Vector2>();
-            Vector2 pos = _scrollRect.content.anchoredPosition;
+            Vector2 pos = scrollRect.content.anchoredPosition;
             posList.Add(pos);
-            for (int i = 1; i < _slidePages.Count; i++)
+            for (int i = 1; i < pageObjects.Count; i++)
             {
-                pos = new Vector2(pos.x - _scrollRect.viewport.sizeDelta.x, pos.y);
+                pos = new Vector2(pos.x - scrollRect.viewport.sizeDelta.x, pos.y);
                 posList.Add(pos);
             }
-            _scrollRect.InitializePageScroll(posList);
-            _curPage = 0;
-            _arrowButton.SetLeftButtonEvent(ScrollPrevPage);
-            _arrowButton.SetRightButtonEvent(ScrollNextPage);
-            SetActiveArrowButton(_curPage);
+            scrollRect.InitializePageScroll(posList);
+            curPage = 0;
+            arrowButton.SetLeftButtonEvent(ScrollPrevPage);
+            arrowButton.SetRightButtonEvent(ScrollNextPage);
+            SetActiveArrowButton(curPage);
         }
 
         // 次のページへスクロール
         protected virtual void ScrollNextPage()
         {
-            if (_scrollRect.IsMove) return;
+            if (scrollRect.IsMove) return;
 
-            _curPage++;
-            SetActiveArrowButton(_curPage);
-            _scrollRect.MovePage(_curPage);
+            curPage++;
+            SetActiveArrowButton(curPage);
+            scrollRect.MovePage(curPage);
         }
 
         // 前のページへスクロール
         protected virtual void ScrollPrevPage()
         {
-            if (_scrollRect.IsMove) return;
+            if (scrollRect.IsMove) return;
 
-            _curPage--;
-            SetActiveArrowButton(_curPage);
-            _scrollRect.MovePage(_curPage);
+            curPage--;
+            SetActiveArrowButton(curPage);
+            scrollRect.MovePage(curPage);
         }
     }
 }
